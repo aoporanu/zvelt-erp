@@ -27,7 +27,8 @@ class ItemStoreRequest extends FormRequest
             'name' => 'required|min:3|max:250',
             'vat' => 'required|min:1|max:2',
             'price' => 'required',
-            'category_id' => 'required|exists:categories,id'
+            'category_id' => 'required|exists:categories,id',
+            'weight' => 'required|min:1'
         ];
     }
 }

@@ -41,18 +41,22 @@ class ItemController extends Controller
      */
     public function store(ItemStoreRequest $request)
     {
-        $sku = Item::latest()->get('sku')->first();
+        $sku = Item::latest()->pluck('sku');
+        dump($sku);
         if (!$sku) {
             $sku = '0000100000000';
         } else {
-            (int)$sku++;
+            $sku = $sku[0];
+            $sku+=1;
         }
+        dump($sku);
 
         $item = Item::create([
             'sku' => $sku,
             'name' => $request->get('name'),
             'vat' => $request->get('vat'),
             'price' => $request->get('price'),
+            'weight' => $request->get('weight'),
             'category_id' => $request->get('category_id')
         ]);
 
