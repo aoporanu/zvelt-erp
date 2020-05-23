@@ -1,0 +1,9 @@
+/.idea/
+/vendor
+/.env
+/artisan
+/CHANGELOG.md
+/node_modules
+/storage
+/config
+/laradock
