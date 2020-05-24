@@ -29,3 +29,11 @@ Route::post('category', 'CategoriesController@store');
 Route::get('get-item/{item}', 'ItemController@show');
 
 Route::get('categories', 'CategoriesController@index');
+
+Route::get('packagings', 'PackagingController@index');
+
+Route::post('packaging', 'PackagingController@store');
+
+Route::get('brands', 'BrandsController@index');
+
+Route::post('brand', 'BrandsController@store');

@@ -16,11 +16,17 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function index()
     {
-        dd(Item::all());
+        $items = Item::with(['categor', 'brand'])->get();
+
+        if ($items->count() < 1) {
+            return response()->json(['success' => false, 'message' => 'There are no items in the database']);
+        }
+
+        return response()->json(['success' => true, 'items' => $items]);
     }
 
     /**

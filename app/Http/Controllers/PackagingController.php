@@ -16,8 +16,8 @@ class PackagingController extends Controller
     {
         $packagings = Packaging::get(['id', 'name']);
 
-        if (!$packagings) {
-            return response()->json(['success' => false, 'message' => 'Something must have happened'], 500);
+        if ($packagings->count() < 1) {
+            return response()->json(['success' => false, 'message' => 'Packagings are missing']);
         }
         return response()->json(['success' => true, 'message' => 'Loading your packagings', 'packagings' => $packagings]);
     }

@@ -18,13 +18,16 @@ class CreateItems extends Migration
             $table->string('name');
             $table->string('vat');
             $table->double('price');
-            $table->string('sku');
+            $table->unsignedBigInteger('sku');
             $table->integer('category_id')->index()->unsigned();
             $table->string('unit_of_measure');
             $table->string('packaging');
             $table->string('per_packaging');
+            $table->unsignedBigInteger('brand_id')->index();
+
             $table->timestamps();
         });
+
     }
 
     /**

@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Brand;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class CategoriesController extends Controller
+class BrandsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index()
     {
-        $categories = Category::get(['id', 'name']);
+        $brands = Brand::get(['id', 'name']);
 
-        if ($categories->count() < 1) {
-            return response()->json(['success' => false, 'message' => 'Categories aren\'t present, you will not be able to save items.']);
+        if ($brands->count() < 1) {
+            return response()->json(['success'=>false, 'message'=>'There are no brands. You won\'t be able to save items']);
         }
 
-        return response()->json(['success' => true, 'categories' => $categories]);
+        return response()->json(['success' => true, 'brands' => $brands], 200);
     }
 
     /**
@@ -37,20 +38,11 @@ class CategoriesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $category = Category::create([
-            'name' => $request->get('name'),
-            'description' => $request->get('description')
-        ]);
-
-        if (!$category) {
-            return response()->json(['success'=>false, 'message'=>'Category creation failed'], 500);
-        }
-
-        return response()->json(['success'=>true, 'message' => 'Category creation OK']);
+        //
     }
 
     /**
