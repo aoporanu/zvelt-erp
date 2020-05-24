@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Packaging;
 use Illuminate\Http\Request;
 
 class PackagingController extends Controller
@@ -9,11 +10,16 @@ class PackagingController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        //
+        $packagings = Packaging::get(['id', 'name']);
+
+        if (!$packagings) {
+            return response()->json(['success' => false, 'message' => 'Something must have happened'], 500);
+        }
+        return response()->json(['success' => true, 'message' => 'Loading your packagings', 'packagings' => $packagings]);
     }
 
     /**
@@ -30,11 +36,19 @@ class PackagingController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $packaging = Packaging::create([
+            'name' => $request->get('name')
+        ]);
+
+        if (!$packaging) {
+            return response()->json(['success' => false, 'message' => 'Package creation failed'], 500);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Package creation succeeded'], 200);
     }
 
     /**
