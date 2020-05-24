@@ -20,7 +20,7 @@ class CreateShopsTable extends Migration
             $table->string('lat');
             $table->string('lng');
             $table->text('address');
-            $table->bigInteger('client_id');
+            $table->unsignedBigInteger('client_id');
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
             $table->timestamps();

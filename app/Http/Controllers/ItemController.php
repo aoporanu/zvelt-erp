@@ -57,7 +57,10 @@ class ItemController extends Controller
             'vat' => $request->get('vat'),
             'price' => $request->get('price'),
             'weight' => $request->get('weight'),
-            'category_id' => $request->get('category_id')
+            'category_id' => $request->get('category_id'),
+            'unit_of_measure' => $request->get('unit_of_measure'),
+            'packaging' => $request->get('packaging'),
+            'per_packaging' => $request->get('per_packaging')
         ]);
 
         if (!$item) {

@@ -28,7 +28,10 @@ class ItemStoreRequest extends FormRequest
             'vat' => 'required|min:1|max:2',
             'price' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'weight' => 'required|min:1'
+            'weight' => 'required|min:1',
+            'unit_of_measure' => 'required',
+            'packaging' => 'required|min:1|exists:packagings,id',
+            'per_packaging' => 'required|numeric'
         ];
     }
 }

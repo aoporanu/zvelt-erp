@@ -27,3 +27,5 @@ Route::post('store-item', 'ItemController@store');
 Route::post('category', 'CategoriesController@store');
 
 Route::get('get-item/{item}', 'ItemController@show');
+
+Route::get('categories', 'CategoriesController@index');
