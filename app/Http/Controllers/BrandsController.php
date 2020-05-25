@@ -38,11 +38,20 @@ class BrandsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function store(Request $request)
     {
-        //
+        $brand = Brand::create([
+            'name' => $request->get('name'),
+            'address' => $request->get('address'),
+            'cui' => $request->get('cui')
+        ]);
+        if (!$brand) {
+            return response()->json(['success' => false, 'message' => 'Could not save brand']);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Brand saved succesfully']);
     }
 
     /**
@@ -76,17 +85,22 @@ class BrandsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $brand = Brand::find($id);
+
+        $brand->update();
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        if (Brand::destroy($id)) {
+            return response()->json(['success' => true, 'message' => 'Brand was deleted']);
+        }
+        return response()->json(['success' => false, 'message' => 'Could not delete brand']);
     }
 }

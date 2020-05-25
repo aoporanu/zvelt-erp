@@ -120,10 +120,13 @@ class ItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy($id)
     {
-        //
+        if (Item::destroy($id)) {
+            return response()->json(['success' => true, 'message' => 'Item deleted']);
+        }
+        return response()->json(['success' => false, 'message' => 'Item could not be deleted']);
     }
 }
