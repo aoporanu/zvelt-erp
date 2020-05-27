@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemStoreRequest;
-use http\Env\Response;
+use App\Http\Resources\ItemCollection;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
@@ -20,7 +20,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::with(['categor', 'brand'])->get();
+        $items = ItemCollection::collection(Item::all());
 
         if ($items->count() < 1) {
             return response()->json(['success' => false, 'message' => 'There are no items in the database']);
@@ -109,11 +109,18 @@ class ItemController extends Controller
      *
      * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Item::findOrFail($id);
+
+        $item->update($request->all());
+
+        if ($item->save()) {
+            return response()->json(['success' => true, 'message' => 'Item was updated']);
+        }
+        return response()->json(['success' => false, 'message' => 'Could not update item']);
     }
 
     /**

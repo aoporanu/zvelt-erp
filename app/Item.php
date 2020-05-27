@@ -26,4 +26,12 @@ class Item extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function options()
+    {
+        return $this->hasMany(Option::class);
+    }
 }
