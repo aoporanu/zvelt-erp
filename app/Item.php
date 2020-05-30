@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Category;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Item extends Model
@@ -35,5 +36,13 @@ class Item extends Model
     public function options()
     {
         return $this->hasMany(Option::class);
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function purchases()
+    {
+        return $this->belongsToMany(Purchase::class, 'purchased_items');
     }
 }
