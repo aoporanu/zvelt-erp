@@ -13,7 +13,10 @@ class Client extends Model
         'lat',
         'lng',
         'owner_name',
-        'owner_phone'
+        'owner_phone',
+        'city',
+        'state',
+        'country'
     ];
 
     /**

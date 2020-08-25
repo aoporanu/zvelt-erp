@@ -15,6 +15,9 @@ class Shop extends Model
         'client_id'
     ];
 
+    /**
+     * @return mixed
+     */
     public function client()
     {
         return $this->belongsTo(Client::class);

@@ -14,12 +14,15 @@ class CreatePurchasesTable extends Migration
     public function up()
     {
         Schema::create('purchases', function (Blueprint $table) {
-            $table->id();
-            $table->string('due_date');
-            $table->double('due_amount');
-            $table->text('notes');
-            $table->float('weight');
-            $table->timestamps();
+            $table->bigIncrements('id');
+            $table->string('purchase_id');
+            $table->string('value');
+            $table->string('total');
+            $table->string('discount');
+            $table->string('for_invoice');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 
