@@ -3,34 +3,30 @@
 use Illuminate\Http\Request;
 use Illuminate\Routing\Router;
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+/*
+* Snippet for a quick route reference
+*/
+Route::get('/', function (Router $router) {
+    return collect($router->getRoutes()->getRoutesByMethod()["GET"])->map(function($value, $key) {
+        return url($key);
+    })->values();   
 });
 
-Route::post('login', 'Api\AuthController@login');
+Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
 
-Route::post('register', 'Api\AuthController@register');
+Route::apiResource('receipts', '\App\Http\Controllers\API\ReceiptAPIController');
 
-Route::post('store-item', 'ItemController@store');
+Route::apiResource('warehouses', '\App\Http\Controllers\API\WarehouseAPIController');
 
-Route::post('category', 'CategoriesController@store');
-
-Route::get('get-item/{item}', 'ItemController@show');
-
-Route::get('categories', 'CategoriesController@index');
-
-Route::get('packagings', 'PackagingController@index');
-
-Route::post('packaging', 'PackagingController@store');
-
-Route::get('brands', 'BrandsController@index');
-
-Route::post('brand', 'BrandsController@store');
-
-Route::get('clients', 'ClientController@index');
-
-Route::post('create-client', 'ClientController@store');
-
-Route::apiResource('purchases', '\App\Http\Controllers\API\PurchaseAPIController');
-
-Route::apiResource('purchasedItems', '\App\Http\Controllers\API\PurchasedItemsAPIController');
+Route::apiResource('locations', '\App\Http\Controllers\API\LocationAPIController');
