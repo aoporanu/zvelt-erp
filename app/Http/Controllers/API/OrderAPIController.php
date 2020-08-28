@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Order;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
+use App\Http\Requests\OrderStoreRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -20,12 +22,12 @@ class OrderAPIController extends Controller
         return new OrderResource($order->load(['orderItems']));
     }
 
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
         return new OrderResource(Order::create($request->all()));
     }
 
-    public function update(Request $request, Order $order)
+    public function update(OrderUpdateRequest $request, Order $order)
     {
         $order->update($request->all());
 
