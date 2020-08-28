@@ -23,10 +23,4 @@ Route::get('/', function (Router $router) {
     })->values();   
 });
 
-Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
-
-Route::apiResource('receipts', '\App\Http\Controllers\API\ReceiptAPIController');
-
-Route::apiResource('warehouses', '\App\Http\Controllers\API\WarehouseAPIController');
-
-Route::apiResource('locations', '\App\Http\Controllers\API\LocationAPIController');
+Route::apiResource('suppliers', '\App\Http\Controllers\API\SupplierAPIController');
