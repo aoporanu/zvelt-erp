@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Ledger extends Model
-{
+{
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +46,12 @@ class Ledger extends Model
      */
     public function receipts()
     {
-        return $this->hasMany(\App\Receipt::class);
+        return $this->hasMany(Receipt::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

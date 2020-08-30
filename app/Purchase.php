@@ -41,5 +41,15 @@ class Purchase extends Model
         //
     ];
 
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
+
 
 }

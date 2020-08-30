@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Supplier extends Model
-{
+{
+
     /**
      * The attributes that are mass assignable.
      *
@@ -39,5 +40,14 @@ class Supplier extends Model
     protected $casts = [
         //
     ];
-
+
+    public function items()
+    {
+        return $this->hasMany(Items::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
 }
