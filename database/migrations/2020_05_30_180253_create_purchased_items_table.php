@@ -17,12 +17,15 @@ class CreatePurchasedItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('purchase_id');
             $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('supplier_id');
             $table->double('purchase_cost');
             $table->double('selling_cost');
+            $table->double('vat');
             $table->integer('qty');
 
             $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('items');
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
             $table->timestamps();
         });
     }

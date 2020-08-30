@@ -25,6 +25,7 @@ class PurchaseStoreRequest extends FormRequest
     {
         return [
             'purchase_id' => 'required|unique:purchases',
+            'supplier_id' => 'required|exists:suppliers,id',
             'value' => 'required',
             'total' => 'required',
             'for_invoice' => 'required',
@@ -35,6 +36,7 @@ class PurchaseStoreRequest extends FormRequest
             'items.*.selling_cost' => 'required',
             'items.*.qty' => 'required|min:1',
             'items.*.lot' => 'required',
+            'items.*.warehouse_id' => 'required|exists:warehouses,id',
             'items.*.location_id' => 'required|exists:locations,id'
         ];
     }

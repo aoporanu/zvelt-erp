@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Purchase extends Model
+class Supplier extends Model
 {
 
     /**
@@ -13,7 +13,7 @@ class Purchase extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'value', 'total', 'discount', 'for_invoice'
+        'id', 'uid', 'name', 'description'
     ];
 
     /**
@@ -43,13 +43,11 @@ class Purchase extends Model
 
     public function items()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Items::class);
     }
 
-    public function supplier()
+    public function purchases()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->hasMany(Purchase::class);
     }
-
-
 }

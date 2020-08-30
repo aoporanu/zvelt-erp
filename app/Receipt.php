@@ -2,14 +2,10 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Receipt extends Model
 {
-    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,8 +13,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id', 'ledger_id', 'shop_id', 'invoice_id', 'observations'
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -26,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        //
     ];
 
     /**
@@ -35,11 +38,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        //
     ];
 
+    /**
+     * Get the Ledger for the Receipt.
+     */
     public function ledger()
     {
-        return $this->hasOne(Ledger::class);
+        return $this->belongsTo(\App\Ledger::class);
     }
+
 }

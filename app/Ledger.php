@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Purchase extends Model
+class Ledger extends Model
 {
 
     /**
@@ -13,7 +13,7 @@ class Purchase extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'value', 'total', 'discount', 'for_invoice'
+        'id', 'type', 'user_id', 'balance'
     ];
 
     /**
@@ -41,15 +41,17 @@ class Purchase extends Model
         //
     ];
 
-    public function items()
+    /**
+     * Get the Receipts for the Ledger.
+     */
+    public function receipts()
     {
-        return $this->hasMany(Item::class);
+        return $this->hasMany(Receipt::class);
     }
 
-    public function supplier()
+    public function user()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(User::class);
     }
-
 
 }
