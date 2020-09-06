@@ -5,14 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class PurchasedItems extends Model
-{
+{
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id,', 'item_id,', 'value,', 'location,', 'total,', 'qty,', 'vat'
+        'id', 'purchase_id', 'item_id', 'value', 'location', 'total', 'qty', 'vat', 'type_id'
     ];
 
     /**
@@ -39,5 +40,6 @@ class PurchasedItems extends Model
     protected $casts = [
         //
     ];
-
+
+
 }

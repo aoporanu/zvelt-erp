@@ -20,23 +20,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = ItemCollection::collection(Item::all());
-
-        if ($items->count() < 1) {
-            return response()->json(['success' => false, 'message' => 'There are no items in the database']);
-        }
-
-        return response()->json(['success' => true, 'items' => $items]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        return view('items.create');
+        return new ItemCollection(Item::paginate());
     }
 
     /**
@@ -47,33 +31,7 @@ class ItemController extends Controller
      */
     public function store(ItemStoreRequest $request)
     {
-        $sku = Item::latest()->pluck('sku');
-        dump($sku);
-        if (!$sku) {
-            $sku = '0000100000000';
-        } else {
-            $sku = $sku[0];
-            $sku+=1;
-        }
-        dump($sku);
-
-        $item = Item::create([
-            'sku' => $sku,
-            'name' => $request->get('name'),
-            'vat' => $request->get('vat'),
-            'price' => $request->get('price'),
-            'weight' => $request->get('weight'),
-            'category_id' => $request->get('category_id'),
-            'unit_of_measure' => $request->get('unit_of_measure'),
-            'packaging' => $request->get('packaging'),
-            'per_packaging' => $request->get('per_packaging')
-        ]);
-
-        if (!$item) {
-            return response()->json(['success'=>false, 'message'=>'Item creation failed'], 500);
-        }
-
-        return response()->json(['success'=>true, 'message' => 'Item creation OK']);
+        return new ItemCollection(Item::create($request->all()));
     }
 
     /**
@@ -82,58 +40,36 @@ class ItemController extends Controller
      * @param  int  $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(Item $item)
     {
-        $item = Item::where('id', $id)->with('category')->get();
-
-        if (!$item) {
-            return \response()->json(['success' => false, 'message' => 'No such item on inventory'], 500);
-        }
-
-        return response()->json(['success' => true, 'item' => $item]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return new ItemResource($item->load(['categories', 'brands']));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  int  $id
+     * @param  Item $item
      * @return JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Item $item)
     {
-        $item = Item::findOrFail($id);
-
         $item->update($request->all());
 
-        if ($item->save()) {
-            return response()->json(['success' => true, 'message' => 'Item was updated']);
-        }
-        return response()->json(['success' => false, 'message' => 'Could not update item']);
+        return new ItemResource($item);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param  Item  $id
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request, Item $item)
     {
-        if (Item::destroy($id)) {
-            return response()->json(['success' => true, 'message' => 'Item deleted']);
-        }
-        return response()->json(['success' => false, 'message' => 'Item could not be deleted']);
+        $item->delete();
+
+        return response()->noContent();
     }
 }
