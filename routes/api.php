@@ -24,3 +24,19 @@ Route::get('/', function (Router $router) {
 });
 
 Route::apiResource('routes', '\App\Http\Controllers\API\RouteAPIController');
+
+Route::apiResource('login', '\App\Http\Controllers\API\AuthController@login');
+
+Route::apiResource('register','\App\Http\Controllers\API\AuthController@login');
+
+Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
+
+Route::apiResource('orders', '\App\Http\Contollers\API\OrderAPIController');
+
+Route::apiResource('orders-items', '\App\Http\Controllers\API\OrderItemController');
+
+Route::apiResource('purchases', '\App\Http\Controllers\API\PurchaseAPIController');
+
+Route::apiResource('purchased-items', '\App\Http\Controllers\API\PurchasedItemsAPIController');
+
+Route::apiResource('invoices', '\App\Http\Controller\API\InvoiceAPIController');
