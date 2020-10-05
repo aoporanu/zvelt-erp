@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Order;
+use App\Invoice;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\OrderStoreRequest;
