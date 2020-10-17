@@ -24,6 +24,6 @@ class ItemResource extends JsonResource
             'brand' => new BrandCollection($this->whenLoaded('brand')),
             'options' => new OptionsCollection($this->whenLoaded('options')),
             'purchases' => new PurchaseCollection($this->whenLoaded('purchases'))
-        ]
+        ];
     }
 }

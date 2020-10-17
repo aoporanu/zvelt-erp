@@ -39,4 +39,6 @@ Route::apiResource('purchases', '\App\Http\Controllers\API\PurchaseAPIController
 
 Route::apiResource('purchased-items', '\App\Http\Controllers\API\PurchasedItemsAPIController');
 
-Route::apiResource('invoices', '\App\Http\Controller\API\InvoiceAPIController');
+Route::apiResource('invoices', '\App\Http\Controllers\API\InvoiceAPIController');
+
+Route::apiResource('items', '\App\Http\Controllers\API\ItemAPIController');

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Resources\ItemCollection;
 use App\Http\Resources\ItemResource;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use App\Item;
 use Illuminate\View\View;
 
-class ItemController extends Controller
+class ItemAPIController extends Controller
 {
     /**
      * Display a listing of the resource.
