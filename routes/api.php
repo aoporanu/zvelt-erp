@@ -3,7 +3,7 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('routes', '\App\Http\Controllers\API\RouteAPIController');
+// Route::apiResource('rute', '\App\Http\Controllers\API\RouteAPIController');
 
 Route::apiResource('login', '\App\Http\Controllers\API\AuthAPIController@login');
 
@@ -24,3 +24,15 @@ Route::apiResource('invoices', '\App\Http\Controllers\API\InvoiceAPIController')
 Route::apiResource('items', '\App\Http\Controllers\API\ItemAPIController');
 
 Route::apiResource('packagings', '\App\Http\Controllers\API\PackagingAPIController');
+
+Route::get('rute', '\App\Http\Controllers\API\RouteAPIController@index');
+
+Route::post('rute', '\App\Http\Controllers\API\RouteAPIController@store');
+
+Route::get('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@show');
+
+Route::put('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@update');
+
+Route::delete('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@destroy');
+
+Route::apiResource('shops', '\App\Http\Controllers\API\ShopsAPIController');

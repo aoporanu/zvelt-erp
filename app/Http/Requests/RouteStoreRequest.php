@@ -26,7 +26,7 @@ class RouteStoreRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'shop_id' => 'required|exists:shops,id',
-            'payment' => 'required|min:1|numeric'
+            'payment' => 'required|min:1'
         ];
     }
 }

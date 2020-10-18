@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Route;
-use App\Http\Resources\RouteCollection;
-use App\Http\Resources\RouteResource;
+use App\Visitation;
+use App\Http\Resources\VisitationCollection;
+use App\Http\Resources\VisitationResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RouteStoreRequest;
@@ -13,27 +13,37 @@ class RouteAPIController extends Controller
 {
     public function index()
     {
-        return new RouteCollection(Route::paginate());
+        return new VisitationCollection(Visitation::paginate());
     }
 
-    public function show(Route $route)
+    public function show(Visitation $route)
     {
-        return new RouteResource($route->load([]));
+        return new VisitationResource($route->load([]));
     }
 
     public function store(RouteStoreRequest $request)
     {
-        return new RouteResource(Route::create($request->all()));
+        $route = Visitation::where([
+            ['shop_id', '=', $request->client_id],
+            ['user_id', '=', $request->user_id],
+            ['day_of_week', '=', $request->day_of_week]
+        ])->count();
+
+        if ((int)$route > 0) {
+            return response()->json(['success' => false, 'message' => 'The rout already exists'], 409);
+        }
+
+        return new VisitationResource(Visitation::create($request->all()));
     }
 
-    public function update(Request $request, Route $route)
+    public function update(Request $request, Visitation $route)
     {
         $route->update($request->all());
 
-        return new RouteResource($route);
+        return new VisitationResource($route);
     }
 
-    public function destroy(Request $request, Route $route)
+    public function destroy(Request $request, Visitation $route)
     {
         $route->delete();
 
