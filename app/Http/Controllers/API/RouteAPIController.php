@@ -8,12 +8,13 @@ use App\Http\Resources\VisitationResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RouteStoreRequest;
+use Illuminate\Support\Facades\DB;
 
 class RouteAPIController extends Controller
 {
     public function index()
     {
-        return new VisitationCollection(Visitation::paginate());
+        return new VisitationCollection(Visitation::paginate(10));
     }
 
     public function show(Visitation $route)
@@ -23,17 +24,7 @@ class RouteAPIController extends Controller
 
     public function store(RouteStoreRequest $request)
     {
-        $route = Visitation::where([
-            ['shop_id', '=', $request->client_id],
-            ['user_id', '=', $request->user_id],
-            ['day_of_week', '=', $request->day_of_week]
-        ])->count();
-
-        if ((int)$route > 0) {
-            return response()->json(['success' => false, 'message' => 'The rout already exists'], 409);
-        }
-
-        return new VisitationResource(Visitation::create($request->all()));
+        return new VisitationResource(Visitation::firstOrCreate($request->all()));
     }
 
     public function update(Request $request, Visitation $route)
