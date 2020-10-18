@@ -14,7 +14,7 @@ class ReceiptAPIController extends Controller
     {
         return new ReceiptCollection(Receipt::paginate());
     }
- 
+
     public function show(Receipt $receipt)
     {
         return new ReceiptResource($receipt->load(['ledger']));

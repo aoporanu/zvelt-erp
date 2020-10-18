@@ -15,7 +15,7 @@ class WarehouseAPIController extends Controller
     {
         return new WarehouseCollection(Warehouse::paginate());
     }
- 
+
     public function show(Warehouse $warehouse)
     {
         return new WarehouseResource($warehouse->load(['locations']));

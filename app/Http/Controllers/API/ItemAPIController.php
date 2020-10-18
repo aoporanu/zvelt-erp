@@ -6,12 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Resources\ItemCollection;
 use App\Http\Resources\ItemResource;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Item;
-use Illuminate\View\View;
 
 class ItemAPIController extends Controller
 {

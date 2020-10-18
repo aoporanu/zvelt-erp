@@ -11,7 +11,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Item extends Model
 {
     protected $fillable = [
-        'name', 'vat', 'price', 'category_id', 'sku', 'weight', 'brand_id'
+        'name',
+        'vat',
+        'price',
+        'category_id',
+        'sku',
+        'weight',
+        'brand_id',
+        'unit_of_measure',
+        'packaging',
+        'per_packaging'
     ];
 
     /**

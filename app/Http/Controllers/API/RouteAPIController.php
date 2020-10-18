@@ -7,6 +7,7 @@ use App\Http\Resources\RouteCollection;
 use App\Http\Resources\RouteResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RouteStoreRequest;
 
 class RouteAPIController extends Controller
 {
@@ -14,13 +15,13 @@ class RouteAPIController extends Controller
     {
         return new RouteCollection(Route::paginate());
     }
- 
+
     public function show(Route $route)
     {
         return new RouteResource($route->load([]));
     }
 
-    public function store(Request $request)
+    public function store(RouteStoreRequest $request)
     {
         return new RouteResource(Route::create($request->all()));
     }

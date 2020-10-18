@@ -14,7 +14,7 @@ class SupplierAPIController extends Controller
     {
         return new SupplierCollection(Supplier::paginate());
     }
- 
+
     public function show(Supplier $supplier)
     {
         return new SupplierResource($supplier->load([]));

@@ -15,7 +15,7 @@ class LocationAPIController extends Controller
     {
         return new LocationCollection(Location::paginate());
     }
- 
+
     public function show(Location $location)
     {
         return new LocationResource($location->load(['warehouse']));

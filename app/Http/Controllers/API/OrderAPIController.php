@@ -18,7 +18,7 @@ class OrderAPIController extends Controller
     {
         return new OrderCollection(Order::paginate());
     }
- 
+
     public function show(Order $order)
     {
         return new OrderResource($order->load(['orderItems']));
@@ -35,7 +35,7 @@ class OrderAPIController extends Controller
             // 2. check if the user has any invoice for this client, and the invoice's
             //      due_date field is less than or equal to the one set in the config table
             if ($collection->count() > 0) {
-                
+
                 //      * if true, automatically send an email to the powers-that-be informing them
                 //          of the infringement.
 
@@ -53,7 +53,7 @@ class OrderAPIController extends Controller
                 //          go through the powers-that-be configs, inform the user
             }
         }
-        
+
         // 3. if all's good, then proceed to ...
         return new OrderResource(Order::create($request->all()));
     }

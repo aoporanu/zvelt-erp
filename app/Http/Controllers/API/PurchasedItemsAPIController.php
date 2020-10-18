@@ -14,7 +14,7 @@ class PurchasedItemsAPIController extends Controller
     {
         return new PurchasedItemsCollection(PurchasedItems::paginate());
     }
- 
+
     public function show(PurchasedItems $purchasedItems)
     {
         return new PurchasedItemsResource($purchasedItems->load([]));
@@ -22,6 +22,7 @@ class PurchasedItemsAPIController extends Controller
 
     public function store(Request $request)
     {
+        
         return new PurchasedItemsResource(PurchasedItems::create($request->all()));
     }
 

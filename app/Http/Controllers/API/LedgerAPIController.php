@@ -14,7 +14,7 @@ class LedgerAPIController extends Controller
     {
         return new LedgerCollection(Ledger::paginate());
     }
- 
+
     public function show(Ledger $ledger)
     {
         return new LedgerResource($ledger->load(['receipts']));

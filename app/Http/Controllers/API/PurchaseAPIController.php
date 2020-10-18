@@ -15,7 +15,7 @@ class PurchaseAPIController extends Controller
     {
         return new PurchaseCollection(Purchase::paginate());
     }
- 
+
     public function show(Purchase $purchase)
     {
         return new PurchaseResource($purchase->load([]));

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Controller;
 use App\Invoice;
 use App\Order;
 use App\OrderItem;
@@ -20,23 +21,23 @@ class InvoiceAPIController extends Controller
 
     public function show(Invoice $invoice)
     {
-        return new InvoiceResource($invoice->load(['invoiceItems','invoiceClient']));
+        return new InvoiceResource($invoice->load(['invoiceItems', 'invoiceClient']));
     }
 
     public function store(InvoiceStoreRequest $request)
     {
         // mefinks this should go inside the InvoiceStoreRequest
         $order = Order::where('id', $request->order_id);
-        switch($order->status) {
+        switch ($order->status) {
             case 'processed':
                 return response()->json(['success' => false, 'message' => 'The order has already been processed']);
-            break;
+                break;
             case 'rejected':
                 return response()->json(['success' => false, 'message' => 'The order has been rejected by someone at the office']);
-            break;
+                break;
             case 'cancelled':
                 return response()->json(['success' => false, 'message' => 'The order has been cancelled by the client']);
-            break;
+                break;
         }
         return new InvoiceResource(Invoice::create($request->all()));
     }

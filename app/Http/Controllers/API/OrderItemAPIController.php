@@ -14,7 +14,7 @@ class OrderItemAPIController extends Controller
     {
         return new OrderItemCollection(OrderItem::paginate());
     }
- 
+
     public function show(OrderItem $orderItem)
     {
         return new OrderItemResource($orderItem->load(['order']));

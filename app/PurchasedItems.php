@@ -40,6 +40,4 @@ class PurchasedItems extends Model
     protected $casts = [
         //
     ];
-
-
 }
