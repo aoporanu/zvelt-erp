@@ -13,12 +13,12 @@ class PurchaseAPIController extends Controller
 {
     public function index()
     {
-        return new PurchaseCollection(Purchase::paginate());
+        return new PurchaseCollection(Purchase::paginate(10));
     }
 
     public function show(Purchase $purchase)
     {
-        return new PurchaseResource($purchase->load([]));
+        return new PurchaseResource($purchase);
     }
 
     public function store(PurchaseStoreRequest $request)

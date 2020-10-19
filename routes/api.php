@@ -38,3 +38,7 @@ Route::delete('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@destr
 Route::apiResource('shops', '\App\Http\Controllers\API\ShopsAPIController');
 
 Route::apiResource('warehouses', '\App\Http\Controllers\API\WarehouseAPIController');
+
+Route::apiResource('locations', '\App\Http\Controllers\API\LocationAPIController');
+
+Route::apiResource('suppliers', '\App\Http\Controllers\API\SupplierAPIController');
