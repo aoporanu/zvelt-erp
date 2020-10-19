@@ -12,7 +12,10 @@ class Shop extends Model
         'lat',
         'lng',
         'address',
-        'client_id'
+        'client_id',
+        'city',
+        'state',
+        'country'
     ];
 
     /**

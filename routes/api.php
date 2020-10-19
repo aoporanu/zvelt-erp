@@ -36,3 +36,5 @@ Route::put('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@update')
 Route::delete('rute/{rute}', '\App\Http\Controllers\API\RouteAPIController@destroy');
 
 Route::apiResource('shops', '\App\Http\Controllers\API\ShopsAPIController');
+
+Route::apiResource('warehouses', '\App\Http\Controllers\API\WarehouseAPIController');

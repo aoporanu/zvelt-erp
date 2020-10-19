@@ -10,6 +10,7 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Visitation;
 use Illuminate\Support\Carbon;
 
 class OrderAPIController extends Controller
@@ -27,6 +28,11 @@ class OrderAPIController extends Controller
     public function store(OrderStoreRequest $request)
     {
         // 1. get user+client invoices
+        // check if the user has a right to store the order for the client
+        $route = Visitation::where([['shop_id', $request->client_id], ['user_id' => $request->user_id]])->first();
+        if (!$route) {
+            return response()->json(['success' => false, 'message' => 'Not able to create an order for this client']);
+        }
         $invoices = Invoice::where('client_id', $request->client_id)
             ->where('agent_id', $request->agent_id)
             ->get();
