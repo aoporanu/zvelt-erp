@@ -29,7 +29,8 @@ class OrderAPIController extends Controller
     {
         // 1. get user+client invoices
         // check if the user has a right to store the order for the client
-        $route = Visitation::where([['shop_id', $request->client_id], ['user_id' => $request->user_id]])->first();
+        $route = Visitation::where([['shop_id', $request->shop_id], ['user_id', $request->user_id]])->first();
+        // dump($route);
         if (!$route) {
             return response()->json(['success' => false, 'message' => 'Not able to create an order for this client']);
         }
