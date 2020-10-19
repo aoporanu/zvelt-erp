@@ -40,7 +40,7 @@ class ShopsAPIController extends Controller
      */
     public function show(Shop $shop)
     {
-        //
+        return new ShopResource($shop->load(['client']));
     }
 
     /**
@@ -52,7 +52,9 @@ class ShopsAPIController extends Controller
      */
     public function update(Request $request, Shop $shop)
     {
-        //
+        $shop->update($request->all());
+
+        return new ShopResource($shop);
     }
 
     /**
