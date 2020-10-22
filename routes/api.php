@@ -42,3 +42,5 @@ Route::apiResource('warehouses', '\App\Http\Controllers\API\WarehouseAPIControll
 Route::apiResource('locations', '\App\Http\Controllers\API\LocationAPIController');
 
 Route::apiResource('suppliers', '\App\Http\Controllers\API\SupplierAPIController');
+
+Route::apiResource('settings', '\App\Http\Controllers\SettingsController');

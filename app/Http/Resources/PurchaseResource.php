@@ -23,7 +23,7 @@ class PurchaseResource extends JsonResource
             'for_invoice' => $this->for_invoice,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'items' => ItemResource::collection($this->whenLoaded('items'))
+            'items' => ItemResource::collection($this->items)
         ];
     }
 }
