@@ -63,10 +63,10 @@ class OrderAPIController extends Controller
             }
         }
 
-        $ceil = Shop::find($request->shop_id)->get('ceil');
-        $invoices = Invoice::where([['shop_id', $request->get('shop_id')], ['user_id', $request->get('id')]])->get();
+        $ceil = Visitation::where([['shop_id', $request->get('shop_id')], ['user_id', $request->get('user_id')]])->get('ceil'); // we'll get the ceil from the routes table
+        $invoices = Invoice::where([['shop_id', $request->get('shop_id')], ['agent_id', $request->get('user_id')]])->get();
 
-        if ($invoices->amount_left >= $ceil) {
+        if (count($invoices) && $invoices->amount_left >= $ceil) {
             return response()->json(['success' => false, 'message' => 'The ceil has been overflown']);
         }
 
