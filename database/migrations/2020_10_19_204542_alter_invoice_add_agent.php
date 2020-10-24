@@ -14,7 +14,8 @@ class AlterInvoiceAddAgent extends Migration
     public function up()
     {
         Schema::table('invoices', function(Blueprint $table) {
-            $table->foreign('agent_id')->references('id')->on('user');
+            // $table->bigInteger('agent_id');
+            $table->foreign('agent_id')->references('id')->on('users');
         });
     }
 

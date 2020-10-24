@@ -19,8 +19,10 @@ class CreateRoutesTable extends Migration
             $table->unsignedBigInteger('shop_id');
             $table->string('day_of_week');
             $table->string('payment');
+            $table->double('ceil')->default(0);
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
         });
     }
 
