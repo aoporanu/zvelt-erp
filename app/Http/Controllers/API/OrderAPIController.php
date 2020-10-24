@@ -70,6 +70,8 @@ class OrderAPIController extends Controller
             return response()->json(['success' => false, 'message' => 'The ceil has been overflown']);
         }
 
+        $request->state = 'unprocessed';
+
         // 3. if all's good, then proceed to ...
         return new OrderResource(Order::create($request->all()));
     }
