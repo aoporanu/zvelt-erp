@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-
-// Route::apiResource('rute', '\App\Http\Controllers\API\RouteAPIController');
 
 Route::apiResource('login', '\App\Http\Controllers\API\AuthAPIController@login');
 
 Route::apiResource('register', '\App\Http\Controllers\API\AuthAPIController@register');
 
 Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
+
+Route::apiResource('receipts', '\App\Http\Controllers\API\ReceiptAPIController');
 
 Route::apiResource('orders', '\App\Http\Controllers\API\OrderAPIController');
 

@@ -10,6 +10,8 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Setting;
+use App\Shop;
 use App\Visitation;
 use Illuminate\Support\Carbon;
 
@@ -37,7 +39,7 @@ class OrderAPIController extends Controller
         $invoices = Invoice::where('client_id', $request->client_id)
             ->where('agent_id', $request->agent_id)
             ->get();
-        if ($invoices->count() > 0) {
+        if ($invoices->count() > 0 && Setting::blocksOnDue()) {
             $collection = $invoices->firstWhere('due_date', Carbon::now());
             // 2. check if the user has any invoice for this client, and the invoice's
             //      due_date field is less than or equal to the one set in the config table
@@ -52,13 +54,20 @@ class OrderAPIController extends Controller
         }
         $invoices = Invoice::where('client_id', $request->client_id)
             ->get();
-        if ($invoices->count() > 0) {
+        if ($invoices->count() > 0 && Setting::blocksOnDue()) {
             $collection = $invoices->firstWhere('due_date', Carbon::now());
 
             if ($collection->count() > 0) {
                 //      * else if another user has an invoice that has a due_date which cannpt safely
                 //          go through the powers-that-be configs, inform the user
             }
+        }
+
+        $ceil = Shop::find($request->shop_id)->get('ceil');
+        $invoices = Invoice::where([['shop_id', $request->get('shop_id')], ['user_id', $request->get('id')]])->get();
+
+        if ($invoices->amount_left >= $ceil) {
+            return response()->json(['success' => false, 'message' => 'The ceil has been overflown']);
         }
 
         // 3. if all's good, then proceed to ...

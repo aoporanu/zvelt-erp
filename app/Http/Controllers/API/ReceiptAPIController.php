@@ -7,6 +7,7 @@ use App\Http\Resources\ReceiptCollection;
 use App\Http\Resources\ReceiptResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReceiptStoreRequest;
 
 class ReceiptAPIController extends Controller
 {
@@ -20,7 +21,7 @@ class ReceiptAPIController extends Controller
         return new ReceiptResource($receipt->load(['ledger']));
     }
 
-    public function store(Request $request)
+    public function store(ReceiptStoreRequest $request)
     {
         return new ReceiptResource(Receipt::create($request->all()));
     }
