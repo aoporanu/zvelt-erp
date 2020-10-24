@@ -10,6 +10,7 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\OrderItem;
 use App\Setting;
 use App\Shop;
 use App\Visitation;
@@ -72,8 +73,16 @@ class OrderAPIController extends Controller
 
         $request->state = 'unprocessed';
 
+        if (empty($request->get('items'))) {
+            return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted']);
+        }
+
+        foreach($request->get('items') as $item) {
+            OrderItem::create($item);
+        }
+
         // 3. if all's good, then proceed to ...
-        return new OrderResource(Order::create($request->all()));
+        return new OrderResource(Order::create($request->all())->orderItems()->create($request->get('items')));
     }
 
     public function update(OrderUpdateRequest $request, Order $order)

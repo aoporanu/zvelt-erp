@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
-{
+{
+
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +46,7 @@ class Order extends Model
      */
     public function orderItems()
     {
-        return $this->hasMany(\App\OrderItem::class);
+        return $this->hasMany(Item::class)->using(OrderItem::class);
     }
 
 }
