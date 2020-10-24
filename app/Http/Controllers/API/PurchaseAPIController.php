@@ -8,6 +8,7 @@ use App\Http\Resources\PurchaseCollection;
 use App\Http\Resources\PurchaseResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseAPIController extends Controller
 {
@@ -23,7 +24,14 @@ class PurchaseAPIController extends Controller
 
     public function store(PurchaseStoreRequest $request)
     {
-        return new PurchaseResource(Purchase::create($request->all()));
+        DB::beginTransaction();
+        Purchase::create($request->all());
+        if (!DB::commit()) {
+            DB::rollBack();
+            return new PurchaseResource(Purchase::create($request->all()));
+        }
+
+        return response()->json(['success' => false, 'message' => 'Could not commit the purchase']);
     }
 
     public function update(Request $request, Purchase $purchase)
