@@ -46,6 +46,11 @@ class Purchase extends Model
         return $this->belongsToMany(Item::class)->withPivot('purchase_id', 'item_id', 'purchase_cost', 'selling_cost', 'lot', 'location_id', 'qty', 'warehouse_id');
     }
 
+    public function purchasedItems()
+    {
+        return $this->hasMany(PurchasedItems::class);
+    }
+
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
