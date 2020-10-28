@@ -15,15 +15,16 @@ class PurchaseResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'purchase_id,' => $this->purchase_id,
-            'value,' => $this->value,
-            'total,' => $this->total,
-            'discount,' => $this->discount,
+            // 'id' => $this->id,
+            // 'purchase_id' => $this->purchase_id,
+            'value' => $this->value,
+            'total' => $this->total,
+            'discount' => $this->discount,
             'for_invoice' => $this->for_invoice,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'items' => ItemResource::collection($this->items)
+            'items' => ItemResource::collection($this->items),
+            'purchase-list' => ItemResource::collection($this->purchasedItems)
         ];
     }
 }
