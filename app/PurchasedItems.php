@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchasedItems extends Model
 {
+    protected $table = 'item_purchase';
 
     /**
      * The attributes that are mass assignable.
@@ -13,7 +14,7 @@ class PurchasedItems extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'item_id', 'value', 'location', 'total', 'qty', 'vat', 'type_id'
+        'id', 'purchase_id', 'item_id', 'value', 'location', 'total', 'qty', 'vat', 'type_id', 'batch_id'
     ];
 
     /**
@@ -40,4 +41,12 @@ class PurchasedItems extends Model
     protected $casts = [
         //
     ];
+
+    /**
+     * 
+     */
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class);
+    }
 }
