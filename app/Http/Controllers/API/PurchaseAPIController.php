@@ -10,6 +10,8 @@ use App\Http\Resources\PurchaseResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\PurchasedItems;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseAPIController extends Controller
 {
@@ -26,42 +28,46 @@ class PurchaseAPIController extends Controller
     public function store(PurchaseStoreRequest $request)
     {
         // DB::beginTransaction();
-        $purchase = Purchase::create($request->all());
-        if ($purchase) {
+        DB::beginTransaction();
+        try {
             $total = 0;
-            $batch = '';
+            $purchase = Purchase::create($request->all());
             foreach ($request->get('purchase_items') as $item) {
-                dd($item);
+                $batch = Batch::firstOrNew($item['lot']);
                 if ($purchase->discount != 0) {
                     $item['selling_cost'] = $item['selling_cost'] * ((100 - $purchase->discount) / 100);
                     $item['purchase_cost'] = $item['purchase_cost'] * ((100 - $purchase->discount) / 100);
                 }
-                $total += (double)$item['selling_cost'] * $item['qty'];
+                $total += (float)$item['selling_cost'] * $item['qty'];
                 $purchasedItem = new PurchasedItems(
                     [
                         'purchase_id' => $item['purchase_id'],
                         'item_id' => $item['item_id'],
-                        'value' => $item['value'],
-                        'location' => $item['location'],
-                        'total' => $item['total'],
-                        'vat' => $item['vat'],
-                        'type_id' => $item['type_id'],
-                    ]);
+                        'purchase_cost' => $item['purchase_cost'],
+                        'selling_cost' => $item['selling_cost'],
+                        'qty' => $item['qty'],
+                        'total' => $item['selling_cost'] * $item['qty'],
+                        'lot' => $batch->name,
+                        'location_id' => $item['location_id'],
+                        'warehouse_id' => $item['warehouse_id']
+                    ]
+                );
                 $purchase->purchasedItems()->save($purchasedItem);
-                $purchase->purchasedItems->batch->create($item['lot']);
             }
             $purchase->total = $total;
             $purchase->save();
-        } else {
-            return response()->json(['success' => false, 'message' => 'Could not commit the purchase']);
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase successfully stored',
+                'purchase' => [
+                    'object' => new PurchaseResource($purchase)
+                ]
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'could not commit the purchase ' . $e->getMessage()], 500);
         }
-        return response()->json([
-            'success' => true, 
-            'message' => 'Purchase successfully stored', 
-            'purchase' => [
-                 'object' => new PurchaseResource($purchase)
-            ]
-        ]);
     }
 
     public function update(Request $request, Purchase $purchase)

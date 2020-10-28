@@ -14,7 +14,21 @@ class PurchasedItems extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'item_id', 'value', 'location', 'total', 'qty', 'vat', 'type_id', 'batch_id'
+        'id', 
+        'purchase_id', 
+        'item_id', 
+        'value', 
+        'location', 
+        'total', 
+        'qty', 
+        'vat', 
+        'type_id', 
+        'batch_id', 
+        'purchase_cost', 
+        'selling_cost', 
+        'lot', 
+        'location_id',
+        'warehouse_id'
     ];
 
     /**
