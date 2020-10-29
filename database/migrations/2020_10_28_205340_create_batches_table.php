@@ -18,8 +18,9 @@ class CreateBatchesTable extends Migration
             $table->string('name');
             $table->integer('from_qty')->default(0);
             $table->integer('to_qty')->default(0);
-            $table->time('expiry_date');
+            $table->date('expiry_date');
             $table->timestamps();
+            $table->int('qty')
         });
     }
 
