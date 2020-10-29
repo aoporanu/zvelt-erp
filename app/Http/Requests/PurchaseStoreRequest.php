@@ -24,13 +24,16 @@ class PurchaseStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'purchase_id' => 'required|unique:purchases',
             'supplier_id' => 'required|exists:suppliers,id',
             'value' => 'required',
-            'total' => 'required',
+            // 'total' => [
+            //     'required',
+            //     function($attribute, $value, $fail) {
+            //         foreach()
+            //     }
+            // ],
             'for_invoice' => 'required',
             'purchase_items' => 'required',
-            'purchase_items.*.purchase_id' => 'required|same:purchase_id',
             'purchase_items.*.item_id' => 'required|exists:items,id',
             'purchase_items.*.purchase_cost' => 'required',
             'purchase_items.*.selling_cost' => 'required',

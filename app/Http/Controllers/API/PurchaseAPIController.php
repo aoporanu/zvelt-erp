@@ -27,7 +27,6 @@ class PurchaseAPIController extends Controller
 
     public function store(PurchaseStoreRequest $request)
     {
-        // DB::beginTransaction();
         DB::beginTransaction();
         try {
             $total = 0;

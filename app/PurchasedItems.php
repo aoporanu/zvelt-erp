@@ -55,12 +55,17 @@ class PurchasedItems extends Model
     protected $casts = [
         //
     ];
-
+  
     /**
      * 
      */
     public function batch()
     {
         return $this->belongsTo(Batch::class);
+    }
+  
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class);
     }
 }
