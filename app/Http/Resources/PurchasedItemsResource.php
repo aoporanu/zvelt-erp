@@ -16,12 +16,12 @@ class PurchasedItemsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'purchase_id,' => $this->purchase_id,
-            'item_id,' => $this->item_id,
-            'value,' => $this->value,
-            'location,' => $this->location,
-            'total,' => $this->total,
-            'qty,' => $this->qty,
+            'purchase_id' => $this->purchase_id,
+            'item_id' => $this->item_id,
+            'value' => $this->value,
+            'location' => $this->location,
+            'total' => $this->total,
+            'qty' => $this->qty,
             'vat' => $this->vat,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

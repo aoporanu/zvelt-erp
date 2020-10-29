@@ -38,6 +38,7 @@ class PurchaseAPIController extends Controller
                     $item['purchase_cost'] = $item['purchase_cost'] * ((100 - $purchase->discount) / 100);
                 }
                 $total += (float)$item['selling_cost'] * $item['qty'];
+                // compute total from the PurchasedItems total + purchased_item quantity
                 $purchasedItem = new PurchasedItems(
                     [
                         'purchase_id' => $item['purchase_id'],
@@ -51,7 +52,14 @@ class PurchaseAPIController extends Controller
                         'warehouse_id' => $item['warehouse_id']
                     ]
                 );
-                $purchase->purchasedItems()->save($purchasedItem);
+                $inventory = PurchasedItems::where('item_id', $item['item_id'])->first();
+                if ($inventory) {
+                    // dd($inventory);
+                    $inventory->qty += $item['qty'];
+                    $inventory->save();
+                } else {
+                    $purchase->purchasedItems()->save($purchasedItem);
+                }
             }
             $purchase->total = $total;
             $purchase->save();
