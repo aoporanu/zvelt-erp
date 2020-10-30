@@ -35,7 +35,7 @@ class PurchaseAPIController extends Controller
                 'purchase' => [
                     'object' => new PurchaseResource($purchase)
                 ]
-            ]);
+                ], 200);
         } catch (Exception $e) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => 'could not commit the purchase ' . $e->getMessage()], 500);

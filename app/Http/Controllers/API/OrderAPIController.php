@@ -51,7 +51,7 @@ class OrderAPIController extends Controller
 
             }
 
-            return response()->json(['success' => false, 'message' => 'You exceed the number of allowed invoices for this client. An Email has been sent to your superiors. Let\'s just pray they will allow your order to be processed. It will not appear in the order list UNLESS it\'s allowed']);
+            return response()->json(['success' => false, 'message' => 'You exceed the number of allowed invoices for this client. An Email has been sent to your superiors. Let\'s just pray they will allow your order to be processed. It will not appear in the order list UNLESS it\'s allowed'], 500);
         }
         $invoices = Invoice::where('client_id', $request->client_id)
             ->get();
@@ -68,13 +68,13 @@ class OrderAPIController extends Controller
         $invoices = Invoice::where([['shop_id', $request->get('shop_id')], ['agent_id', $request->get('user_id')]])->get();
 
         if (count($invoices) && $invoices->amount_left >= $ceil) {
-            return response()->json(['success' => false, 'message' => 'The ceil has been overflown']);
+            return response()->json(['success' => false, 'message' => 'The ceil has been overflown'], 500);
         }
 
         $request->state = 'unprocessed';
 
         if (empty($request->get('items'))) {
-            return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted']);
+            return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted', 500]);
         }
 
         foreach($request->get('items') as $item) {
