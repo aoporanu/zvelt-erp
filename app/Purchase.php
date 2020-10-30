@@ -56,5 +56,47 @@ class Purchase extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-
+    /**
+     * @param $request object
+     * 
+     * @return bool
+     */
+    public static function storeOrder($request)
+    {
+        $total = 0;
+        $purchase = Purchase::create($request->all());
+        foreach ($request->get('purchase_items') as $item) {
+            $batch = Batch::firstOrNew($item['lot']);
+            if ($purchase->discount != 0) {
+                $item['selling_cost'] = $item['selling_cost'] * ((100 - $purchase->discount) / 100);
+                $item['purchase_cost'] = $item['purchase_cost'] * ((100 - $purchase->discount) / 100);
+            }
+            $total += (float)$item['selling_cost'] * $item['qty'];
+            // compute total from the PurchasedItems total + purchased_item quantity
+            $purchasedItem = new PurchasedItems(
+                [
+                    'purchase_id' => $item['purchase_id'],
+                    'item_id' => $item['item_id'],
+                    'purchase_cost' => $item['purchase_cost'],
+                    'selling_cost' => $item['selling_cost'],
+                    'qty' => $item['qty'],
+                    'total' => $item['selling_cost'] * $item['qty'],
+                    'lot' => $batch->name,
+                    'location_id' => $item['location_id'],
+                    'warehouse_id' => $item['warehouse_id']
+                ]
+            );
+            $inventory = PurchasedItems::where('item_id', $item['item_id'])->first();
+            if ($inventory) {
+                $inventory->qty += $item['qty'];
+                $inventory->save();
+            } else {
+                $purchase->purchasedItems()->save($purchasedItem);
+            }
+        }
+        $purchase->total = $total;
+        if ($purchase->save())
+            return true;
+        return false;
+    }
 }
