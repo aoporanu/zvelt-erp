@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Purchase extends Model
 {
@@ -61,12 +62,13 @@ class Purchase extends Model
      * 
      * @return bool
      */
-    public static function storeOrder($request)
+    public static function storeOrder(Request $request)
     {
         $total = 0;
         $purchase = Purchase::create($request->all());
         foreach ($request->get('purchase_items') as $item) {
             $batch = Batch::firstOrNew($item['lot']);
+            $batch->qty = $item['qty'];
             if ($purchase->discount != 0) {
                 $item['selling_cost'] = $item['selling_cost'] * ((100 - $purchase->discount) / 100);
                 $item['purchase_cost'] = $item['purchase_cost'] * ((100 - $purchase->discount) / 100);
@@ -88,8 +90,10 @@ class Purchase extends Model
             );
             $inventory = PurchasedItems::where('item_id', $item['item_id'])->first();
             if ($inventory) {
+                $batch->from_qty = $inventory->qty;
                 $inventory->qty += $item['qty'];
                 $inventory->save();
+                $batch->save();
             } else {
                 $purchase->purchasedItems()->save($purchasedItem);
             }
