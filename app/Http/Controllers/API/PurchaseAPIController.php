@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Batch;
 use App\Http\Requests\PurchaseStoreRequest;
 use App\Purchase;
 use App\Http\Resources\PurchaseCollection;
 use App\Http\Resources\PurchaseResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\PurchasedItems;
 use Exception;
 use Illuminate\Support\Facades\DB;
 

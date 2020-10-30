@@ -90,8 +90,11 @@ class Purchase extends Model
             );
             $inventory = PurchasedItems::where('item_id', $item['item_id'])->first();
             if ($inventory) {
+                // get original qty
                 $batch->from_qty = $inventory->qty;
                 $inventory->qty += $item['qty'];
+                // set last inserted qty
+                $batch->to_qty = $inventory->qty;
                 $inventory->save();
                 $batch->save();
             } else {
