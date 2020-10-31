@@ -10,6 +10,7 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Item;
 use App\OrderItem;
 use App\PurchasedItems;
 use App\Setting;
@@ -33,6 +34,7 @@ class OrderAPIController extends Controller
 
     public function store(Request $request)
     {
+
         // 1. get user+client invoices
         // check if the user has a right to store the order for the client
         // $route = Visitation::where([['shop_id', $request->shop_id], ['user_id', $request->user_id]])->first();
@@ -81,14 +83,14 @@ class OrderAPIController extends Controller
             }
             $shop = Shop::find($request->get('shop_id'));
             foreach ($request->get('items') as $item) {
+                $itemR = Item::find($item['item_id']);
                 $purchasedItem = DB::select('select id from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
                 if (!$purchasedItem) {
                     return response()->json(['success' => false, 'message' => 'There wasn\'t any purchase for this item', 'purchased_item' => $item]);
                 } else {
                     $purchItem = PurchasedItems::find($purchasedItem[0]->id);
-                    $purchItem->qty = 1;
-                    if ($item['qty'] > $purchItem->qty && $purchItem !== 0) {
-                        return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order. The quantity on stock is less than what you\'re ordering'], 402);
+                    if ($item['qty'] > $purchItem->qty) {
+                        return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order. The quantity on stock is less than what you\'re ordering', 'order' => $request->all()], 402);
                     }
                     if ($purchItem->qty === 0) {
                         return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order, it\'s out of stock']);
@@ -97,7 +99,7 @@ class OrderAPIController extends Controller
                     $purchItem->save();
                     // fire event to notify the frontend to update
                     // the stocks for the current item
-                    if ($shop->discounts->applicableTo($purchItem, $shop)) {
+                    if ($shop->hasDiscountFor($itemR)) {
                         if (sizeof($shop->discounts) < 2) {
                             $item['sale_price'] = $item['sale_price'] * ((100 - $shop->discounts->value) / 100);
                         } else {

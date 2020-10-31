@@ -33,8 +33,8 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        Event::listen(function(OrderCreated $event) {
+        // Event::listen(function(OrderCreated $event) {
 
-        });
+        // });
     }
 }
