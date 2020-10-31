@@ -28,6 +28,6 @@ class Shop extends Model
 
     public function discounts()
     {
-        return $this->hasMany(Discount::class);
+        return $this->belongsToMany(Discount::class)->withPivot(['value', 'brand_id']);
     }
 }
