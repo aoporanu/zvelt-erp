@@ -1,0 +1,30 @@
+POST http://sap-killer.com/api/orders
+content-type: application/json
+
+{
+    "uid": "2020000006",
+    "user_id": "1",
+    "client_id": "1",
+    "shop_id": "2",
+    "deliverer_id": "1",
+    "total": "116.5",
+    "weight": "13",
+    "warehouse_id": "1",
+    "items": [
+        {
+            "id": 24,
+            "user_id": "1",
+            "order_id": "3",
+            "item_id": 2,
+            "qty": 32,
+            "location_id": 1
+        },
+        {
+            "id": 26,
+            "order_id": "3",
+            "item_id": 2,
+            "qty": 24,
+            "location_id": 1
+        }
+    ]
+}

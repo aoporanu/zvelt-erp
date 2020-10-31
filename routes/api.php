@@ -9,10 +9,10 @@ Route::apiResource('register', '\App\Http\Controllers\API\AuthAPIController@regi
 Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
 
 Route::apiResource('receipts', '\App\Http\Controllers\API\ReceiptAPIController');
-
+Route::post('orders', '\App\Http\Controllers\API\OrderAPIController@store');
 Route::apiResource('orders', '\App\Http\Controllers\API\OrderAPIController');
 
-Route::apiResource('orders-items', '\App\Http\Controllers\OrderItemController');
+Route::get('/purchases/generate-nir/{purchase}', '\App\Http\Controllers\API\PurchaseAPIController@generateNir');
 
 Route::apiResource('purchases', '\App\Http\Controllers\API\PurchaseAPIController');
 

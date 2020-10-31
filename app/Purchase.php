@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Dompdf\Dompdf;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class Purchase extends Model
 {
@@ -109,6 +111,8 @@ class Purchase extends Model
 
     public function generateNir()
     {
-        die('xxx');
+        $pdf = PDF::loadView('pdf.invoice', $this);
+        $pdf->loadHTML('<h1>test</h1>');
+        return $pdf->download('pdf_view.pdf');
     }
 }
