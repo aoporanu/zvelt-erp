@@ -25,4 +25,9 @@ class Shop extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
+    }
 }

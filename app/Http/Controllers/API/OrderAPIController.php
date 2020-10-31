@@ -77,18 +77,29 @@ class OrderAPIController extends Controller
         if (empty($request->get('items'))) {
             return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted', 500]);
         }
-
-        foreach($request->get('items') as $item) {
+        $shop = Shop::find($request->get('shop_id'));
+        foreach ($request->get('items') as $item) {
             $purchasedItem = DB::select('select * from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
             if (!$purchasedItem) {
                 return response()->json(['success' => false, 'message' => 'There wasn\'t any purchase for this item', 'purchased_item' => $item]);
             } else {
-                $purchasedItem[0]->qty -= $item['qty'];
                 $purchItem = PurchasedItems::find($purchasedItem[0]->id);
+                if ($purchItem->qty <= 0) {
+                    return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order, it\'s out of stock']);
+                }
                 $purchItem->qty -= $item['qty'];
                 $purchItem->save();
+                if ($shop->discounts()->applicableTo($purchItem)) {
+                    if (sizeof($shop->discounts) < 2) {
+                        $item['sale_price'] = $item['sale_price'] * ((100 - $shop->discounts->value) / 100);
+                    } else {
+                        foreach ($shop->discounts as $discount) {
+                            $item['sale_price'] = $item['sale_price'] * ((100 - $discount->value) / 100);
+                        }
+                    }
+                }
             }
-            // OrderItem::create($item);
+            OrderItem::create($item);
         }
 
         // 3. if all's good, then proceed to ...
