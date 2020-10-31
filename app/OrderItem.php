@@ -5,14 +5,15 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderItem extends Model
-{
+{
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'order_id', 'item_id', 'qty', 'location_id'
+        'order_id', 'item_id', 'qty', 'location_id'
     ];
 
     /**
@@ -45,7 +46,7 @@ class OrderItem extends Model
      */
     public function order()
     {
-        return $this->belongsTo(\App\Order::class);
+        return $this->belongsTo(Order::class);
     }
 
 }

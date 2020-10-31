@@ -13,7 +13,7 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'uid', 'user_id', 'client_id', 'shop_id', 'deliverer_id', 'total', 'weight', 'warehouse_id'
+        'uid', 'user_id', 'client_id', 'shop_id', 'deliverer_id', 'total', 'weight', 'warehouse_id'
     ];
 
     /**
@@ -46,7 +46,7 @@ class Order extends Model
      */
     public function orderItems()
     {
-        return $this->hasMany(Item::class)->using(OrderItem::class);
+        return $this->hasMany(OrderItem::class);
     }
 
 }
