@@ -85,6 +85,9 @@ class OrderAPIController extends Controller
             } else {
                 $purchasedItem[0]->qty -= $item['qty'];
                 $purchItem = PurchasedItems::find($purchasedItem[0]->id);
+                if ($purchItem->qty <= 0) {
+                    return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order, it\'s out of stock']);
+                }
                 $purchItem->qty -= $item['qty'];
                 $purchItem->save();
             }
