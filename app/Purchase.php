@@ -104,15 +104,22 @@ class Purchase extends Model
             }
         }
         $purchase->total = $total;
-        if ($purchase->save())
+        if ($purchase->save()) {
+            // (new self)::generateNir();
             return true;
+        }
         return false;
     }
 
-    public function generateNir()
+    public function generateNir(Purchase $purchase)
     {
-        $pdf = PDF::loadView('pdf.invoice', $this);
-        $pdf->loadHTML('<h1>test</h1>');
-        return $pdf->download('pdf_view.pdf');
+        $purchase->load('purchasedItems');
+        // dump($purchase);
+        $pdf = PDF::loadView('pdf.invoice', compact('purchase'))->setPaper('a4', 'landscape');
+        // $pdf->loadHTML($htmlString)->setPaper('a4', 'landscape');
+        if (!file_exists('nir')) {
+            mkdir('nir');
+        }
+        return $pdf->save('nir/nir_' . $purchase->id . '.pdf');
     }
 }
