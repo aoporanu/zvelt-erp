@@ -62,8 +62,11 @@ class PurchaseAPIController extends Controller
             return response()->json(['success' => false, 'message' => 'No purchase found for your query'], 404);
         }
 
-        $purchase->generateNir($purchase);
-
+        $response = $purchase->generateNir($purchase);
+        $json = json_decode($response->getContent());
+        if (!$json->success) {
+            return response()->json(['message' => $json->message]);
+        }
         return response()->json(['success' => true, 'message' => 'The NIR for this purhcase has been generated'], 200);
     }
 }

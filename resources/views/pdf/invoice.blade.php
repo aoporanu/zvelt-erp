@@ -18,6 +18,17 @@
       </style>
   </head>
   <body>
+    <table>
+      <tr>
+        <td colspan="3">Companie</td>
+        <td colspan="4">Supplier</td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td colspan="7">Comanda # {{ $purchase->id }}</td>
+      </tr>
+    </table>
     <table class="tg">
     <thead>
       <tr>
@@ -27,16 +38,22 @@
             <th class="tg-73oq">Cantitate</th>
             <th class="tg-73oq">Total</th>
             <th class="tg-73oq">Lot</th>
+            <th class="tg-73oq">Expiry date</th>
       </tr>
       </thead>
       <tbody>
+        @php
+          $i = 0;
+        @endphp
         @foreach ($purchase->purchasedItems ?? '' as $item)
           <tr>
-            <td class="tg-73oq">{{ $item->id }}</td>
+          <td class="tg-73oq">{{ $i++ }}</td>
             <td class="tg-73oq">{{ $item->item->name }}</td>
             <td class="tg-73oq">{{ $item->item->unit_of_measure }}</td>
+            <td class="tg-73oq">{{ $item->qty }}</td>
             <td class="tg-73oq">{{ (double)$item->purchase_cost * $item->qty }}</td>
-            <td class="tg-73oq">{{ $item->lot }}</td>
+            <td class="tg-73oq">{{ $item->batch->name }}</td>
+            <td class="tg-73oq">{{ $item->batch->expiry_date }}</td>
           </tr>  
         @endforeach
       </tbody>
