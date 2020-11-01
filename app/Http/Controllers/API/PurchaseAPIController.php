@@ -63,6 +63,7 @@ class PurchaseAPIController extends Controller
         }
 
         $response = $purchase->generateNir($purchase);
+        
         $json = json_decode($response->getContent());
         if (!$json->success) {
             return response()->json(['message' => $json->message]);

@@ -127,9 +127,10 @@ class Purchase extends Model
             }
             $purchase->printed = true;
             $purchase->save();
-            return $pdf->save('nir/nir_' . $purchase->id . '.pdf');
+            $pdf->save('nir/nir_' . $purchase->id . '.pdf');
+            return response()->json(['success' => true]);
         } catch (Exception $ex) {
-            return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()], 400);
         }
         
     }
