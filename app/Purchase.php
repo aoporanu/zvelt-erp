@@ -6,6 +6,7 @@ use Dompdf\Dompdf;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
+use Exception;
 
 class Purchase extends Model
 {
@@ -104,15 +105,33 @@ class Purchase extends Model
             }
         }
         $purchase->total = $total;
-        if ($purchase->save())
+        if ($purchase->save()) {
+            // (new self)::generateNir();
             return true;
+        }
         return false;
     }
 
-    public function generateNir()
+    public function generateNir(Purchase $purchase)
     {
-        $pdf = PDF::loadView('pdf.invoice', $this);
-        $pdf->loadHTML('<h1>test</h1>');
-        return $pdf->download('pdf_view.pdf');
+        if ($purchase->printed) {
+            return response()->json(['success' => false, 'message' => 'This NIR has already been generated']);
+        }
+        try {
+            $purchase->load('purchasedItems');
+            // dump($purchase);
+            $pdf = PDF::loadView('pdf.invoice', compact('purchase'))->setPaper('a4', 'landscape');
+            // $pdf->loadHTML($htmlString)->setPaper('a4', 'landscape');
+            if (!file_exists('nir')) {
+                mkdir('nir');
+            }
+            $purchase->printed = true;
+            $purchase->save();
+            $pdf->save('nir/nir_' . $purchase->id . '.pdf');
+            return response()->json(['success' => true]);
+        } catch (Exception $ex) {
+            return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()], 400);
+        }
+        
     }
 }

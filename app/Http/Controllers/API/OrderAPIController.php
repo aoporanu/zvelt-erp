@@ -10,11 +10,13 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Item;
 use App\OrderItem;
 use App\PurchasedItems;
 use App\Setting;
 use App\Shop;
 use App\Visitation;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -32,6 +34,7 @@ class OrderAPIController extends Controller
 
     public function store(Request $request)
     {
+
         // 1. get user+client invoices
         // check if the user has a right to store the order for the client
         // $route = Visitation::where([['shop_id', $request->shop_id], ['user_id', $request->user_id]])->first();
@@ -72,38 +75,49 @@ class OrderAPIController extends Controller
         // if (count($invoices) && $invoices->amount_left >= $ceil) {
         //     return response()->json(['success' => false, 'message' => 'The ceil has been overflown'], 500);
         // }
-
-        $request->state = 'unprocessed';
-        if (empty($request->get('items'))) {
-            return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted', 500]);
-        }
-        $shop = Shop::find($request->get('shop_id'));
-        foreach ($request->get('items') as $item) {
-            $purchasedItem = DB::select('select * from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
-            if (!$purchasedItem) {
-                return response()->json(['success' => false, 'message' => 'There wasn\'t any purchase for this item', 'purchased_item' => $item]);
-            } else {
-                $purchItem = PurchasedItems::find($purchasedItem[0]->id);
-                if ($purchItem->qty <= 0) {
-                    return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order, it\'s out of stock']);
-                }
-                $purchItem->qty -= $item['qty'];
-                $purchItem->save();
-                if ($shop->discounts()->applicableTo($purchItem)) {
-                    if (sizeof($shop->discounts) < 2) {
-                        $item['sale_price'] = $item['sale_price'] * ((100 - $shop->discounts->value) / 100);
-                    } else {
-                        foreach ($shop->discounts as $discount) {
-                            $item['sale_price'] = $item['sale_price'] * ((100 - $discount->value) / 100);
+        DB::beginTransaction();
+        try {
+            $request->state = 'unprocessed';
+            if (empty($request->get('items'))) {
+                return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted', 500]);
+            }
+            $shop = Shop::find($request->get('shop_id'));
+            foreach ($request->get('items') as $item) {
+                $itemR = Item::find($item['item_id']);
+                $purchasedItem = DB::select('select id from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
+                if (!$purchasedItem) {
+                    return response()->json(['success' => false, 'message' => 'There wasn\'t any purchase for this item', 'purchased_item' => $item]);
+                } else {
+                    $purchItem = PurchasedItems::find($purchasedItem[0]->id);
+                    if ($item['qty'] > $purchItem->qty) {
+                        return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order. The quantity on stock is less than what you\'re ordering', 'order' => $request->all()], 402);
+                    }
+                    if ($purchItem->qty === 0) {
+                        return response()->json(['status' => false, 'message' => 'Unable to add the current item to your order, it\'s out of stock']);
+                    }
+                    $purchItem->qty -= $item['qty'];
+                    $purchItem->save();
+                    // fire event to notify the frontend to update
+                    // the stocks for the current item
+                    if ($shop->hasDiscountFor($itemR)) {
+                        if (sizeof($shop->discounts) < 2) {
+                            $item['sale_price'] = $item['sale_price'] * ((100 - $shop->discounts->value) / 100);
+                        } else {
+                            foreach ($shop->discounts as $discount) {
+                                $item['sale_price'] = $item['sale_price'] * ((100 - $discount->value) / 100);
+                            }
                         }
                     }
                 }
+                OrderItem::create($item);
             }
-            OrderItem::create($item);
+            DB::commit();
+            // 3. if all's good, then proceed to ...
+            return new OrderResource(Order::create($request->all())->orderItems()->create($request->get('items')));
+        } catch (Exception $ex) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'Could not commit your transaction ' . $ex->getMessage()], 500);
         }
-
-        // 3. if all's good, then proceed to ...
-        // return new OrderResource(Order::create($request->all())->orderItems()->create($request->get('items')));
     }
 
     public function update(OrderUpdateRequest $request, Order $order)
@@ -118,5 +132,10 @@ class OrderAPIController extends Controller
         $order->delete();
 
         return response()->noContent();
+    }
+
+    public function latest()
+    {
+        return response()->json(['status' => true, 'order' => Order::latest()->first()]);
     }
 }

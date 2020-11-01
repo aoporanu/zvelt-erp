@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Shop extends Model
 {
@@ -28,6 +29,13 @@ class Shop extends Model
 
     public function discounts()
     {
-        return $this->hasMany(Discount::class);
+        return $this->belongsToMany(Discount::class)->withPivot(['value', 'brand_id']);
+    }
+
+    public function hasDiscountFor(Item $item)
+    {
+        $discount = DB::select('select id,value from discount_shop where shop_id=? and brand_id=?', [$this->id, $item->brand->id]);
+        dd($discount);
+        return 0;
     }
 }
