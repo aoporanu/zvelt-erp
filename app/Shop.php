@@ -35,7 +35,7 @@ class Shop extends Model
     public function hasDiscountFor(Item $item)
     {
         $discount = DB::select('select id,value from discount_shop where shop_id=? and brand_id=?', [$this->id, $item->brand->id]);
-        dd($discount);
+        // dd($discount);
         return 0;
     }
 }

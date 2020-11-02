@@ -9,9 +9,14 @@ Route::apiResource('register', '\App\Http\Controllers\API\AuthAPIController@regi
 Route::apiResource('ledgers', '\App\Http\Controllers\API\LedgerAPIController');
 
 Route::apiResource('receipts', '\App\Http\Controllers\API\ReceiptAPIController');
+Route::geT('/purchases/latest', '\App\Http\Controllers\API\PurchaseAPIController@latest');
 Route::get('/orders/latest', '\App\Http\Controllers\API\OrderAPIController@latest');
+Route::get('/orders', '\App\Http\Controllers\API\OrderAPIController@index');
 Route::post('orders', '\App\Http\Controllers\API\OrderAPIController@store');
-Route::apiResource('orders', '\App\Http\Controllers\API\OrderAPIController');
+Route::get('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@show');
+Route::put('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@update');
+Route::delete('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@destroy');
+// Route::apiResource('orders', '\App\Http\Controllers\API\OrderAPIController');
 Route::get('/purchases/generate-nir/{purchase}', '\App\Http\Controllers\API\PurchaseAPIController@generateNir');
 
 Route::apiResource('purchases', '\App\Http\Controllers\API\PurchaseAPIController');
