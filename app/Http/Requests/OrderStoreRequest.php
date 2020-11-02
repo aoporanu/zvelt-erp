@@ -8,7 +8,6 @@ class OrderStoreRequest extends FormRequest
 {
     public function prepareForValidation()
     {
-        // dump($this->all());
     }
 
     /**

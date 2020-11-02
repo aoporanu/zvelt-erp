@@ -119,9 +119,7 @@ class Purchase extends Model
         }
         try {
             $purchase->load('purchasedItems');
-            // dump($purchase);
             $pdf = PDF::loadView('pdf.invoice', compact('purchase'))->setPaper('a4', 'landscape');
-            // $pdf->loadHTML($htmlString)->setPaper('a4', 'landscape');
             if (!file_exists('nir')) {
                 mkdir('nir');
             }

@@ -70,4 +70,9 @@ class PurchaseAPIController extends Controller
         }
         return response()->json(['success' => true, 'message' => 'The NIR for this purhcase has been generated'], 200);
     }
+
+    public function latest()
+    {
+        return response()->json(['status' => true, 'purchase' => Purchase::latest()->first()]);
+    }
 }

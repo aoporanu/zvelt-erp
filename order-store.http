@@ -1,5 +1,5 @@
 POST http://sap-killer.com/api/orders
-content-type: application/json
+Content-Type: application/json
 
 {
     "uid": "2020000007",
