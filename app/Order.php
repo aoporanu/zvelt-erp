@@ -112,14 +112,14 @@ class Order extends Model
             $order->total = $total;
             // visit is not an object, neither is visitation
 
-            // $visit = Visitation::where(
-            //     [
-            //         ['user_id', '=', $request->get('user_id')], 
-            //         ['shop_id', '=', $request->get('shop_id')]
-            //     ])->first();
-            //     var_dump($visit);
-            // $visit->ceil -= $order->total;
-            // $visitation->save();
+            $visit = Visitation::where(
+                [
+                    ['user_id', '=', $request->get('user_id')], 
+                    ['shop_id', '=', $request->get('shop_id')]
+                ])->first();
+                var_dump($visit);
+            $visit->ceil -= $order->total;
+            $visitation->save();
             DB::commit();
             // 3. if all's good, then proceed to ...
             return response()->json(['status' => true, 'order' => new OrderResource($order)], 201);
