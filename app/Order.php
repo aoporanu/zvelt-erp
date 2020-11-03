@@ -62,6 +62,20 @@ class Order extends Model
                 return response()->json(['success' => false, 'message' => 'The order doersn\'t have any items, it will be deleted', 500]);
             }
             $shop = Shop::find($request->get('shop_id'));
+            $invoice = Invoice::where('agent_id', $request->get('user_id'))->get(['id', 'amount_left'])->toArray();
+            $visitation = Visitation::where(
+                [
+                    ['user_id', '=', $request->get('user_id')], 
+                    ['shop_id', '=', $request->get('shop_id')]
+                ])->first();
+            if ($shop->invoices
+                && $invoice 
+                && $invoice[0]['amount_left']
+                && $visitation 
+                && $visitation->ceil > $invoice[0]['amount_left']) {
+                return response()->json(['success' => false, 'message' => 'This client has already been invoiced by you. Please cash the invoice first'], 400);
+            }
+            $total = 0.0;
             foreach ($request->get('items') as $item) {
                 $itemR = Item::find($item['item_id']);
                 $purchasedItem = DB::select('select id, selling_cost from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
@@ -90,11 +104,22 @@ class Order extends Model
                     } else {
                         $item['sale_cost'] = $purchasedItem[0]->selling_cost;
                     }
+                    $total += $item['sale_cost'] * $item['qty'];
                 }
                 OrderItem::create($item);
-                // dump($order);
             }
             $order = Order::create($request->all());
+            $order->total = $total;
+            // visit is not an object, neither is visitation
+
+            // $visit = Visitation::where(
+            //     [
+            //         ['user_id', '=', $request->get('user_id')], 
+            //         ['shop_id', '=', $request->get('shop_id')]
+            //     ])->first();
+            //     var_dump($visit);
+            // $visit->ceil -= $order->total;
+            // $visitation->save();
             DB::commit();
             // 3. if all's good, then proceed to ...
             return response()->json(['status' => true, 'order' => new OrderResource($order)], 201);

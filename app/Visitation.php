@@ -15,7 +15,7 @@ class Visitation extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'user_id', 'shop_id', 'day_of_week', 'payment'
+        'id', 'user_id', 'shop_id', 'day_of_week', 'payment', 'ceil'
     ];
 
     /**
