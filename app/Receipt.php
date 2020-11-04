@@ -46,7 +46,11 @@ class Receipt extends Model
      */
     public function ledger()
     {
-        return $this->belongsTo(\App\Ledger::class);
+        return $this->belongsTo(Ledger::class);
     }
 
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class);
+    }
 }

@@ -38,4 +38,9 @@ class Shop extends Model
         // dd($discount);
         return 0;
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }
