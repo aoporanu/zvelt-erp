@@ -98,10 +98,10 @@ class Order extends Model
                     // the stocks for the current item
                     if ($shop->hasDiscountFor($itemR)) {
                         if (sizeof($shop->discounts) < 2) {
-                            $item['sale_price'] = $item['sale_price'] * ((100 - $shop->discounts->value) / 100);
+                            $item['sale_cost'] = $item['sale_cost'] * ((100 - $shop->discounts->value) / 100);
                         } else {
                             foreach ($shop->discounts as $discount) {
-                                $item['sale_price'] = $item['sale_price'] * ((100 - $discount->value) / 100);
+                                $item['sale_cost'] = $item['sale_price'] * ((100 - $discount->value) / 100);
                             }
                         }
                     } else {
@@ -115,15 +115,11 @@ class Order extends Model
             $order->total = $total;
             // visit is not an object, neither is visitation
 
-            $visit = Visitation::where(
-                [
-                    ['user_id', '=', $request->get('user_id')], 
-                    ['shop_id', '=', $request->get('shop_id')]
-                ])->first();
-                var_dump($visit);
-            $visit->ceil -= $order->total;
-            $visitation->save();
-            DB::commit();
+            $visitation->ceil -= $order->total;
+            if($visitation->ceil - $order->total >= 0) {
+                $visitation->save();
+                DB::commit();
+            }
             // 3. if all's good, then proceed to ...
             return response()->json(['status' => true, 'order' => new OrderResource($order)], 201);
         } catch (Exception $ex) {
