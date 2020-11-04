@@ -68,6 +68,9 @@ class Order extends Model
                     ['user_id', '=', $request->get('user_id')], 
                     ['shop_id', '=', $request->get('shop_id')]
                 ])->first();
+            if (is_null($visitation)) {
+                return response()->json(['success' => false, 'message' => 'no route for this agent to the shop'], 400);
+            }
             if ($shop->invoices
                 && $invoice 
                 && $invoice[0]['amount_left']
