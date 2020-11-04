@@ -71,6 +71,9 @@ class Order extends Model
             if (is_null($visitation)) {
                 return response()->json(['success' => false, 'message' => 'no route for this agent to the shop'], 400);
             }
+            if ($visitation->ceil < 0) {
+                return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your orverdue invoices.'], 400);
+            }
             if ($shop->invoices
                 && $invoice 
                 && $invoice[0]['amount_left']
