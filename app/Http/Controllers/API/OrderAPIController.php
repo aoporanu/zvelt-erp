@@ -55,4 +55,13 @@ class OrderAPIController extends Controller
     {
         return response()->json(['status' => true, 'order' => Order::latest()->first()]);
     }
+
+    public function process(Order $order)
+    {
+        if ($order->state !== 'processable') {
+            return response()
+                ->json(['success' => false, 'message' => 'The order is not processable'], 400);
+        }
+        return response()->json(['order' => new OrderResource($order)], 200);
+    }
 }

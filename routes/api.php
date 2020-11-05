@@ -16,6 +16,7 @@ Route::post('orders', '\App\Http\Controllers\API\OrderAPIController@store');
 Route::get('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@show');
 Route::put('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@update');
 Route::delete('/orders/{order}', '\App\Http\Controllers\API\OrderAPIController@destroy');
+Route::get('/orders/process/{order}', '\App\Http\Controllers\API\OrderAPIController@process');
 // Route::apiResource('orders', '\App\Http\Controllers\API\OrderAPIController');
 Route::get('/purchases/generate-nir/{purchase}', '\App\Http\Controllers\API\PurchaseAPIController@generateNir');
 
