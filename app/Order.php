@@ -82,6 +82,7 @@ class Order extends Model
                 return response()->json(['success' => false, 'message' => 'Either the ceil is smaller than the order total or this client has already been invoiced by you. Please cash the invoice first'], 400);
             }
             $total = 0.0;
+            $weight = 0;
             foreach ($request->get('items') as $item) {
                 $itemR = Item::find($item['item_id']);
                 $purchasedItem = DB::select('select id, selling_cost from item_purchase where item_id=? and location_id=? and warehouse_id=?', [$item['item_id'], $item['location_id'], $request->get('warehouse_id')]);
@@ -111,11 +112,14 @@ class Order extends Model
                         $item['sale_cost'] = $purchasedItem[0]->selling_cost;
                     }
                     $total += $item['sale_cost'] * $item['qty'];
+                    $weight += $itemR['weight'] * $item['qty'];
                 }
                 OrderItem::create($item);
             }
             $order = Order::create($request->all());
             $order->total = $total;
+            $order->state = 'unprocessed';
+            $order->save();
             // visit is not an object, neither is visitation
 
             $visitation->ceil -= $order->total;
