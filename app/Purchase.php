@@ -132,4 +132,9 @@ class Purchase extends Model
         }
         
     }
+
+    function transfer(Warehouse $where, Location $location)
+    {
+        // if ()
+    }
 }

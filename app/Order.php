@@ -79,7 +79,7 @@ class Order extends Model
                 && $invoice[0]['amount_left']
                 && $visitation 
                 && $visitation->ceil > $invoice[0]['amount_left']) {
-                return response()->json(['success' => false, 'message' => 'This client has already been invoiced by you. Please cash the invoice first'], 400);
+                return response()->json(['success' => false, 'message' => 'Either the ceil is smaller than the order total or this client has already been invoiced by you. Please cash the invoice first'], 400);
             }
             $total = 0.0;
             foreach ($request->get('items') as $item) {
@@ -130,4 +130,6 @@ class Order extends Model
             return response()->json(['success' => false, 'Could not commit your transaction ' . $ex->getMessage()], 500);
         }
     }
+
+    
 }
