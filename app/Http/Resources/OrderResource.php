@@ -26,7 +26,7 @@ class OrderResource extends JsonResource
             'warehouse_id' => $this->warehouse_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'order_items' => new OrderItemResource($this->orderItems),
+            'order_items' => $this->orderItems,
             'state' => $this->state
         ];
     }

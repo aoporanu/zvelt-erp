@@ -72,14 +72,14 @@ class Order extends Model
                 return response()->json(['success' => false, 'message' => 'no route for this agent to the shop'], 400);
             }
             if ($visitation->ceil < 0) {
-                return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your orverdue invoices.'], 400);
+                return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your orverdue invoices.', 'order' => $request->all()], 400);
             }
             if ($shop->invoices
                 && $invoice 
                 && $invoice[0]['amount_left']
                 && $visitation 
                 && $visitation->ceil > $invoice[0]['amount_left']) {
-                return response()->json(['success' => false, 'message' => 'Either the ceil is smaller than the order total or this client has already been invoiced by you. Please cash the invoice first'], 400);
+                return response()->json(['success' => false, 'message' => 'Either the ceil is smaller than the order total or this client has already been invoiced by you. Please cash the invoice first', 'order' => $request->all()], 400);
             }
             $total = 0.0;
             $weight = 0;

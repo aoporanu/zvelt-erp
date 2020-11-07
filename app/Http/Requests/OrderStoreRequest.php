@@ -6,10 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class OrderStoreRequest extends FormRequest
 {
-    public function prepareForValidation()
-    {
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
