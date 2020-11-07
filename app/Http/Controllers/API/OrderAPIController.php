@@ -9,6 +9,8 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 class OrderAPIController extends Controller
 {
@@ -46,12 +48,29 @@ class OrderAPIController extends Controller
         return response()->json(['status' => true, 'order' => Order::latest()->first()]);
     }
 
-    public function process(Order $order)
+    private function checkIfOrderIsProcessable(Order $order) 
     {
         if ($order->state !== 'processable') {
             return response()
                 ->json(['success' => false, 'message' => 'The order is not processable'], 400);
         }
+        
+        return true;
+    }
+
+    public function process(Order $order)
+    {
+        if (!$this->checkIfOrderIsProcessable($order)) {
+            return $this->checkIfOrderIsProcessable($order);
+        }
+
+        $order->load('orderItems');
+        $pdf = PDF::loadView('pdf.preorder', compact('order'))
+            ->setPaper('a4', 'portrait');
+        if (!file_exists('orders')) {
+            mkdir('orders');
+        }
+        $pdf->save('orders/order_' . $order->id . '.pdf');
         return response()->json(['order' => new OrderResource($order), 'extra' => '/api/orders/save/' . $order->id], 200);
     }
 
@@ -63,11 +82,9 @@ class OrderAPIController extends Controller
      */
     public function save(Order $order)
     {
-        if ($order->state !== 'processable') {
-            return response()
-                ->json(['success' => false, 'message' => 'The order is not processable'], 400);
+        if ($this->checkIfOrderIsProcessable($order)) {
+            return $this->checkIfOrderIsProcessable($order);
         }
-
         $order->state = 'invoiceable';
         $order->save();
 
