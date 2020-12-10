@@ -4,13 +4,14 @@ namespace App;
 
 use Dompdf\Dompdf;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Exception;
 
 class Purchase extends Model
 {
-
+    use SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -62,7 +63,7 @@ class Purchase extends Model
 
     /**
      * @param $request object
-     * 
+     *
      * @return bool
      */
     public static function storeOrder(Request $request)
@@ -130,6 +131,6 @@ class Purchase extends Model
         } catch (Exception $ex) {
             return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()], 400);
         }
-        
+
     }
 }

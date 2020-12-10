@@ -3,9 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchasedItems extends Model
 {
+    use SoftDeletes;
     protected $table = 'item_purchase';
 
     /**
@@ -14,19 +16,19 @@ class PurchasedItems extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 
-        'purchase_id', 
-        'item_id', 
-        'value', 
-        'location', 
-        'total', 
-        'qty', 
-        'vat', 
-        'type_id', 
-        'batch_id', 
-        'purchase_cost', 
-        'selling_cost', 
-        'lot', 
+        'id',
+        'purchase_id',
+        'item_id',
+        'value',
+        'location',
+        'total',
+        'qty',
+        'vat',
+        'type_id',
+        'batch_id',
+        'purchase_cost',
+        'selling_cost',
+        'lot',
         'location_id',
         'warehouse_id'
     ];
@@ -55,15 +57,15 @@ class PurchasedItems extends Model
     protected $casts = [
         //
     ];
-  
+
     /**
-     * 
+     *
      */
     public function batch()
     {
         return $this->belongsTo(Batch::class);
     }
-  
+
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);
