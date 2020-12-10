@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static insert(mixed $item)
+ */
 class OrderItem extends Model
 {
     use SoftDeletes;

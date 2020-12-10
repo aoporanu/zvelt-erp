@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Multitenentable;
 
+/**
+ * @method static where(string $string, $user_id)
+ */
 class Invoice extends Model
 {
     use SoftDeletes, Multitenantable;

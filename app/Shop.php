@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @method static find($shop_id)
+ */
 class Shop extends Model
 {
     use SoftDeletes;
