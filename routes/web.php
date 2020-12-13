@@ -27,3 +27,5 @@ Route::post('item/update', 'ItemController@update');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('purchase', PurchasesController::class);

@@ -19,12 +19,12 @@ use Carbon\Carbon;
 
 $factory->define(PurchasedItems::class, function (Faker $faker) {
     return [
-        'purchase_id,' => $faker->word(),
-        'item_id,' => $faker->word(),
-        'value,' => $faker->word(),
-        'location,' => $faker->word(),
-        'total,' => $faker->word(),
-        'qty,' => $faker->word(),
+        'purchase_id' => $faker->word(),
+        'item_id' => $faker->word(),
+        'value' => $faker->word(),
+        'location' => $faker->word(),
+        'total' => $faker->word(),
+        'qty' => $faker->word(),
         'vat' => $faker->word()
     ];
 });
