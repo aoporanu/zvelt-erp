@@ -18,14 +18,18 @@ use Carbon\Carbon;
 */
 
 $factory->define(Order::class, function (Faker $faker) {
-    return [
-        'uid' => $faker->word(),
-        'user_id' => random_int(0, 9223372036854775807),
-        'client_id' => random_int(0, 9223372036854775807),
-        'shop_id' => random_int(0, 9223372036854775807),
-        'deliverer_id' => random_int(0, 9223372036854775807),
-        'total' => $faker->word(),
-        'weight' => $faker->word(),
-        'warehouse_id' => random_int(0, 9223372036854775807)
-    ];
+    try {
+        return [
+            'uid' => $faker->word(),
+            'user_id' => random_int(0, 9223372036854775807),
+            'client_id' => random_int(0, 9223372036854775807),
+            'shop_id' => random_int(0, 9223372036854775807),
+            'deliverer_id' => random_int(0, 9223372036854775807),
+            'total' => $faker->word(),
+            'weight' => $faker->word(),
+            'warehouse_id' => random_int(0, 9223372036854775807)
+        ];
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
 });
