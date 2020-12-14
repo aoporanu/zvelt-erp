@@ -24,23 +24,15 @@ class PurchaseStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'supplier_id' => 'required|exists:suppliers,id',
-            'value' => 'required',
-            // 'total' => [
-            //     'required',
-            //     function($attribute, $value, $fail) {
-            //         foreach()
-            //     }
-            // ],
-            'for_invoice' => 'required',
-            'purchase_items' => 'required',
-            'purchase_items.*.item_id' => 'required|exists:items,id',
-            'purchase_items.*.purchase_cost' => 'required',
-            'purchase_items.*.selling_cost' => 'required',
-            'purchase_items.*.qty' => 'required|min:1',
-            'purchase_items.*.lot' => 'required',
-            'purchase_items.*.warehouse_id' => 'required|exists:warehouses,id',
-            'purchase_items.*.location_id' => 'required|exists:locations,id'
+            'purchase_id'           => 'required',
+            'for_invoice'           => 'required|unique:purchases,for_invoice',
+            'supplier_id'           => 'required|exists:suppliers,id',
+            'value'                 => 'required',
+            'item.*.item_name'      => 'required',
+            'item.*.item_qty'       => 'required',
+            'item.*.purchase_price' => 'required',
+            'item.*.expiration_date' => 'required',
+            'item.*.lot'             => 'required'
         ];
     }
 }
