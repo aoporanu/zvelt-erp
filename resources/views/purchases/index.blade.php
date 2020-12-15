@@ -51,8 +51,8 @@
                         name: 'discount'
                     },
                     {
-                        data: 'supplier_id',
-                        name: 'supplier_id'
+                        data: 'supplier',
+                        name: 'supplier'
                     },
                     {
                         data: 'action',

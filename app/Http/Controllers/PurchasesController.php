@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseStoreRequest;
 use App\Http\Requests\PurchaseUpdateRequest;
+use App\Item;
 use App\Purchase;
 use App\Supplier;
 use Exception;
@@ -11,8 +12,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class PurchasesController extends Controller
@@ -26,16 +25,15 @@ class PurchasesController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $model = Purchase::all();
+            $model = Purchase::with('supplier');
             return \datatables()->of($model)
                 ->addColumn('supplier', function(Purchase $purchase) {
-                    return $purchase->supplier->name;
+                    return $purchase->supplier->name ? $purchase->supplier->name : '';
                 })
                 ->addColumn('action', 'action')
                 ->addIndexColumn()
                 ->make(true);
         }
-//        $purchases = Purchase::paginate(10);
         $pageTitle = 'Purchases index';
         return view('purchases.index',
             compact('pageTitle'));
@@ -49,6 +47,7 @@ class PurchasesController extends Controller
     public function create(): View
     {
         $suppliers = Supplier::all();
+        $items = Item::all();
         $pageTitle = 'Create purchase';
         return view('purchases.create',
             compact('suppliers', 'pageTitle'));
@@ -62,7 +61,6 @@ class PurchasesController extends Controller
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-        dd($request->errors());
         Purchase::insert($request->validated());
     }
 
