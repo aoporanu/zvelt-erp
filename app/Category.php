@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Item;
 
+/**
+ * @method static get(string $string, string $string1)
+ */
 class Category extends Model
 {
     protected $fillable = [

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
+use App\Category;
 use App\Http\Requests\ItemStoreRequest;
-use App\Http\Resources\ItemCollection;
 use App\Http\Resources\ItemResource;
 use Illuminate\Http\Request;
 use App\Item;
@@ -47,6 +48,14 @@ class ItemController extends Controller
 
         $pageTitle = 'Item index';
         return view('items.index', compact('pageTitle'));
+    }
+
+    public function create()
+    {
+        $categories = Category::get('id', 'name');
+        $brands = Brand::get('id', 'name');
+
+        return view('items.create', compact('categories', 'brands'));
     }
 
     /**
