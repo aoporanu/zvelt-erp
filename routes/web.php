@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,9 +17,5 @@ Route::post('item/update', 'ItemController@update');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::post('purchase', function(\http\Env\Request $request) {
-    dd($request->all());
-});
 
 Route::resource('purchase', PurchasesController::class);

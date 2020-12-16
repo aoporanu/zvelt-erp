@@ -131,7 +131,7 @@
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/chadengle.jpg" alt="Img Profile">
+                                                <img src="" alt="Img Profile">
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Chad</span>
@@ -143,7 +143,7 @@
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/mlane.jpg" alt="Img Profile">
+                                                <img src="" alt="Img Profile">
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Jhon Doe</span>
@@ -155,7 +155,7 @@
                                         </a>
                                         <a href="#">
                                             <div class="notif-img">
-                                                <img src="../assets/img/talha.jpg" alt="Img Profile">
+                                                <img src="" alt="Img Profile">
                                             </div>
                                             <div class="notif-content">
                                                 <span class="subject">Talha</span>
@@ -354,7 +354,7 @@
 <script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script>
 <script src="{{ asset('js/core/popper.min.js') }}"></script>
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
-<script src="{{ asset('js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
 <script src="{{ asset('js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 <script src="{{ asset('js/plugin/chart.js/chart.min.js') }}"></script>
@@ -409,45 +409,45 @@
         styleWrapper:true,
         styleText:true
     })
-
-    let totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
-
-    let mytotalIncomeChart = new Chart(totalIncomeChart, {
-        type: 'bar',
-        data: {
-            labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
-            datasets : [{
-                label: "Total Income",
-                backgroundColor: '#ff9e27',
-                borderColor: 'rgb(23, 125, 255)',
-                data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
-            }],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                display: false,
-            },
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        display: false //this will remove only the label
-                    },
-                    gridLines : {
-                        drawBorder: false,
-                        display : false
-                    }
+    if (typeof document.getElementById('totalIncomeChart') !== 'undefined' && document.getElementById('totalIncomeChart') !== null ) {
+        let totalIncomeChart = document.getElementById('totalIncomeChart').getContext('2d');
+        let myTotalIncomeChart = new Chart(totalIncomeChart, {
+            type: 'bar',
+            data: {
+                labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
+                datasets : [{
+                    label: "Total Income",
+                    backgroundColor: '#ff9e27',
+                    borderColor: 'rgb(23, 125, 255)',
+                    data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
                 }],
-                xAxes : [ {
-                    gridLines : {
-                        drawBorder: false,
-                        display : false
-                    }
-                }]
             },
-        }
-    });
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false,
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            display: false //this will remove only the label
+                        },
+                        gridLines : {
+                            drawBorder: false,
+                            display : false
+                        }
+                    }],
+                    xAxes : [ {
+                        gridLines : {
+                            drawBorder: false,
+                            display : false
+                        }
+                    }]
+                },
+            }
+        });
+    }
 
     $('#lineChart').sparkline([105,103,123,100,95,105,115], {
         type: 'line',

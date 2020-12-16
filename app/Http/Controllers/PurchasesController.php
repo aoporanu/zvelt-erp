@@ -17,6 +17,14 @@ use Illuminate\View\View;
 class PurchasesController extends Controller
 {
     /**
+     * PurchasesController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return JsonResponse|View
@@ -47,10 +55,10 @@ class PurchasesController extends Controller
     public function create(): View
     {
         $suppliers = Supplier::all();
-        $items = Item::all();
+        $items = Item::get('name');
         $pageTitle = 'Create purchase';
         return view('purchases.create',
-            compact('suppliers', 'pageTitle'));
+            compact('suppliers', 'pageTitle', 'items'));
     }
 
     /**

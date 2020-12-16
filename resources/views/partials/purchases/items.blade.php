@@ -1,17 +1,8 @@
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 <div class="row row-purchased">
     <div class="row">
         <div class="col">
             <input type="text" placeholder="Item name"
-                   class="form-control @error('item.*.item_name') is-invalid @enderror"
+                   class="form-control @error('item.*.item_name') is-invalid @enderror item-name"
                    name="item[][item_name]" value="{{ @old('item.*.item_name') }}"/>
             @error('item.*.item_name')
             <span class="invalid-feedback" role="alert">
