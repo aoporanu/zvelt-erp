@@ -24,15 +24,16 @@ class PurchaseStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'purchase_id'           => 'required',
-            'for_invoice'           => 'required|unique:purchases,for_invoice',
-            'supplier_id'           => 'required|exists:suppliers,id',
-            'value'                 => 'required',
-            'item.*.item_name'      => 'required',
-            'item.*.item_qty'       => 'required',
-            'item.*.purchase_price' => 'required',
-            'item.*.expiration_date' => 'required',
-            'item.*.lot'             => 'required'
+            'purchase_id'               => 'required',
+            'for_invoice'               => 'required|unique:purchases,for_invoice',
+            'supplier_id'               => 'required|exists:suppliers,id',
+            'value'                     => 'required',
+            'item'                      => 'required|array|min:1',
+            'item.*.item_name'          => 'required|string|min:3',
+            'item.*.item_qty'           => 'required|integer|min:1',
+            'item.*.purchase_price'     => 'required',
+            'item.*.expiration_date'    => 'required|date',
+            'item.*.lot'                => 'required'
         ];
     }
 }

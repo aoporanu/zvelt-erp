@@ -60,6 +60,11 @@
                         orderable: false
                     },
                 ],
+                select: true,
+                buttons: {
+                    { extend: 'edit', editor: editor },
+                    { extend: 'remove', editor: editor }
+                }
                 order: [
                     [0, 'desc']
                 ]
