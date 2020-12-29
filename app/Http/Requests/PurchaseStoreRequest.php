@@ -13,7 +13,7 @@ class PurchaseStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->can('store-order', $this->order);
     }
 
     /**
