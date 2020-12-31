@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="card full-height">
+        {{ dump($errors) }}
         <div class="card-body">
             <form class="form-horizontal" method="post" action="{{ route('purchase.store') }}">
                 @csrf
@@ -92,18 +93,22 @@
 @endsection
 
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script type="text/javascript">
-        let iterator = 1;
         $(document).ready(function () {
+            let iterator = 0;
+            let wrapper = $('.form-group');
             $('#add_row').click(function (e) {
+                iterator+=1;
                 e.preventDefault();
+                let template =
                 $(this).closest('.form-group').append(`
             <div class="row row-purchased">
     <div class="row">
         <div class="col">
             <input type="text" placeholder="Item name"
                    class="form-control @error('item.*.item_name') is-invalid @enderror item-name"
-                   name="item[][item_name]" value="{{ @old('item.*.item_name') }}"/>
+                   name="item[${iterator}][item_name]" value="{{ @old('item.*.item_name') }}"/>
             @error('item.*.item_name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -113,7 +118,7 @@
                 <div class="col">
                     <input type="number" placeholder="Item qty"
                            class="form-control item-qty item_qty @error('item.*.item_qty') is-invalid @enderror"
-                   name="item[][item_qty]" value="{{ @old('item.*.item_qty') }}"/>
+                   name="item[${iterator}][item_qty]" value="{{ @old('item.*.item_qty') }}"/>
             @error('item.*.item_qty')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -123,7 +128,7 @@
                 <div class="col">
                     <input type="text" placeholder="Item purchase price"
                            class="form-control purchase-price @error('item.*.purchase_price') is-invalid @enderror"
-                   name="item[][purchase_price]" value="{{ @old('item.*.purchase_price') }}"/>
+                   name="item[${iterator}][purchase_price]" value="{{ @old('item.*.purchase_price') }}"/>
             @error('item.*.purchase_price')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -133,7 +138,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <input type="text" value="{{ old('item.*.expiration_date') }}" name="item[][expiration_date]"
+                    <input type="text" value="{{ old('item.*.expiration_date') }}" name="item[${iterator}][expiration_date]"
                    placeholder="Expiration date"
                    class="form-control @error('item.*.expiration_date') is-invalid @enderror"/>
             @error('item.*.expiration_date')
@@ -143,14 +148,14 @@
             @enderror
 
                 </div>
-                <a href="#" class="btn btn-danger remove-row">
+                <a href="#" class="btn btn-danger remove-row" onclick="removeRow(this); return false;">
                     <i class="fas fa-minus-square"></i>
                 </a>
             </div>
             <div class="row">
                 <div class="col">
                     <input type="text" class="form-control @error('item.*.lot') is-invalid @enderror"
-                   name="item[][lot]" placeholder="Lot" value="{{ old('item.*.lot') }}"/>
+                   name="item[${iterator}][lot]" placeholder="Lot" value="{{ old('item.*.lot') }}"/>
             @error('item.*.lot')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -159,7 +164,7 @@
                 </div>
                 <div class="col">
                     <input type="text" class="form-control @error('item.*.upc') is-invalid @enderror"
-                   name="item[][upc]" placeholder="UPC Code" value="{{ old('item.*.upc') }}"/>
+                   name="item[${iterator}][upc]" placeholder="UPC Code" value="{{ old('item.*.upc') }}"/>
             @error('item.*.upc')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -168,7 +173,7 @@
                 </div>
                 <div class="col">
                     <input type="text" class="form-control @error('item.*.ean') is-invalid @enderror"
-                   name="item[][ean]" placeholder="EAN Code" value="{{ old('item.*.ean') }}"/>
+                   name="item[${iterator}][ean]" placeholder="EAN Code" value="{{ old('item.*.ean') }}"/>
             @error('item.*.ean')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -198,18 +203,21 @@
                     $('#total').val(total);
                 })
             });
-            $('.remove-row').click(function(e) {
-                e.preventDefault();
-                if (typeof $(this) !== 'undefined' && $(this) !== null) {
-                    $(this).parent().parent().remove();
-                }
-            });
-
             let items = {{ $items }}
             $('.item-name').autocomplete({
                 source: items
             });
+            $('#supplier_id').select2();
         });
 
+        function removeRow(elem) {
+            if ($('.row-purchased').length === 1) {
+                return;
+            }
+            $(elem).parent().parent().remove();
+        }
     </script>
+@endsection
+@section('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
