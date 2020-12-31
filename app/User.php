@@ -8,9 +8,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 
-class User extends Authenticatable implements Authorizable
+class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable, Authorizable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
