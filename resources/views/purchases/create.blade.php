@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="card full-height">
-        {{ dump($errors) }}
         <div class="card-body">
             <form class="form-horizontal" method="post" action="{{ route('purchase.store') }}">
                 @csrf
@@ -101,7 +100,6 @@
             $('#add_row').click(function (e) {
                 iterator+=1;
                 e.preventDefault();
-                let template =
                 $(this).closest('.form-group').append(`
             <div class="row row-purchased">
     <div class="row">
@@ -185,23 +183,7 @@
 
         </div>
 `);
-                let rows = $('.row-purchased');
-                let subtotal = 0;
-                let total = 0;
-                let discount = $('#discount').val();
-                $.each(rows, function () {
-                    let $row = $(this);
-                    // console.info($row);
-                    // console.info($row.find(".item-qty").val());
-                    if ($row.find('.item-qty').val() !== '' && $row.find('.purchase-price').val() !== '') {
-                        let qty = $row.find(".item-qty").val();
-                        let price = $row.find('.purchase-price').val();
-                        subtotal += (parseInt(qty, 10) * parseFloat(price));
-                    }
-                    $('#value').val(subtotal);
-                    total = subtotal - (subtotal * (parseInt(discount) / 100));
-                    $('#total').val(total);
-                })
+                calculateTotal();
             });
             let items = {{ $items }}
             $('.item-name').autocomplete({
@@ -215,6 +197,25 @@
                 return;
             }
             $(elem).parent().parent().remove();
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            let rows = $('.row-purchased');
+            let subtotal = 0;
+            let total = 0;
+            let discount = $('#discount').val();
+            $.each(rows, function () {
+                let $row = $(this);
+                if ($row.find('.item-qty').val() !== '' && $row.find('.purchase-price').val() !== '') {
+                    let qty = $row.find(".item-qty").val();
+                    let price = $row.find('.purchase-price').val();
+                    subtotal += (parseInt(qty, 10) * parseFloat(price));
+                }
+                $('#value').val(subtotal);
+                total = subtotal - (subtotal * (parseInt(discount) / 100));
+                $('#total').val(total);
+            })
         }
     </script>
 @endsection
