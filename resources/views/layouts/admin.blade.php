@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} / {{ $pageTitle }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link href="{{ asset('css/atlantis.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
+    @yield('styles')
 </head>
 <body data-background-color="dark">
 <div class="wrapper">
@@ -38,50 +39,6 @@
                 </button>
             </div>
         </div>
-{{--        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm" data-background-color="blue">--}}
-{{--            <div class="container-fluid">--}}
-{{--                <div class="collapse navbar-collapse" id="navbarSupportedContent">--}}
-{{--                    <!-- Left Side Of Navbar -->--}}
-{{--                    <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">--}}
-
-{{--                    </ul>--}}
-
-{{--                    <!-- Right Side Of Navbar -->--}}
-{{--                    <ul class="navbar-nav topbar-nav ml-md-auto align-items-center">--}}
-{{--                        <!-- Authentication Links -->--}}
-{{--                        @guest--}}
-{{--                            <li class="nav-item hidden-caret">--}}
-{{--                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>--}}
-{{--                            </li>--}}
-{{--                            @if (Route::has('register'))--}}
-{{--                                <li class="nav-item hidden-caret">--}}
-{{--                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>--}}
-{{--                                </li>--}}
-{{--                            @endif--}}
-{{--                        @else--}}
-{{--                            <li class="nav-item dropdown  hidden-caret">--}}
-{{--                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>--}}
-{{--                                    {{ auth()->user()->name }} <span class="caret"></span>--}}
-{{--                                </a>--}}
-
-{{--                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--}}
-{{--                                    <a class="dropdown-item" href="{{ route('logout') }}"--}}
-{{--                                       onclick="event.preventDefault();--}}
-{{--                                                     document.getElementById('logout-form').submit();">--}}
-{{--                                        {{ __('Logout') }}--}}
-{{--                                    </a>--}}
-
-{{--                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
-{{--                                        @csrf--}}
-{{--                                    </form>--}}
-{{--                                </div>--}}
-{{--                            </li>--}}
-{{--                        @endguest--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </nav>--}}
-    <!-- Navbar Header -->
         <nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
 
             <div class="container-fluid">
