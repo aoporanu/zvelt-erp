@@ -13,15 +13,19 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use App\Services\PurchaseService;
 
 class PurchasesController extends Controller
 {
+    protected $service;
+
     /**
      * PurchasesController constructor.
      */
     public function __construct()
     {
         $this->middleware('auth');
+        $this->service = $service;
     }
 
     /**
@@ -69,7 +73,8 @@ class PurchasesController extends Controller
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-        Purchase::insert($request->validated());
+//        @FIXME array to string conversion
+        $this->service->create($request->validated());
     }
 
     /**
