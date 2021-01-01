@@ -16,16 +16,9 @@
     </head>
     <body>
         <div id="app" class="flex-center position-ref full-height">
-            <p>
-                <router-link to="/items">Items</router-link>
-                <router-link to="/item/create">Create Item</router-link>
-                <router-link to="/example">ExampleComponent</router-link>
-                <router-link to="/login">Login</router-link>
-                <router-link to="/register">Register</router-link>
-            </p>
             <div class="content">
                 <div class="title m-b-md">
-                    <router-view></router-view>
+{{--                    <router-view></router-view>--}}
                 </div>
             </div>
         </div>

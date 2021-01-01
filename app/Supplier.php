@@ -3,8 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static get()
+ */
 class Supplier extends Model
 {
     use SoftDeletes;
@@ -42,12 +46,18 @@ class Supplier extends Model
         //
     ];
 
-    public function items()
+    /**
+     * @return HasMany
+     */
+    public function items(): HasMany
     {
-        return $this->hasMany(Items::class);
+        return $this->hasMany(Item::class);
     }
 
-    public function purchases()
+    /**
+     * @return HasMany
+     */
+    public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
     }

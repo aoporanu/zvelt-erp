@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
+ * @method static paginate()
+ * @method static create(array $all)
  * @method static firstOrFail(mixed $item_id)
  */
 class Item extends Model

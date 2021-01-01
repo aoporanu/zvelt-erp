@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static firstOrNew(mixed $lot)
+ */
 class Batch extends Model
 {
     protected $fillable = [

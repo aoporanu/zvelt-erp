@@ -3,103 +3,140 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PurchaseStoreRequest;
+use App\Http\Requests\PurchaseUpdateRequest;
+use App\Item;
 use App\Purchase;
+use App\Supplier;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+use App\Services\PurchaseService;
 
 class PurchasesController extends Controller
 {
+    protected $service;
+
+    /**
+     * PurchasesController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return JsonResponse|View
+     * @throws Exception
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            $model = Purchase::with('supplier');
+            return \datatables()->of($model)
+                ->addColumn('supplier', function(Purchase $purchase) {
+                    return $purchase->supplier->name ? $purchase->supplier->name : '';
+                })
+                ->addColumn('action', 'action')
+                ->addIndexColumn()
+                ->make(true);
+        }
+        $pageTitle = 'Purchases index';
+        return view('purchases.index',
+            compact('pageTitle'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
-        //
+        $suppliers = Supplier::all();
+        $items = Item::get('name');
+        $pageTitle = 'Create purchase';
+        return view('purchases.create',
+            compact('suppliers', 'pageTitle', 'items'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param PurchaseStoreRequest $request
-     * @return void
+     * @return RedirectResponse
      */
-    public function store(PurchaseStoreRequest $request)
+    public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-        //
+//        @FIXME array to string conversion
+        $this->service->create($request->validated());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param Purchase $purchase
+     * @return Application|Factory|View
      */
-    public function show($id)
+    public function show(Purchase $purchase)
     {
-        //
+        return view('purchases.show', compact('purchase'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return Response
+     * @param  Purchase $purchase
+     * @return View
      */
-    public function edit($id)
+    public function edit(Purchase $purchase): View
     {
-        //
+        return view('purchase.edit', compact('purchase'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
-     * @return Response
+     * @param PurchaseUpdateRequest $request
+     * @param  Purchase $purchase
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
     {
-        //
+        return redirect()->back()->with('message', 'The Purchase has been updated');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Purchase $purchase
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Purchase $purchase): JsonResponse
     {
-        $purchase = Purchase::findOrFail($id);
-
         if (Purchase::destroy($purchase)) {
-            return response()->json(['success' => true, 'message' => 'The purchase was deleted']);
+            return response()->json(['success' => true,
+                'message' => 'The purchase was deleted']);
         }
     }
 
     /**
      * @return JsonResponse
      */
-    public function list()
+    public function list(): JsonResponse
     {
         $purchases = Purchase::with('items')->all();
 
         if ($purchases->count() < 1) {
-            return response()->json(['success' => false, 'message' => 'There are no products on stock']);
+            return response()->json(['success' => false,
+                'message' => 'There are no products on stock']);
         }
-        return response()->json(['success' => true, 'purchases' => $purchases]);
+        return response()->json(['success' => true,
+            'purchases' => $purchases]);
     }
 }

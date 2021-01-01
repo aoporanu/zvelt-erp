@@ -75,4 +75,9 @@ class PurchaseAPIController extends Controller
     {
         return response()->json(['status' => true, 'purchase' => Purchase::latest()->first()]);
     }
+
+    public function transfer(Request $request, Purchase $purchase)
+    {
+        return $purchase->transfer($request->where, $request->location);
+    }
 }

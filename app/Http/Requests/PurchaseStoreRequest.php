@@ -11,9 +11,10 @@ class PurchaseStoreRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
+//        return auth()->user()->can('store-order', $this->order);
     }
 
     /**
@@ -21,26 +22,33 @@ class PurchaseStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'supplier_id' => 'required|exists:suppliers,id',
-            'value' => 'required',
-            // 'total' => [
-            //     'required',
-            //     function($attribute, $value, $fail) {
-            //         foreach()
-            //     }
-            // ],
-            'for_invoice' => 'required',
-            'purchase_items' => 'required',
-            'purchase_items.*.item_id' => 'required|exists:items,id',
-            'purchase_items.*.purchase_cost' => 'required',
-            'purchase_items.*.selling_cost' => 'required',
-            'purchase_items.*.qty' => 'required|min:1',
-            'purchase_items.*.lot' => 'required',
-            'purchase_items.*.warehouse_id' => 'required|exists:warehouses,id',
-            'purchase_items.*.location_id' => 'required|exists:locations,id'
+            'purchase_id'               => 'required',
+            'for_invoice'               => 'required|unique:purchases,for_invoice',
+            'supplier_id'               => 'required|exists:suppliers,id',
+            'value'                     => 'required',
+            'item.*.item_name'          => 'required|string|min:3',
+            'item.*.item_qty'           => 'required|integer|min:1',
+            'item.*.purchase_price'     => 'required',
+            'item.*.expiration_date'    => 'required|date',
+            'item.*.lot'                => 'required',
+            'item.*.upc'                => 'required',
+            'item.*.ean'                => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'purchase_id.required'  => 'The purchase id was not generated ...',
+            'for_invoice.required'  => 'The invoice is not present',
+            'for_invoice.unique'    => 'A purchase was already made for that ID',
+            'supplier_id.required'  => 'The supplier was not filled',
+            'supplier_id.exists'    => 'The supplier does not exist in the suppliers table',
+            'value.required'        => 'The purchase value was not calculated',
+            'item.required'         => 'The purchased items list must contain at least one item'
         ];
     }
 }

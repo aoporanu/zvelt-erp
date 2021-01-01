@@ -19,10 +19,13 @@ use Carbon\Carbon;
 
 $factory->define(Purchase::class, function (Faker $faker) {
     return [
-        'purchase_id,' => $faker->word(),
-        'value,' => $faker->word(),
-        'total,' => $faker->word(),
-        'discount,' => $faker->word(),
-        'for_invoice' => $faker->word()
+        'purchase_id' => $faker->word(),
+        'value' => $faker->word(),
+        'total' => $faker->word(),
+        'discount' => $faker->word(),
+        'for_invoice' => $faker->word(),
+        'supplier_id' => function() {
+            return factory(\App\Supplier::class)->create()->id;
+        }
     ];
 });

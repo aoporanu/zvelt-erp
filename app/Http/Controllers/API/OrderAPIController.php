@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API;
 
 use App\Order;
-use App\Invoice;
 use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\OrderStoreRequest;
@@ -11,15 +10,8 @@ use App\Http\Requests\OrderUpdateRequest;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Item;
-use App\OrderItem;
-use App\PurchasedItems;
-use App\Setting;
-use App\Shop;
-use App\Visitation;
-use Exception;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 class OrderAPIController extends Controller
 {
@@ -44,7 +36,7 @@ class OrderAPIController extends Controller
         return new OrderResource($order->load(['orderItems']));
     }
 
-    public function store(Request $request): \Illuminate\Http\JsonResponse
+    public function store(OrderStoreRequest $request)
     {
         return Order::storeOrder($request);
     }
@@ -66,5 +58,49 @@ class OrderAPIController extends Controller
     public function latest(): \Illuminate\Http\JsonResponse
     {
         return response()->json(['status' => true, 'order' => Order::latest()->first()]);
+    }
+
+    private function checkIfOrderIsProcessable(Order $order) 
+    {
+        if ($order->state !== 'processable') {
+            return response()
+                ->json(['success' => false, 'message' => 'The order is not processable'], 400);
+        }
+        
+        return true;
+    }
+
+    public function process(Order $order)
+    {
+        if (!$this->checkIfOrderIsProcessable($order)) {
+            return $this->checkIfOrderIsProcessable($order);
+        }
+
+        $order->load('orderItems');
+        $pdf = PDF::loadView('pdf.preorder', compact('order'))
+            ->setPaper('a4', 'portrait');
+        if (!file_exists('orders')) {
+            mkdir('orders');
+        }
+        $pdf->save('orders/order_' . $order->id . '.pdf');
+        return response()->json(['order' => new OrderResource($order), 'extra' => '/api/orders/save/' . $order->id], 200);
+    }
+
+    /**
+     * This method should be used only when the order has been
+     * processed by the warehouse.
+     * 
+     * @author Adi Oporanu
+     */
+    public function save(Order $order)
+    {
+        if ($this->checkIfOrderIsProcessable($order)) {
+            return $this->checkIfOrderIsProcessable($order);
+        }
+        $order->state = 'invoiceable';
+        $order->save();
+
+        return response()
+            ->json(['success' => true, 'message' => 'The order is invoiceable now', 'order' => new OrderResource($order)]);
     }
 }

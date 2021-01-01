@@ -4,11 +4,22 @@ namespace App;
 
 use Dompdf\Dompdf;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Exception;
 
+/**
+ * @method static paginate(int $int)
+ * @method static findOrFail(int $id)
+ * @method static select(string $string)
+ * @method static insert(array $validated)
+ * @method static create(array $all)
+ */
 class Purchase extends Model
 {
     use SoftDeletes;
@@ -46,27 +57,36 @@ class Purchase extends Model
         //
     ];
 
-    public function items()
+    /**
+     * @return BelongsToMany
+     */
+    public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class)->withPivot('purchase_id', 'item_id', 'purchase_cost', 'selling_cost', 'lot', 'location_id', 'qty', 'warehouse_id');
     }
 
-    public function purchasedItems()
+    /**
+     * @return HasMany
+     */
+    public function purchasedItems(): HasMany
     {
         return $this->hasMany(PurchasedItems::class);
     }
 
-    public function supplier()
+    /**
+     * @return BelongsTo
+     */
+    public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
     }
 
     /**
-     * @param $request object
+     * @param Request $request
      *
      * @return bool
      */
-    public static function storeOrder(Request $request)
+    public static function storeOrder(Request $request): bool
     {
         $total = 0;
         $purchase = Purchase::create($request->all());
@@ -113,7 +133,11 @@ class Purchase extends Model
         return false;
     }
 
-    public function generateNir(Purchase $purchase)
+    /**
+     * @param Purchase $purchase
+     * @return JsonResponse
+     */
+    public function generateNir(Purchase $purchase): JsonResponse
     {
         if ($purchase->printed) {
             return response()->json(['success' => false, 'message' => 'This NIR has already been generated']);
@@ -131,6 +155,10 @@ class Purchase extends Model
         } catch (Exception $ex) {
             return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()], 400);
         }
+    }
 
+    function transfer(Warehouse $where, Location $location)
+    {
+        // if ()
     }
 }
