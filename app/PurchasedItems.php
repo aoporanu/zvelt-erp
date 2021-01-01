@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static where(string $string, mixed $item_id)
+ * @method static first($id)
  */
 class PurchasedItems extends Model
 {
+    use SoftDeletes;
     protected $table = 'item_purchase';
 
     /**
