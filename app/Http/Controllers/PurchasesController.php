@@ -22,7 +22,7 @@ class PurchasesController extends Controller
     /**
      * PurchasesController constructor.
      */
-    public function __construct()
+    public function __construct(PurchaseService $service)
     {
         $this->middleware('auth');
         $this->service = $service;
