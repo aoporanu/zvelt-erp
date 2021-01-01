@@ -7,13 +7,16 @@ use App\Category;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static paginate()
  * @method static create(array $all)
+ * @method static firstOrFail(mixed $item_id)
  */
 class Item extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'name',
         'vat',
