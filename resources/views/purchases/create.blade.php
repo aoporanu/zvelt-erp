@@ -7,7 +7,12 @@
 @section('content')
     <div class="card full-height">
         <div class="card-body">
-            <form class="form-horizontal" method="post" action="{{ route('purchase.store') }}">
+            @if(count($items) == 0)
+                <span class="alert alert-danger" role="alert">
+                    <strong>There are no items in your inventory. Create some items before making any purchases</strong>
+                </span>
+            @endif
+            <form class="form-horizontal" method="post" action="@if(count($items) > 0) {{ route('purchase.store') }} @endif">
                 @csrf
                 <div class="form-group">
                     <label for="purchase_id">Purchase ID</label>
@@ -83,9 +88,11 @@
                         </a>
                     </div>
                 </div>
+                @if(count($items) > 0)
                 <div class="card-action">
                     <input type="submit" class="btn btn-success" value="Save purchase"/>
                 </div>
+                @endif
             </form>
         </div>
     </div>
@@ -101,87 +108,107 @@
                 iterator+=1;
                 e.preventDefault();
                 $(this).closest('.form-group').append(`
-            <div class="row row-purchased">
-    <div class="row">
-        <div class="col">
-            <input type="text" placeholder="Item name"
-                   class="form-control @error('item.*.item_name') is-invalid @enderror item-name"
-                   name="item[${iterator}][item_name]" value="{{ @old('item.*.item_name') }}"/>
-            @error('item.*.item_name')
+            <div class="form-group row-purchased">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input type="text" placeholder="Item name"
+                       class="form-control @error('item.*.item_name') is-invalid @enderror item-name"
+                       name="item[${ iterator }][item_name]" value="{{ @old('item.*.item_name') }}"/>
+                @error('item.*.item_name')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-                <div class="col">
+                <div class="form-group col-md-2">
                     <input type="number" placeholder="Item qty"
                            class="form-control item-qty item_qty @error('item.*.item_qty') is-invalid @enderror"
-                   name="item[${iterator}][item_qty]" value="{{ @old('item.*.item_qty') }}"/>
-            @error('item.*.item_qty')
+                       name="item[${ iterator }][item_qty]" value="{{ @old('item.*.item_qty') }}"/>
+                @error('item.*.item_qty')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-                <div class="col">
+                <div class="form-group col-md-2">
                     <input type="text" placeholder="Item purchase price"
                            class="form-control purchase-price @error('item.*.purchase_price') is-invalid @enderror"
-                   name="item[${iterator}][purchase_price]" value="{{ @old('item.*.purchase_price') }}"/>
-            @error('item.*.purchase_price')
+                       name="item[${ iterator }][purchase_price]" value="{{ @old('item.*.purchase_price') }}"/>
+                @error('item.*.purchase_price')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <input type="text" value="{{ old('item.*.expiration_date') }}" name="item[${iterator}][expiration_date]"
-                   placeholder="Expiration date"
-                   class="form-control @error('item.*.expiration_date') is-invalid @enderror"/>
-            @error('item.*.expiration_date')
+                <div class="form-group col-md-3">
+                    <input type="text" value="{{ old('item.*.expiration_date') }}" name="item[${ iterator }][expiration_date]"
+                       placeholder="Expiration date"
+                       class="form-control @error('item.*.expiration_date') is-invalid @enderror"/>
+                @error('item.*.expiration_date')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
 
                 </div>
-                <a href="#" class="btn btn-danger remove-row" onclick="removeRow(this); return false;">
-                    <i class="fas fa-minus-square"></i>
-                </a>
+                <div class="form-group col-md-1">
+                    <a href="#" class="btn btn-danger remove-row" onclick="removeRow(this); return false;">
+                        <i class="fas fa-minus-square"></i>
+                    </a>
+                </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <div class="form-row">
+                <div class="form-group col-md-4">
                     <input type="text" class="form-control @error('item.*.lot') is-invalid @enderror"
-                   name="item[${iterator}][lot]" placeholder="Lot" value="{{ old('item.*.lot') }}"/>
-            @error('item.*.lot')
+                       name="item[${ iterator }][lot]" placeholder="Lot" value="{{ old('item.*.lot') }}"/>
+                @error('item.*.lot')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-                <div class="col">
+                <div class="form-group col-md-4">
                     <input type="text" class="form-control @error('item.*.upc') is-invalid @enderror"
-                   name="item[${iterator}][upc]" placeholder="UPC Code" value="{{ old('item.*.upc') }}"/>
-            @error('item.*.upc')
+                       name="item[${ iterator }][upc]" placeholder="UPC Code" value="{{ old('item.*.upc') }}"/>
+                @error('item.*.upc')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-                <div class="col">
+                <div class="form-group col-md-4">
                     <input type="text" class="form-control @error('item.*.ean') is-invalid @enderror"
-                   name="item[${iterator}][ean]" placeholder="EAN Code" value="{{ old('item.*.ean') }}"/>
-            @error('item.*.ean')
+                       name="item[${ iterator }][ean]" placeholder="EAN Code" value="{{ old('item.*.ean') }}"/>
+                @error('item.*.ean')
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
+                <strong>{{ $message }}</strong>
             </span>
-            @enderror
+                @enderror
                 </div>
-
             </div>
-
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <select class="form-control @error('item.*.warehouse') is-invalid @enderror"
+                        name="item[${ iterator }][warehouse_id]"
+                        id="warehouse_id">
+                    <option value="">Please pick warehouse</option>
+                    @foreach($warehouses as $warehouse)
+                <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
+                        @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <select class="form-control @error('item.*.location_id') is-invalid @enderror"
+                        name="item[${ iterator }][location_id]"
+                        id="location_id">
+                    <option value="">Please pick location</option>
+                    @foreach($locations as $location)
+                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                </select>
+            </div>
         </div>
+    </div>
 `);
                 calculateTotal();
             });
@@ -189,7 +216,11 @@
             $('.item-name').autocomplete({
                 source: items
             });
-            $('#supplier_id').select2();
+            $('#supplier_id .warehouse-id .location-id').select2();
+        });
+
+        $('.purchase-price').keyup(function() {
+            calculateTotal();
         });
 
         function removeRow(elem) {

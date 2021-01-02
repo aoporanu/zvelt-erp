@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PurchaseStoreRequest;
-use App\Http\Requests\PurchaseUpdateRequest;
 use App\Item;
+use Exception;
+use App\Location;
 use App\Purchase;
 use App\Supplier;
-use Exception;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Warehouse;
 use Illuminate\View\View;
 use App\Services\PurchaseService;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller as Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use App\Http\Requests\PurchaseStoreRequest;
+use App\Http\Requests\PurchaseUpdateRequest;
+use Illuminate\Contracts\Foundation\Application;
 
 class PurchasesController extends Controller
 {
@@ -60,9 +63,11 @@ class PurchasesController extends Controller
     {
         $suppliers = Supplier::all();
         $items = Item::get('name');
+        $warehouses = Warehouse::get(['id', 'name']);
+        $locations = Location::get(['id', 'name']);
         $pageTitle = 'Create purchase';
         return view('purchases.create',
-            compact('suppliers', 'pageTitle', 'items'));
+            compact('suppliers', 'pageTitle', 'items', 'warehouses', 'locations'));
     }
 
     /**
@@ -73,7 +78,6 @@ class PurchasesController extends Controller
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-//        @FIXME array to string conversion
         $this->service->create($request->validated());
     }
 
