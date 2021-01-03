@@ -61,9 +61,30 @@
                     </div>
                 </li>
                 <li class="nav-item">
+                    <a href="#items" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                        <i class="fas fa-item"></i>
+                        <p>Items</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="items">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('items.index') }}">
+                                    <span class="sub-item">Items Index</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('items.create') }}">
+                                    <span class="sub-item">Create Item</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
                     <a data-toggle="collapse" href="#purchases" class="collapsed" aria-expanded="false">
                         <i class="fas fa-shopping-bag"></i>
-                        <p>Purchased</p>
+                        <p>Purchases</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="purchases">

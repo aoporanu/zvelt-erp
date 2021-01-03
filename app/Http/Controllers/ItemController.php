@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\Brand;
 use App\Category;
-use App\Http\Requests\ItemStoreRequest;
-use App\Http\Resources\ItemResource;
-use Illuminate\Http\Request;
-use App\Item;
-use Illuminate\Http\Response;
+use App\Packaging;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Http\Resources\ItemResource;
+use App\Http\Requests\ItemStoreRequest;
 
 class ItemController extends Controller
 {
@@ -54,8 +55,10 @@ class ItemController extends Controller
     {
         $categories = Category::get('id', 'name');
         $brands = Brand::get('id', 'name');
+        $packagings = Packaging::get('id', 'name');
+        $pageTitle = 'Create Item';
 
-        return view('items.create', compact('categories', 'brands'));
+        return view('items.create', compact('categories', 'brands', 'pageTitle', 'packagings'));
     }
 
     /**
