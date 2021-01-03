@@ -107,7 +107,7 @@
             $('#add_row').click(function (e) {
                 iterator+=1;
                 e.preventDefault();
-                $(this).closest('.form-group').append(`
+                $(this).closest('.form-group').before(`
             <div class="form-group row-purchased">
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -212,11 +212,7 @@
 `);
                 calculateTotal();
             });
-            let items = {{ $items }}
-            $('.item-name').autocomplete({
-                source: items
-            });
-            $('#supplier_id .warehouse-id .location-id').select2();
+            $('#supplier_id, .warehouse-id, .location-id, .item-name').select2();
         });
 
         $('.purchase-price').keyup(function() {
