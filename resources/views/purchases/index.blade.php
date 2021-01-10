@@ -63,10 +63,38 @@
                 ],
                 select: true,
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5'
+                    {
+                        extend: 'copyHtml5',
+                        text: 'Copy search results',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: 'Export search results',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: 'Export to CSV',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: 'Export to PDF',
+                        className: 'btn btn-default',
+                        exportOptions: {
+                            columns: 'th:not(:last-child)'
+                        }
+                    }
                 ],
                 order: [
                     [0, 'desc']
