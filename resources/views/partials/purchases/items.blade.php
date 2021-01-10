@@ -4,7 +4,12 @@
 <div class="form-group row-purchased">
     <div class="form-row">
         <div class="form-group col-md-4">
-            <input type="text" placeholder="Item name" class="form-control @error('item.*.item_name') is-invalid @enderror item-name" name="item[{{ $iterator }}][item_name]" value="{{ @old('item.*.item_name') }}" />
+        <select name="item[{{ $iterator }}][item_name]" id="item_name" class="form-control @error('item.*.item_name') is-invalid @enderror item-name">
+                <option value="">Please pick item</option>
+                @foreach($items as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
             @error('item.*.item_name')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -95,6 +100,14 @@
             </span>
             @enderror
         </div>
+        <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="item[{{ $iterator }}][vat]" id="vat" value="{{ old('item.*.vat') }}" />
+            @error('item.*.vat')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+        </div>
     </div>
 </div>
 @php $iterator++; @endphp
@@ -103,7 +116,13 @@
 <div class="form-group row-purchased">
     <div class="form-row">
         <div class="form-group col-md-4">
-            <input type="text" placeholder="Item name" class="form-control @error('item.*.item_name') is-invalid @enderror item-name" name="item[0][item_name]" value="{{ @old('item.*.item_name') }}" />
+            <select name="item[0][item_name]" id="item_name" class="form-control @error('item.*.item_name') is-invalid @enderror item-name">
+                <option value="">Please pick item</option>
+                @foreach($items as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            
             @error('item.*.item_name')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -193,6 +212,9 @@
                 <strong>{{ $message }}</strong>
             </span>
             @enderror
+        </div>
+        <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="item[0][vat]" id="vat" value="{{ old('item.*.vat') }}" placeholder="VAT" />
         </div>
     </div>
 </div>

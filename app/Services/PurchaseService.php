@@ -35,7 +35,7 @@ class PurchaseService
                 DB::table('purchased_items')
                 ->insert(
                     [
-                        'purchase_id'       => $array['purchase_id'],
+                        'purchase_id'       => $purchase->id,
                         'item_id'           => $item['item_name'],
                         'qty'               => $item['item_qty'],
                         'lot'               => $item['lot'],
@@ -47,7 +47,7 @@ class PurchaseService
                         'ean'               => $item['ean'],
                         'purchase_cost'     => $item['purchase_price'],
                         'selling_cost'      => $item['purchase_price'],
-                        'vat'               => 9,
+                        'vat'               => $item['vat'],
                         'created_at'        => Carbon::now(),
                         'updated_at'        => Carbon::now()
                     ]
@@ -80,7 +80,7 @@ class PurchaseService
             ->join('purchased_items as pi', 'purchases.id', '=', 'pi.purchase_id', 'left')
             ->join('items', 'items.id', '=', 'pi.item_id', 'left')
             ->join('brands', 'items.brand_id', '=', 'brands.id', 'left')
-            ->get(['purchases.id', 'purchases.purchase_id', 'purchases.discount', 'purchases.for_invoice', 'suppliers.id', 'suppliers.name', 'purchases.value', 'purchases.total', 'purchase_cost', 'selling_cost', 'qty', 'items.id as item_id', 'items.name as item_name', 'suppliers.name as supplier_name', 'brands.name as brand_name']);
+            ->get(['purchases.id', 'purchases.purchase_id', 'purchases.discount', 'purchases.created_at', 'purchases.for_invoice', 'suppliers.id as supplier_id', 'suppliers.name as supplier_name', 'purchases.value', 'purchases.total', 'purchase_cost', 'selling_cost', 'qty', 'items.id as item_id', 'items.name as item_name', 'suppliers.name as supplier_name', 'brands.name as brand_name']);
         return \datatables()->of($model)
             ->addColumn('action', function($row) {
                 $html = '<a href="' . route('purchase.show', [$row->id]) . '" class="btn btn-xs btn-success"><i class="fa fa-eye" aria-hidden="true"></i>
@@ -91,6 +91,17 @@ class PurchaseService
                 </a>';
                 return $html;
             })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function loadStocks()
+    {
+        $model = \DB::table('purchased_items')
+            ->join('items', 'items.id', '=', 'purchased_items.item_id')
+            ->join('suppliers', 'suppliers.id', '=', 'purchased_items.supplier_id')
+            ->get(['purchased_items.*', 'items.name as item_name', 'suppliers.name as supplier_name']);
+            return \datatables()->of($model)
             ->addIndexColumn()
             ->make(true);
     }

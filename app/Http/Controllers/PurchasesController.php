@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Asd
+ * php version ^8.0
+ * 
+ * @category ERP
+ * @package  SapKiller
+ * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     http://zvelt-erp.com
+ */
 namespace App\Http\Controllers;
 
 use Exception;
@@ -14,12 +23,26 @@ use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 
+/**
+ * Purchases Controller
+ * 
+ * @category ERP
+ * @package  SapKiller
+ * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     http://zvelt-erp.com
+ */
 class PurchasesController extends Controller
 {
     protected $service;
 
     /**
      * PurchasesController constructor.
+     * 
+     * @param PurchaseService $service the service which 
+     *                                 implements the 
+     *                                 methods that 
+     *                                 operate on the Purchase model
      */
     public function __construct(PurchaseService $service)
     {
@@ -39,8 +62,10 @@ class PurchasesController extends Controller
             return $this->service->loadIndex();
         }
         $pageTitle = 'Purchases index';
-        return view('purchases.index',
-            compact('pageTitle'));
+        return view(
+            'purchases.index',
+            compact('pageTitle')
+        );
     }
 
     /**
@@ -53,7 +78,8 @@ class PurchasesController extends Controller
         $arrayForView = $this->service->loadViewArray();
         $pageTitle = 'Create purchase';
         $lastPurchaseId = (int)Purchase::latest()->first()->purchase_id;
-        return view('purchases.create',
+        return view(
+            'purchases.create',
             [
                 'suppliers'         => $arrayForView['suppliers'],
                 'items'             => $arrayForView['items'],
@@ -68,7 +94,8 @@ class PurchasesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param PurchaseStoreRequest $request
+     * @param PurchaseStoreRequest $request the request object
+     * 
      * @return RedirectResponse
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
@@ -80,7 +107,8 @@ class PurchasesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Purchase $purchase
+     * @param Purchase $purchase the Purchase object
+     * 
      * @return Application|Factory|View
      */
     public function show(Purchase $purchase)
@@ -91,25 +119,28 @@ class PurchasesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Purchase $purchase
+     * @param Purchase $purchase the Purchase object
+     * 
      * @return View
      */
     public function edit(Purchase $purchase): View
     {
-        return view('purchase.edit', compact('purchase'));
+        return view('purchases.edit', compact('purchase'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param PurchaseUpdateRequest $request
-     * @param  Purchase $purchase
+     * @param PurchaseUpdateRequest $request  request sent to the update method
+     * @param Purchase              $purchase the Purchase object
+     * 
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
+    public function update(PurchaseUpdateRequest $request, Purchase $purchase)
     {
         if ($purchase->update($request->validated())) {
-            return redirect()->back()->with('message', 'The Purchase has been updated');
+            return redirect()->back()
+                ->with('message', 'The Purchase has been updated');
         }
 
         return redirect()->back()->with('message', 'Could not update the model');
@@ -118,14 +149,32 @@ class PurchasesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Purchase $purchase
+     * @param Purchase $purchase the Purchase object
+     * 
      * @return JsonResponse
      */
     public function destroy(Purchase $purchase): JsonResponse
     {
         if (Purchase::destroy($purchase)) {
-            return response()->json(['success' => true,
-                'message' => 'The purchase was deleted']);
+            return response()->json(
+                ['success' => true,
+                'message' => 'The purchase was deleted']
+            );
         }
+    }
+
+    /**
+     * Load the stocks for a given product
+     * 
+     * @return View
+     */
+    public function stocks()
+    {
+        if (request()->ajax()) {
+            return $this->service->loadStocks();
+        }
+        $pageTitle = 'Company stocks';
+
+        return view('purchases.stocks', compact('pageTitle'));
     }
 }

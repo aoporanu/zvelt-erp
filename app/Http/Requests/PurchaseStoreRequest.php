@@ -40,6 +40,7 @@ class PurchaseStoreRequest extends FormRequest
             'item.*.ean'                => 'required',
             'item.*.location_id'        => 'required|exists:locations,id',
             'item.*.warehouse_id'       => 'required|exists:warehouses,id',
+            'item.*.vat'                => 'required|min:1'
         ];
     }
 
