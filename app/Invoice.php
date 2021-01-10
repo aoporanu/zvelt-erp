@@ -11,7 +11,7 @@ use App\Traits\Multitenentable;
  */
 class Invoice extends Model
 {
-    use SoftDeletes, Multitenantable;
+    use SoftDeletes, Multitenentable;
     protected $fillable = [
         'order_id', 'shop_id', 'client_id', 'agent_id'
     ];
