@@ -1,9 +1,10 @@
 <?php
 
-use App\Supplier;
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
-class SupplierSeeder extends Seeder
+class BrandSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +13,6 @@ class SupplierSeeder extends Seeder
      */
     public function run()
     {
-        Supplier::factory()->times(30)->create();
+        //
     }
 }
