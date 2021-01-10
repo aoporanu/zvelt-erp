@@ -23,7 +23,7 @@ class PurchaseService
         // dd($array);
         DB::beginTransaction();
         try {
-            $purchase = Purchase::create([
+            $purchase = (new Purchase)->create([
                 'purchase_id'   => $array['purchase_id'],
                 'for_invoice'   => $array['for_invoice'],
                 'supplier_id'   => $array['supplier_id'],
@@ -48,7 +48,7 @@ class PurchaseService
 
     public function loadViewArray()
     {
-        $suppliers = Supplier::get(['id', 'name']);
+        $suppliers = (new Supplier)->get(['id', 'name']);
         $items = Item::get(['id', 'name']);
         $warehouses = Warehouse::get(['id', 'name']);
         $locations = Location::get(['id', 'name']);
