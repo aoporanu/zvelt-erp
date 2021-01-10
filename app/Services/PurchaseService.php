@@ -9,6 +9,7 @@ use App\Location;
 use App\Purchase;
 use App\Supplier;
 use App\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -19,11 +20,9 @@ class PurchaseService
      */
     public function create(array $array)
     {
-        // insert purchase
-        // dd($array);
         DB::beginTransaction();
         try {
-            $purchase = Purchase::create([
+            $purchase = (new Purchase)->create([
                 'purchase_id'   => $array['purchase_id'],
                 'for_invoice'   => $array['for_invoice'],
                 'supplier_id'   => $array['supplier_id'],
@@ -33,7 +32,26 @@ class PurchaseService
             ]);
 
             foreach ($array['item'] as $item) {
-                $purchase->purchasedItems()->create($item);
+                DB::table('purchased_items')
+                ->insert(
+                    [
+                        'purchase_id'       => $purchase->id,
+                        'item_id'           => $item['item_name'],
+                        'qty'               => $item['item_qty'],
+                        'lot'               => $item['lot'],
+                        'expiration_date'   => Carbon::make($item['expiration_date']),
+                        'location_id'       => $item['location_id'],
+                        'warehouse_id'      => $item['warehouse_id'],
+                        'supplier_id'       => $array['supplier_id'],
+                        'upc'               => $item['upc'],
+                        'ean'               => $item['ean'],
+                        'purchase_cost'     => $item['purchase_price'],
+                        'selling_cost'      => $item['purchase_price'],
+                        'vat'               => $item['vat'],
+                        'created_at'        => Carbon::now(),
+                        'updated_at'        => Carbon::now()
+                    ]
+                );
             }
 
             DB::commit();
@@ -48,7 +66,7 @@ class PurchaseService
 
     public function loadViewArray()
     {
-        $suppliers = Supplier::get(['id', 'name']);
+        $suppliers = (new Supplier)->get(['id', 'name']);
         $items = Item::get(['id', 'name']);
         $warehouses = Warehouse::get(['id', 'name']);
         $locations = Location::get(['id', 'name']);
@@ -62,7 +80,7 @@ class PurchaseService
             ->join('purchased_items as pi', 'purchases.id', '=', 'pi.purchase_id', 'left')
             ->join('items', 'items.id', '=', 'pi.item_id', 'left')
             ->join('brands', 'items.brand_id', '=', 'brands.id', 'left')
-            ->get(['purchases.id', 'purchases.purchase_id', 'purchases.discount', 'purchases.for_invoice', 'suppliers.id', 'suppliers.name', 'purchases.value', 'purchases.total', 'purchase_cost', 'selling_cost', 'qty', 'items.id as item_id', 'items.name as item_name', 'suppliers.name as supplier_name', 'brands.name as brand_name']);
+            ->get(['purchases.id', 'purchases.purchase_id', 'purchases.discount', 'purchases.created_at', 'purchases.for_invoice', 'suppliers.id as supplier_id', 'suppliers.name as supplier_name', 'purchases.value', 'purchases.total', 'purchase_cost', 'selling_cost', 'qty', 'items.id as item_id', 'items.name as item_name', 'suppliers.name as supplier_name', 'brands.name as brand_name']);
         return \datatables()->of($model)
             ->addColumn('action', function($row) {
                 $html = '<a href="' . route('purchase.show', [$row->id]) . '" class="btn btn-xs btn-success"><i class="fa fa-eye" aria-hidden="true"></i>
@@ -73,6 +91,17 @@ class PurchaseService
                 </a>';
                 return $html;
             })
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function loadStocks()
+    {
+        $model = \DB::table('purchased_items')
+            ->join('items', 'items.id', '=', 'purchased_items.item_id')
+            ->join('suppliers', 'suppliers.id', '=', 'purchased_items.supplier_id')
+            ->get(['purchased_items.*', 'items.name as item_name', 'suppliers.name as supplier_name']);
+            return \datatables()->of($model)
             ->addIndexColumn()
             ->make(true);
     }

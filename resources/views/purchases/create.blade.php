@@ -98,7 +98,7 @@
     </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -110,16 +110,20 @@
                 $(this).closest('.form-group').before(`
             <div class="form-group row-purchased">
         <div class="form-row">
-            <div class="form-group col-md-4">
-                <input type="text" placeholder="Item name"
-                       class="form-control @error('item.*.item_name') is-invalid @enderror item-name"
-                       name="item[${ iterator }][item_name]" value="{{ @old('item.*.item_name') }}"/>
-                @error('item.*.item_name')
-                <span class="invalid-feedback" role="alert">
+        <div class="form-group col-md-4">
+            <select name="item[${iterator}][item_name]" id="item_name" class="form-control @error('item.*.item_name') is-invalid @enderror item-name">
+                <option value="">Please pick item</option>
+                @foreach($items as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
+            
+            @error('item.*.item_name')
+            <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
-                @enderror
-                </div>
+            @enderror
+        </div>
                 <div class="form-group col-md-2">
                     <input type="number" placeholder="Item qty"
                            class="form-control item-qty item_qty @error('item.*.item_qty') is-invalid @enderror"
@@ -207,6 +211,9 @@
                         @endforeach
                 </select>
             </div>
+            <div class="form-group col-md-6">
+                <input type="text" name="item[${ iterator }][vat] class="form-control @error('item.*.vat') is-invalid @enderror" />
+            </div>
         </div>
     </div>
 `);
@@ -245,7 +252,7 @@
             })
         }
     </script>
-@endsection
+@endpush
 @section('styles')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 @endsection
