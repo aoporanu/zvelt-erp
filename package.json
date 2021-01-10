@@ -26,6 +26,12 @@
     },
     "dependencies": {
         "@pipe-dream/laravel-file-factory": "^1.1.0-c",
+        "datatables.net-buttons-dt": "^1.6.5",
+        "datatables.net-dt": "^1.10.23",
+        "datatables.net-editor-dt": "^1.6.3",
+        "datatables.net-responsive-dt": "^2.2.6",
+        "datatables.net-rowreorder-dt": "^1.2.7",
+        "datatables.net-scroller-dt": "^2.0.3",
         "laravel-echo-server": "^1.6.2",
         "vue-router": "^3.1.6",
         "vue-uuid": "^2.0.2",

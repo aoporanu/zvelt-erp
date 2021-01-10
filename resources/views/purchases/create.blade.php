@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <label for="purchase_id">Purchase ID</label>
                     <input type="text" class="form-control @error('purchase_id') is-invalid @enderror" id="purchase_id"
-                           name="purchase_id" value="{{ old('purchase_id') }}"/>
+                           name="purchase_id" value="{{ old('purchase_id') ? $lastPurchaseId : old('purchase_id') }}"/>
                     @error('purchase_id')
                     <span class="alert alert-danger" role="alert">
                         <strong>{{ $message }}</strong>

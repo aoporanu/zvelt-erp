@@ -26,10 +26,11 @@
 @include('partials.admin.sidebar')
 @endsection
 
-@section('scripts')
+@push('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
             $('.data-table').DataTable({
+                dom: 'Bfrtip',
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('purchase.index') }}",
@@ -51,7 +52,7 @@
                         name: 'discount'
                     },
                     {
-                        data: 'supplier',
+                        data: 'name',
                         name: 'supplier'
                     },
                     {
@@ -61,14 +62,16 @@
                     },
                 ],
                 select: true,
-                buttons: {
-                    { extend: 'edit', editor: editor },
-                    { extend: 'remove', editor: editor }
-                }
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
                 order: [
                     [0, 'desc']
                 ]
             });
         });
     </script>
-@endsection
+@endpush
