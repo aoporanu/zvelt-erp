@@ -8,17 +8,21 @@ use App\Category;
 use App\Packaging;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Services\ItemService;
 use Illuminate\Http\Response;
 use App\Http\Resources\ItemResource;
 use App\Http\Requests\ItemStoreRequest;
+use App\Http\Requests\ItemUpdateRequest;
 
 class ItemController extends Controller
 {
+    protected $service;
     /**
      * ItemController constructor.
      */
-    public function __construct()
+    public function __construct(ItemService $service)
     {
+        $this->service = $service;
         $this->middleware('auth');
     }
 
@@ -28,23 +32,10 @@ class ItemController extends Controller
      * @return View
      * @throws \Exception
      */
-    public function index(): View
+    public function index()
     {
         if (request()->ajax()) {
-            $model = Item::with('category', 'brand', 'purchases');
-            return \datatables()->of($model)
-                ->addColumn('category', function(Item $purchase) {
-                    return $purchase->category->name ? $purchase->category->name : '';
-                })
-                ->addColumn('brand', function (Item $item) {
-                    return $item->brand->name ? $item->brand->name : '';
-                })
-                ->addColumn('purchases', function (Item $item) {
-                    return $item->purchases->total ? $item->purchases->total : '';
-                })
-                ->addColumn('action', 'action')
-                ->addIndexColumn()
-                ->make(true);
+            return $this->service->index();
         }
 
         $pageTitle = 'Item index';
@@ -53,9 +44,9 @@ class ItemController extends Controller
 
     public function create()
     {
-        $categories = Category::get('id', 'name');
-        $brands = Brand::get('id', 'name');
-        $packagings = Packaging::get('id', 'name');
+        $categories = Category::get(['id', 'name']);
+        $brands = Brand::get(['id', 'name']);
+        $packagings = Packaging::get(['id', 'name']);
         $pageTitle = 'Create Item';
 
         return view('items.create', compact('categories', 'brands', 'pageTitle', 'packagings'));
@@ -90,9 +81,9 @@ class ItemController extends Controller
      * @param  Item $item
      * @return ItemResource
      */
-    public function update(Request $request, Item $item): ItemResource
+    public function update(ItemUpdateRequest $request, Item $item): ItemResource
     {
-        $item->update($request->all());
+        $item->update($request->validated());
 
         return new ItemResource($item);
     }
