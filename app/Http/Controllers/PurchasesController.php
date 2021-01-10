@@ -74,6 +74,7 @@ class PurchasesController extends Controller
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
         $this->service->create($request->validated());
+        return redirect()->back()->with('message', 'The purchase has been created');
     }
 
     /**

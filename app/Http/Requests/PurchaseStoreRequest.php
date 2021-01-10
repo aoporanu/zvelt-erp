@@ -31,7 +31,7 @@ class PurchaseStoreRequest extends FormRequest
             'value'                     => 'required',
             'total'                     => 'required',
             'discount'                  => 'required',
-            'item.*.item_name'          => 'required|string|min:3',
+            'item.*.item_name'          => 'required|string',
             'item.*.item_qty'           => 'required|integer|min:1',
             'item.*.purchase_price'     => 'required',
             'item.*.expiration_date'    => 'required|date',

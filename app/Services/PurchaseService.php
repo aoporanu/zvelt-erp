@@ -9,6 +9,7 @@ use App\Location;
 use App\Purchase;
 use App\Supplier;
 use App\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -19,8 +20,6 @@ class PurchaseService
      */
     public function create(array $array)
     {
-        // insert purchase
-        // dd($array);
         DB::beginTransaction();
         try {
             $purchase = (new Purchase)->create([
@@ -33,7 +32,26 @@ class PurchaseService
             ]);
 
             foreach ($array['item'] as $item) {
-                $purchase->purchasedItems()->create($item);
+                DB::table('purchased_items')
+                ->insert(
+                    [
+                        'purchase_id'       => $array['purchase_id'],
+                        'item_id'           => $item['item_name'],
+                        'qty'               => $item['item_qty'],
+                        'lot'               => $item['lot'],
+                        'expiration_date'   => Carbon::make($item['expiration_date']),
+                        'location_id'       => $item['location_id'],
+                        'warehouse_id'      => $item['warehouse_id'],
+                        'supplier_id'       => $array['supplier_id'],
+                        'upc'               => $item['upc'],
+                        'ean'               => $item['ean'],
+                        'purchase_cost'     => $item['purchase_price'],
+                        'selling_cost'      => $item['purchase_price'],
+                        'vat'               => 9,
+                        'created_at'        => Carbon::now(),
+                        'updated_at'        => Carbon::now()
+                    ]
+                );
             }
 
             DB::commit();
