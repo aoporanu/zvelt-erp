@@ -29,13 +29,17 @@ class PurchaseStoreRequest extends FormRequest
             'for_invoice'               => 'required|unique:purchases,for_invoice',
             'supplier_id'               => 'required|exists:suppliers,id',
             'value'                     => 'required',
+            'total'                     => 'required',
+            'discount'                  => 'required',
             'item.*.item_name'          => 'required|string|min:3',
             'item.*.item_qty'           => 'required|integer|min:1',
             'item.*.purchase_price'     => 'required',
             'item.*.expiration_date'    => 'required|date',
             'item.*.lot'                => 'required',
             'item.*.upc'                => 'required',
-            'item.*.ean'                => 'required'
+            'item.*.ean'                => 'required',
+            'item.*.location_id'        => 'required|exists:locations,id',
+            'item.*.warehouse_id'       => 'required|exists:warehouses,id',
         ];
     }
 

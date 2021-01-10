@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PurchaseStoreRequest;
-use App\Http\Requests\PurchaseUpdateRequest;
-use App\Item;
-use App\Purchase;
-use App\Supplier;
 use Exception;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Purchase;
 use Illuminate\View\View;
 use App\Services\PurchaseService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
+use App\Http\Requests\PurchaseStoreRequest;
+use App\Http\Requests\PurchaseUpdateRequest;
+use Illuminate\Contracts\Foundation\Application;
+use App\Http\Controllers\Controller as Controller;
 
 class PurchasesController extends Controller
 {
@@ -22,7 +21,7 @@ class PurchasesController extends Controller
     /**
      * PurchasesController constructor.
      */
-    public function __construct()
+    public function __construct(PurchaseService $service)
     {
         $this->middleware('auth');
         $this->service = $service;
@@ -37,14 +36,7 @@ class PurchasesController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $model = Purchase::with('supplier');
-            return \datatables()->of($model)
-                ->addColumn('supplier', function(Purchase $purchase) {
-                    return $purchase->supplier->name ? $purchase->supplier->name : '';
-                })
-                ->addColumn('action', 'action')
-                ->addIndexColumn()
-                ->make(true);
+            return $this->service->loadIndex();
         }
         $pageTitle = 'Purchases index';
         return view('purchases.index',
@@ -58,11 +50,19 @@ class PurchasesController extends Controller
      */
     public function create(): View
     {
-        $suppliers = Supplier::all();
-        $items = Item::get('name');
+        $arrayForView = $this->service->loadViewArray();
         $pageTitle = 'Create purchase';
+        $lastPurchaseId = (int)Purchase::latest()->first()->purchase_id;
         return view('purchases.create',
-            compact('suppliers', 'pageTitle', 'items'));
+            [
+                'suppliers'         => $arrayForView['suppliers'],
+                'items'             => $arrayForView['items'],
+                'pageTitle'         => $pageTitle,
+                'warehouses'        => $arrayForView['warehouses'],
+                'locations'         => $arrayForView['locations'],
+                'lastPurchaseId'    => $lastPurchaseId ? $lastPurchaseId+=1 : '1'
+            ]
+        );
     }
 
     /**
@@ -73,7 +73,6 @@ class PurchasesController extends Controller
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-//        @FIXME array to string conversion
         $this->service->create($request->validated());
     }
 
@@ -108,7 +107,11 @@ class PurchasesController extends Controller
      */
     public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
     {
-        return redirect()->back()->with('message', 'The Purchase has been updated');
+        if ($purchase->update($request->validated())) {
+            return redirect()->back()->with('message', 'The Purchase has been updated');
+        }
+
+        return redirect()->back()->with('message', 'Could not update the model');
     }
 
     /**
@@ -123,20 +126,5 @@ class PurchasesController extends Controller
             return response()->json(['success' => true,
                 'message' => 'The purchase was deleted']);
         }
-    }
-
-    /**
-     * @return JsonResponse
-     */
-    public function list(): JsonResponse
-    {
-        $purchases = Purchase::with('items')->all();
-
-        if ($purchases->count() < 1) {
-            return response()->json(['success' => false,
-                'message' => 'There are no products on stock']);
-        }
-        return response()->json(['success' => true,
-            'purchases' => $purchases]);
     }
 }

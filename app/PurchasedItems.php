@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PurchasedItems extends Model
 {
     use SoftDeletes;
-    protected $table = 'item_purchase';
+    protected $table = 'purchased_items';
 
     /**
      * The attributes that are mass assignable.

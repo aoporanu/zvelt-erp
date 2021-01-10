@@ -29,7 +29,7 @@ class Purchase extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'value', 'total', 'discount', 'for_invoice'
+        'id', 'purchase_id', 'value', 'total', 'discount', 'for_invoice', 'supplier_id'
     ];
 
     /**

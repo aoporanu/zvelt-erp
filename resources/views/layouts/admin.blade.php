@@ -18,7 +18,12 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link href="{{ asset('css/atlantis.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.3.5/css/autoFill.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
     @yield('styles')
+
+<script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script>
+<script src="{{ asset('js/core/popper.min.js') }}"></script>
 </head>
 <body data-background-color="dark">
 <div class="wrapper">
@@ -308,8 +313,6 @@
     </div>
 </div>
 
-<script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script>
-<script src="{{ asset('js/core/popper.min.js') }}"></script>
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
@@ -318,6 +321,17 @@
 <script src="{{ asset('js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
 <script src="{{ asset('js/plugin/chart-circle/circles.min.js') }}"></script>
 <script src="{{ asset('js/plugin/datatables/datatables.min.js') }}"></script>
+<script src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
+<script src="https://cdn.datatables.net/autofill/2.3.5/js/dataTables.autoFill.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js"></script>
 <script src="{{ asset('js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
 <script src="{{ asset('js/atlantis.min.js') }}"></script>
 <script src="{{ asset('js/setting-demo.js') }}"></script>
@@ -415,7 +429,7 @@
         fillColor: 'rgba(255, 165, 52, .14)'
     });
 </script>
-@yield('scripts')
+@stack('scripts')
 <script src="{{asset('js/plugin/webfont/webfont.min.js')}}"></script>
 <script>
     WebFont.load({
