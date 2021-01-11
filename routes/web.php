@@ -17,6 +17,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('purchase/stocks', [PurchasesController::class, 'stocks'])
     ->name('purchase.stocks');
+Route::get('purchase/transfer/{purchasedItem}', [PurchasesController::class, 'transfer'])
+    ->name('purchase.transfer');
 Route::resource('purchase', PurchasesController::class);
 Route::resource('warehouse', WarehouseController::class);
 Route::resource('locations', LocationController::class);
