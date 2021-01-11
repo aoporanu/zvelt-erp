@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Item;
 
 class ItemSeed extends Seeder
 {
@@ -13,6 +14,6 @@ class ItemSeed extends Seeder
      */
     public function run()
     {
-        //
+        Item::factory()->times(500)->create();
     }
 }
