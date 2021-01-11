@@ -30,6 +30,11 @@
                 {
                     data: 'item_name',
                     name: 'Product'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false
                 }
             ],
             select: true,

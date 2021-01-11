@@ -11,6 +11,7 @@
  */
 namespace App\Http\Controllers;
 
+use App\PurchasedItems;
 use Exception;
 use App\Purchase;
 use Illuminate\View\View;
@@ -176,5 +177,23 @@ class PurchasesController extends Controller
         $pageTitle = 'Company stocks';
 
         return view('purchases.stocks', compact('pageTitle'));
+    }
+
+    /**
+     * Move stock between locations
+     * 
+     * @param PurchasedItem $purchasedItem the item which will be transferred
+     * 
+     * @return View
+     */
+    public function transfer(PurchasedItems $purchasedItem)
+    {
+        $pageTitle = 'Transfer stocks';
+        $purchasedItem->load('location', 'warehouse');
+        return view('purchases.transfer', [
+            'purchasedItem' => $purchasedItem,
+            'pageTitle'     => $pageTitle
+            ]
+        );
     }
 }
