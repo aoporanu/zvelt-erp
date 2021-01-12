@@ -13,10 +13,12 @@ class AlterInvoiceAddAgent extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function(Blueprint $table) {
-            // $table->bigInteger('agent_id');
-            // $table->foreign('agent_id')->references('id')->on('users');
-        });
+        Schema::table(
+            'invoices', function (Blueprint $table) {
+                // $table->bigInteger('agent_id');
+                // $table->foreign('agent_id')->references('id')->on('users');
+            }
+        );
     }
 
     /**
@@ -26,8 +28,10 @@ class AlterInvoiceAddAgent extends Migration
      */
     public function down()
     {
-        Schema::table('invoices', function(Blueprint $table) {
-            $table->dropForeign('agent_id');
-        });
+        Schema::table(
+            'invoices', function (Blueprint $table) {
+                $table->dropForeign('agent_id');
+            }
+        );
     }
 }

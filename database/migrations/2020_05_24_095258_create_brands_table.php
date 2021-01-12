@@ -13,14 +13,15 @@ class CreateBrandsTable extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::create(
+            'brands', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('identifier');
                 $table->text('address');
                 $table->string('cui');
                 $table->timestamps();
-        }
+            }
         );
     }
 

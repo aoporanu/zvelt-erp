@@ -13,10 +13,12 @@ class CreateVariantsOptions extends Migration
      */
     public function up()
     {
-        Schema::create('variants_options', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create(
+            'variants_options', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+            }
+        );
     }
 
     /**
