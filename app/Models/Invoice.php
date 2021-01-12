@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Multitenentable;
@@ -12,7 +13,8 @@ use App\Traits\Multitenentable;
  */
 class Invoice extends Model
 {
-    use SoftDeletes, Multitenentable;
+    use SoftDeletes, Multitenentable, HasFactory;
+
     protected $fillable = [
         'order_id', 'shop_id', 'client_id', 'agent_id'
     ];

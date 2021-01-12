@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @method static inRandomOrder()
+ */
 class Client extends Model
 {
     use SoftDeletes, HasFactory;

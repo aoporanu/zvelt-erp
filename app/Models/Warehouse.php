@@ -3,12 +3,17 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static inRandomOrder()
+ * @method static factory()
+ */
 class Warehouse extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +53,7 @@ class Warehouse extends Model
      */
     public function locations()
     {
-        return $this->hasMany(\App\Location::class);
+        return $this->hasMany(Location::class);
     }
 
 }

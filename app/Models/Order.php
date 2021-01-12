@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Resources\OrderResource;
 use App\Services\OrderService;
 use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,17 +16,18 @@ use Illuminate\Support\Facades\DB;
 /**
  * @method static paginate()
  * @method static insert($all)
+ * @method static inRandomOrder()
  */
 class Order extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'uid', 'user_id', 'client_id', 'shop_id', 'deliverer_id', 'total', 'weight', 'warehouse_id'
+        'uid', 'user_id', 'client_id', 'shop_id', 'deliverer_id', 'total', 'weight', 'warehouse_id', 'agent_id'
     ];
 
     /**
@@ -82,5 +84,5 @@ class Order extends Model
         }
     }
 
-    
+
 }
