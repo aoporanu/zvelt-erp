@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Warehouse;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class WarehouseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class WarehouseSeeder extends Seeder
      */
     public function run()
     {
-        Warehouse::factory()->timex(100)->create();
+        User::factory()->times(40)->create();
     }
 }

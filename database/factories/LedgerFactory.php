@@ -2,11 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Ledger;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LedgerFactory extends Factory
 {
+
+    protected $model = Ledger::class;
 
     public function definition()
     {
