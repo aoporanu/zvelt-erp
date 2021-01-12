@@ -1,6 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 use App\Warehouse;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -17,8 +19,10 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(Warehouse::class, function (Faker $faker) {
-    return [
+$factory->define(
+    Warehouse::class, function (Faker $faker) {
+        return [
         'name' => $faker->name()
-    ];
-});
+        ];
+    }
+);

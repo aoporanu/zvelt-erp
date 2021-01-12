@@ -1,6 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 use App\OrderItem;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -17,11 +19,13 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(OrderItem::class, function (Faker $faker) {
-    return [
+$factory->define(
+    OrderItem::class, function (Faker $faker) {
+        return [
         'order_id' => random_int(1, 10),
         'item_id' => random_int(0, 9223372036854775807),
         'qty' => $faker->word(),
         'location_id' => random_int(0, 9223372036854775807)
-    ];
-});
+        ];
+    }
+);

@@ -1,6 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 use App\Route;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -17,11 +19,13 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(Route::class, function (Faker $faker) {
-    return [
+$factory->define(
+    Route::class, function (Faker $faker) {
+        return [
         'user_id' => random_int(0, 9223372036854775807),
         'shop_id' => random_int(0, 9223372036854775807),
         'day_of_week' => $faker->word(),
         'payment' => $faker->word()
-    ];
-});
+        ];
+    }
+);

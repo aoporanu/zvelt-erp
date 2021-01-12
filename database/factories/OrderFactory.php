@@ -1,6 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 use App\Order;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -17,9 +19,10 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(Order::class, function (Faker $faker) {
-    try {
-        return [
+$factory->define(
+    Order::class, function (Faker $faker) {
+        try {
+            return [
             'uid' => $faker->word(),
             'user_id' => random_int(0, 9223372036854775807),
             'client_id' => random_int(0, 9223372036854775807),
@@ -28,8 +31,9 @@ $factory->define(Order::class, function (Faker $faker) {
             'total' => $faker->word(),
             'weight' => $faker->word(),
             'warehouse_id' => random_int(0, 9223372036854775807)
-        ];
-    } catch (Exception $e) {
-        echo $e->getMessage();
+            ];
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
-});
+);

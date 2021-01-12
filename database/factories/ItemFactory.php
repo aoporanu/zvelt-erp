@@ -2,7 +2,7 @@
 /**
  * Factory for the Item Model
  * PHP version 8
- * 
+ *
  * @category ERP
  * @package  SapKiller
  * @author   Adi Oporanu <aoporanu@gmail.com>
@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * Factory for the Item Model
- * 
+ *
  * @category ERP
  * @package  SapKiller
  * @author   Adi Oporanu <aoporanu@gmail.com>
@@ -51,7 +51,7 @@ class ItemFactory extends Factory
                 return Category::inRandomOrder()->first()->id;
             },
             'sku'               => $this->faker->unique()->creditCardNumber(),
-            'weight'            => $this->faker->randomDigit(),
+            'weight'            => $this->faker->randomDigit,
             'brand_id'          => function () {
                 return Brand::inRandomOrder()->first()->id;
             },
@@ -61,7 +61,7 @@ class ItemFactory extends Factory
             'packaging'         => function () {
                 return Packaging::inRandomOrder()->first()->id;
             },
-            'per_packaging'     => $this->faker->randomDigit()
+            'per_packaging'     => $this->faker->randomDigit,
         ];
     }
 }

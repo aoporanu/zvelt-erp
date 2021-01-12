@@ -1,6 +1,8 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 use App\Location;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -17,10 +19,12 @@ use Carbon\Carbon;
 |
 */
 
-$factory->define(Location::class, function (Faker $faker) {
-    return [
+$factory->define(
+    Location::class, function (Faker $faker) {
+        return [
         'name' => $faker->name(),
         'type' => $faker->word(),
         'warehouse_id' => random_int(0, 9223372036854775807)
-    ];
-});
+        ];
+    }
+);

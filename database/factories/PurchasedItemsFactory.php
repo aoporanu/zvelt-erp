@@ -1,30 +1,33 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\PurchasedItems;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Item;
+use App\Models\Location;
+use App\Models\Purchase;
+use App\Models\PurchasedItems;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(PurchasedItems::class, function (Faker $faker) {
-    return [
-        'purchase_id' => $faker->word(),
-        'item_id' => $faker->word(),
-        'value' => $faker->word(),
-        'location' => $faker->word(),
-        'total' => $faker->word(),
-        'qty' => $faker->word(),
-        'vat' => $faker->word()
-    ];
-});
+class PurchasedItemsFactory extends Factory
+{
+    protected $model = PurchasedItems::class;
+
+    public function definition()
+    {
+        return [
+            'purchase_id'   => function () {
+                return Purchase::inRandomOrder()->first()->id;
+            },
+            'item_id'       => function () {
+                return Item::inRandomOrder()->first()->id;
+            },
+            'value'         => $this->faker->word(),
+            'location'      => function () {
+                return Location::inRandomOrder()->first()->id;
+            },
+            'total'         => $this->faker->numerify('###.##'),
+            'qty'           => $this->faker->randomDigitNotNull,
+            'vat'           => $this->faker->randomDigitNotNull,
+        ];
+    }
+}
