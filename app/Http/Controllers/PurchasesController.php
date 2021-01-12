@@ -2,7 +2,7 @@
 /**
  * Asd
  * php version ^8.0
- * 
+ *
  * @category ERP
  * @package  SapKiller
  * @author   Adi Oporanu <aoporanu@gmail.com>
@@ -11,8 +11,9 @@
  */
 namespace App\Http\Controllers;
 
+use App\Models\PurchasedItems;
 use Exception;
-use App\Purchase;
+use App\Models\Purchase;
 use Illuminate\View\View;
 use App\Services\PurchaseService;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,7 @@ use App\Http\Controllers\Controller as Controller;
 
 /**
  * Purchases Controller
- * 
+ *
  * @category ERP
  * @package  SapKiller
  * @author   Adi Oporanu <aoporanu@gmail.com>
@@ -38,10 +39,10 @@ class PurchasesController extends Controller
 
     /**
      * PurchasesController constructor.
-     * 
-     * @param PurchaseService $service the service which 
-     *                                 implements the 
-     *                                 methods that 
+     *
+     * @param PurchaseService $service the service which
+     *                                 implements the
+     *                                 methods that
      *                                 operate on the Purchase model
      */
     public function __construct(PurchaseService $service)
@@ -95,7 +96,7 @@ class PurchasesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param PurchaseStoreRequest $request the request object
-     * 
+     *
      * @return RedirectResponse
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
@@ -108,19 +109,20 @@ class PurchasesController extends Controller
      * Display the specified resource.
      *
      * @param Purchase $purchase the Purchase object
-     * 
+     *
      * @return Application|Factory|View
      */
     public function show(Purchase $purchase)
     {
-        return view('purchases.show', compact('purchase'));
+        $pageTitle = 'Showing purchased item';
+        return view('purchases.show', compact('purchase', 'pageTitle'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param Purchase $purchase the Purchase object
-     * 
+     *
      * @return View
      */
     public function edit(Purchase $purchase): View
@@ -133,7 +135,7 @@ class PurchasesController extends Controller
      *
      * @param PurchaseUpdateRequest $request  request sent to the update method
      * @param Purchase              $purchase the Purchase object
-     * 
+     *
      * @return RedirectResponse
      */
     public function update(PurchaseUpdateRequest $request, Purchase $purchase)
@@ -150,7 +152,7 @@ class PurchasesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Purchase $purchase the Purchase object
-     * 
+     *
      * @return JsonResponse
      */
     public function destroy(Purchase $purchase): JsonResponse
@@ -165,7 +167,7 @@ class PurchasesController extends Controller
 
     /**
      * Load the stocks for a given product
-     * 
+     *
      * @return View
      */
     public function stocks()
@@ -176,5 +178,23 @@ class PurchasesController extends Controller
         $pageTitle = 'Company stocks';
 
         return view('purchases.stocks', compact('pageTitle'));
+    }
+
+    /**
+     * Move stock between locations
+     *
+     * @param PurchasedItem $purchasedItem the item which will be transferred
+     *
+     * @return View
+     */
+    public function transfer(PurchasedItems $purchasedItem)
+    {
+        $pageTitle = 'Transfer stocks';
+        $purchasedItem->load('location', 'warehouse');
+        return view('purchases.transfer', [
+            'purchasedItem' => $purchasedItem,
+            'pageTitle'     => $pageTitle
+            ]
+        );
     }
 }

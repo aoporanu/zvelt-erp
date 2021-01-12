@@ -1,6 +1,8 @@
 <?php
 
-use App\Warehouse;
+namespace Database\Seeders;
+
+use App\Models\Warehouse;
 use Illuminate\Database\Seeder;
 
 class WarehouseSeeder extends Seeder
@@ -12,6 +14,6 @@ class WarehouseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Warehouse::class, 10)->create();
+        Warehouse::factory()->timex(100)->create();
     }
 }

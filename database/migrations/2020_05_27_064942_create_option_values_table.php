@@ -13,16 +13,18 @@ class CreateOptionValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('option_values', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create(
+            'option_values', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
 
-            $table->string('name');
-            $table->string('value');
-            $table->unsignedBigInteger('option_id');
+                $table->string('name');
+                $table->string('value');
+                $table->unsignedBigInteger('option_id');
 
-            $table->foreign('option_id')->references('id')->on('options')->onDelete('cascade');
-        });
+                $table->foreign('option_id')->references('id')->on('options')->onDelete('cascade');
+            }
+        );
     }
 
     /**

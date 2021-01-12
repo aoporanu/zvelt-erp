@@ -13,12 +13,14 @@ class AlterInvoicesMakeForeignKeys extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function(Blueprint $table) {
-            $table->foreign('client_id')->references('id')->on('clients');
-            $table->foreign('shop_id')->references('id')->on('shops');
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('user_id')->references('id')->on('users');
-        });
+        Schema::table(
+            'invoices', function (Blueprint $table) {
+                $table->foreign('client_id')->references('id')->on('clients');
+                $table->foreign('shop_id')->references('id')->on('shops');
+                $table->foreign('order_id')->references('id')->on('orders');
+                $table->foreign('user_id')->references('id')->on('users');
+            }
+        );
     }
 
     /**
@@ -28,11 +30,13 @@ class AlterInvoicesMakeForeignKeys extends Migration
      */
     public function down()
     {
-        Schema::table('invoices', function(Blueprint $table) {
-            $table->dropForeign('client_id');
-            $table->dropForeign('user_id');
-            $table->dropForeign('shop_is');
-            $table->dropForeign('order_id');
-        });
+        Schema::table(
+            'invoices', function (Blueprint $table) {
+//                $table->dropForeign('client_id');
+//                $table->dropForeign('user_id');
+//                $table->dropForeign('shop_is');
+//                $table->dropForeign('order_id');
+            }
+        );
     }
 }

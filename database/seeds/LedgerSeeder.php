@@ -1,6 +1,8 @@
 <?php
 
-use App\Ledger;
+namespace Database\Seeders;
+
+use App\Models\Ledger;
 use Illuminate\Database\Seeder;
 
 class LedgerSeeder extends Seeder
@@ -12,6 +14,6 @@ class LedgerSeeder extends Seeder
      */
     public function run()
     {
-        factory(Ledger::class, 10)->create();
+        Ledger::factory()->times(50)->create();
     }
 }

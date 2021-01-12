@@ -13,12 +13,14 @@ class CreateDiscountsTable extends Migration
      */
     public function up()
     {
-        Schema::create('discounts', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->double('amount');
-            $table->timestamps();
-        });
+        Schema::create(
+            'discounts', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->double('amount');
+                $table->timestamps();
+            }
+        );
     }
 
     /**

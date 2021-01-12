@@ -13,10 +13,14 @@ class CreateUnitOfMeasuresTable extends Migration
      */
     public function up()
     {
-        Schema::create('unit_of_measures', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create(
+            'unit_of_measures', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->integer('parent_id')->nullable();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

@@ -1,35 +1,44 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Order;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Client;
+use App\Models\Order;
+use App\Models\Shop;
+use App\Models\User;
+use App\Models\Warehouse;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Order::class, function (Faker $faker) {
-    try {
+class OrderFactory extends Factory
+{
+    protected $model = Order::class;
+
+    public function definition()
+    {
         return [
-            'uid' => $faker->word(),
-            'user_id' => random_int(0, 9223372036854775807),
-            'client_id' => random_int(0, 9223372036854775807),
-            'shop_id' => random_int(0, 9223372036854775807),
-            'deliverer_id' => random_int(0, 9223372036854775807),
-            'total' => $faker->word(),
-            'weight' => $faker->word(),
-            'warehouse_id' => random_int(0, 9223372036854775807)
+            'uid' => $this->faker->uuid,
+            'user_id' => function () {
+                return User::inRandomOrder()->first()->id;
+            },
+            'agent_id' => function () {
+                return User::inRandomOrder()->first()->id;
+            },
+            'client_id' => function () {
+                return Client::inRandomOrder()->first()->id;
+            },
+            'shop_id' => function () {
+                return Shop::inRandomOrder()->first()->id;
+            },
+            'deliverer_id' => function () {
+                return User::inRandomOrder()->first()->id;
+            },
+            'total' => $this->faker->numerify('###.##'),
+            'weight' => $this->faker->numerify('###.##'),
+            'warehouse_id' => function () {
+                return Warehouse::inRandomOrder()->first()->id;
+            },
+            'deleted_at' => null
         ];
-    } catch (Exception $e) {
-        echo $e->getMessage();
     }
-});
+}
+

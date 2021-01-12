@@ -13,10 +13,12 @@ class CreateItemVariants extends Migration
      */
     public function up()
     {
-        Schema::create('item_variants', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        Schema::create(
+            'item_variants', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+            }
+        );
     }
 
     /**

@@ -1,26 +1,24 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\Ledger;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Ledger;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Ledger::class, function (Faker $faker) {
-    return [
-        'type' => $faker->word(),
-        'user_id' => random_int(0, 9223372036854775807),
-        'balance' => $faker->word()
-    ];
-});
+class LedgerFactory extends Factory
+{
+
+    protected $model = Ledger::class;
+
+    public function definition()
+    {
+        return [
+            'type'      => $this->faker->word(),
+            'user_id'   => function () {
+                User::inRandomOrder()->first()->id;
+            },
+            'balance'   => $this->faker->word()
+        ];
+    }
+}

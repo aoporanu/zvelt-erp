@@ -13,17 +13,19 @@ class CreateRoutesTable extends Migration
      */
     public function up()
     {
-        Schema::create('routes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('shop_id');
-            $table->string('day_of_week');
-            $table->string('payment');
-            $table->double('ceil')->default(0);
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+        Schema::create(
+            'routes', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('shop_id');
+                $table->string('day_of_week');
+                $table->string('payment');
+                $table->double('ceil')->default(0);
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
 
-        });
+            }
+        );
     }
 
     /**

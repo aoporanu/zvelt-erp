@@ -13,14 +13,16 @@ class CreateOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name');
-            $table->unsignedBigInteger('item_id');
+        Schema::create(
+            'options', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('name');
+                $table->unsignedBigInteger('item_id');
 
-            $table->foreign('item_id')->references('id')->on('items');
-        });
+                $table->foreign('item_id')->references('id')->on('items');
+            }
+        );
     }
 
     /**

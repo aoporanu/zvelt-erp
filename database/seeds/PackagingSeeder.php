@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Packaging;
 use Illuminate\Database\Seeder;
 
 class PackagingSeeder extends Seeder
@@ -13,6 +14,6 @@ class PackagingSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Packaging::factory()->times(50)->create();
     }
 }

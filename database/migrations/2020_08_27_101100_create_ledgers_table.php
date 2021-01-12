@@ -13,14 +13,16 @@ class CreateLedgersTable extends Migration
      */
     public function up()
     {
-        Schema::create('ledgers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('type');
-            $table->unsignedBigInteger('user_id');
-            $table->string('balance');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-        });
+        Schema::create(
+            'ledgers', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('type');
+                $table->unsignedBigInteger('user_id');
+                $table->string('balance');
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
+            }
+        );
     }
 
     /**

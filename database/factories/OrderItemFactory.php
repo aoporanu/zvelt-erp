@@ -1,27 +1,30 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
-use App\OrderItem;
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use Carbon\Carbon;
+namespace Database\Factories;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+use App\Models\Item;
+use App\Models\Location;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(OrderItem::class, function (Faker $faker) {
-    return [
-        'order_id' => random_int(1, 10),
-        'item_id' => random_int(0, 9223372036854775807),
-        'qty' => $faker->word(),
-        'location_id' => random_int(0, 9223372036854775807)
-    ];
-});
+class OrderItemFactory extends Factory
+{
+    protected $model = OrderItem::class;
+
+    public function definition()
+    {
+        return [
+            'order_id' => function () {
+                return Order::inRandomOrder()->first()->id;
+            },
+            'item_id' => function () {
+                return Item::inRandomOrder()->first()->id;
+            },
+            'qty' => $this->faker->digitNotNull,
+            'location_id' => function () {
+                return Location::inRandomOrder()->first()->id;
+            },
+        ];
+    }
+}

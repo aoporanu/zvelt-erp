@@ -13,15 +13,17 @@ class CreateBatchesTable extends Migration
      */
     public function up()
     {
-        Schema::create('batches', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->integer('from_qty')->default(0);
-            $table->integer('to_qty')->default(0);
-            $table->date('expiry_date');
-            $table->timestamps();
-            $table->integer('qty');
-        });
+        Schema::create(
+            'batches', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->integer('from_qty')->default(0);
+                $table->integer('to_qty')->default(0);
+                $table->date('expiry_date');
+                $table->timestamps();
+                $table->integer('qty');
+            }
+        );
     }
 
     /**

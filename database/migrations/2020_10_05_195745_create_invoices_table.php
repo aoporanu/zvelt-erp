@@ -13,16 +13,20 @@ class CreateInvoicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('shop_id');
-            $table->double('total');
-            $table->double('amount_left')->default(0);
-            $table->timestamps();
-        });
+        Schema::create(
+            'invoices', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('client_id');
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('order_id');
+                $table->unsignedBigInteger('shop_id');
+                $table->unsignedBigInteger('agent_id');
+                $table->foreign('agent_id')->references('id')->on('users');
+                $table->double('total');
+                $table->double('amount_left')->default(0);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

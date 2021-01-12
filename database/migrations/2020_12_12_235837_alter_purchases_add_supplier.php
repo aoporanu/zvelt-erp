@@ -13,9 +13,9 @@ class AlterPurchasesAddSupplier extends Migration
      */
     public function up()
     {
-        Schema::table('purchases', function (Blueprint $table) {
+        /* Schema::table('purchases', function (Blueprint $table) {
             $table->foreignId('supplier_id')->constrained()->nullable();
-        });
+        }); */
     }
 
     /**
@@ -25,8 +25,10 @@ class AlterPurchasesAddSupplier extends Migration
      */
     public function down()
     {
-        Schema::table('purchases', function (Blueprint $table) {
-            $table->dropForeign('supplier_id');
-        });
+//        Schema::table(
+//            'purchases', function (Blueprint $table) {
+//                $table->dropForeign('supplier_id');
+//            }
+//        );
     }
 }

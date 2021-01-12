@@ -1,6 +1,8 @@
 <?php
 
-use App\Purchase;
+namespace Database\Seeders;
+
+use App\Models\Purchase;
 use Illuminate\Database\Seeder;
 
 class PurchaseSeeder extends Seeder
@@ -12,6 +14,6 @@ class PurchaseSeeder extends Seeder
      */
     public function run()
     {
-        factory(Purchase::class, 10)->create();
+        Purchase::factory()->times(50)->create();
     }
 }

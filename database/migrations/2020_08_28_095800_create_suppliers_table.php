@@ -13,14 +13,16 @@ class CreateSuppliersTable extends Migration
      */
     public function up()
     {
-        Schema::create('suppliers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('uid');
-            $table->string('name');
-            $table->text('description');
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
-        });
+        Schema::create(
+            'suppliers', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('uid');
+                $table->string('name');
+                $table->text('description');
+                $table->timestamp('created_at')->nullable();
+                $table->timestamp('updated_at')->nullable();
+            }
+        );
     }
 
     /**

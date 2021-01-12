@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use App\Purchase;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -13,7 +13,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can view any purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewAny(User $user)
@@ -24,7 +24,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can view the purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Purchase  $purchase
      * @return bool
      */
@@ -36,7 +36,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can create a purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -47,7 +47,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can update the purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Purchase  $purchase
      * @return bool
      */
@@ -59,7 +59,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can delete the purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Purchase  $purchase
      * @return bool
      */
@@ -71,7 +71,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can restore the purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Purchase  $purchase
      * @return bool
      */
@@ -83,7 +83,7 @@ class PurchasePolicy
     /**
      * Determine whether the user can permanently delete the purchase.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Purchase  $purchase
      * @return bool
      */
