@@ -295,6 +295,78 @@
                         </ul>
                     </div>
                 </li>
+                <li class="nav-item @if(
+                    in_array('shops', 
+                    explode('/', url()->current())
+                    )
+                    ) active submenu @else @endif">
+                    <a data-toggle="collapse" href="#shop" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-money"></i>
+                        <p>Shops</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse @if(
+                    in_array('shops', 
+                    explode('/', url()->current())
+                    )
+                    ) show @else @endif" id="shop">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('financials.index') }}">
+                                    <span class="sub-item">Financial Index</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item @if(
+                    in_array('clients', 
+                    explode('/', url()->current())
+                    )
+                    ) active submenu @else @endif">
+                    <a data-toggle="collapse" href="#client" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-money"></i>
+                        <p>Clients</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse @if(
+                    in_array('clients', 
+                    explode('/', url()->current())
+                    )
+                    ) show @else @endif" id="client">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('financials.index') }}">
+                                    <span class="sub-item">Financial Index</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item @if(
+                    in_array('orders', 
+                    explode('/', url()->current())
+                    )
+                    ) active submenu @else @endif">
+                    <a data-toggle="collapse" href="#order" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-money"></i>
+                        <p>Orders</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse @if(
+                    in_array('orders', 
+                    explode('/', url()->current())
+                    )
+                    ) show @else @endif" id="order">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('financials.index') }}">
+                                    <span class="sub-item">Financial Index</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
