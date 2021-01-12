@@ -20,6 +20,8 @@ class CreateInvoicesTable extends Migration
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('order_id');
                 $table->unsignedBigInteger('shop_id');
+                $table->unsignedBigInteger('agent_id');
+                $table->foreign('agent_id')->references('id')->on('users');
                 $table->double('total');
                 $table->double('amount_left')->default(0);
                 $table->timestamps();

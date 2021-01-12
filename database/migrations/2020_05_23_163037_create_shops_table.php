@@ -28,6 +28,7 @@ class CreateShopsTable extends Migration
 
                 $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
                 $table->timestamps();
+                $table->timestamp('deleted_at')->nullable();
             }
         );
     }

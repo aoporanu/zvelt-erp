@@ -32,10 +32,10 @@ class AlterInvoicesMakeForeignKeys extends Migration
     {
         Schema::table(
             'invoices', function (Blueprint $table) {
-                $table->dropForeign('client_id');
-                $table->dropForeign('user_id');
-                $table->dropForeign('shop_is');
-                $table->dropForeign('order_id');
+//                $table->dropForeign('client_id');
+//                $table->dropForeign('user_id');
+//                $table->dropForeign('shop_is');
+//                $table->dropForeign('order_id');
             }
         );
     }

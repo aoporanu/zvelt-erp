@@ -30,7 +30,7 @@ class AlterInvoiceAddAgent extends Migration
     {
         Schema::table(
             'invoices', function (Blueprint $table) {
-                $table->dropForeign('agent_id');
+//                $table->dropForeign('agent_id');
             }
         );
     }
