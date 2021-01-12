@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use App\Warehouse;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -13,7 +13,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can view any warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewAny(User $user)
@@ -24,7 +24,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can view the warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Warehouse  $warehouse
      * @return bool
      */
@@ -36,7 +36,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can create a warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -47,7 +47,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can update the warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Warehouse  $warehouse
      * @return bool
      */
@@ -59,7 +59,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can delete the warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Warehouse  $warehouse
      * @return bool
      */
@@ -71,7 +71,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can restore the warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Warehouse  $warehouse
      * @return bool
      */
@@ -83,7 +83,7 @@ class WarehousePolicy
     /**
      * Determine whether the user can permanently delete the warehouse.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Warehouse  $warehouse
      * @return bool
      */

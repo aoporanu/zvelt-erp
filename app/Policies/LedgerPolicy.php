@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use App\Ledger;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -13,7 +13,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can view any ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function viewAny(User $user)
@@ -24,7 +24,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can view the ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Ledger  $ledger
      * @return bool
      */
@@ -36,7 +36,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can create a ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @return bool
      */
     public function create(User $user)
@@ -47,7 +47,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can update the ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Ledger  $ledger
      * @return bool
      */
@@ -59,7 +59,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can delete the ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Ledger  $ledger
      * @return bool
      */
@@ -71,7 +71,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can restore the ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Ledger  $ledger
      * @return bool
      */
@@ -83,7 +83,7 @@ class LedgerPolicy
     /**
      * Determine whether the user can permanently delete the ledger.
      *
-     * @param  App\User  $user
+     * @param  App\Models\User  $user
      * @param  App\Ledger  $ledger
      * @return bool
      */
