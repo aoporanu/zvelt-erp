@@ -25,6 +25,7 @@ class CreateInvoicesTable extends Migration
                 $table->double('total');
                 $table->double('amount_left')->default(0);
                 $table->timestamps();
+                $table->timestamp('deleted_at')->nullable();
             }
         );
     }
