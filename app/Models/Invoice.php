@@ -43,4 +43,9 @@ class Invoice extends Model
     {
         return $this->hasMany(Receipt::class);
     }
+
+    public function cash()
+    {
+        return true;
+    }
 }

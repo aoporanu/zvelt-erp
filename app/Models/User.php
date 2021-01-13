@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Ledger::class);
     }
+
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class);
+    }
 }
