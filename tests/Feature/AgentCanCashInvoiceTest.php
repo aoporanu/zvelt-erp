@@ -31,12 +31,11 @@ class AgentCanCashInvoiceTest extends TestCase
      *
      * @return void
      */
-    public function testExample()
+    public function test_user_can_cash_invoice()
     {
-        $user = User::factory()->create(['role' => 'agent']);
-        dump($user);
+        $user = User::factory()->create();
         $invoice = Invoice::factory()->create();
 
-        $user->invoices->cash($invoice);
+        $this->assertTrue($user->invoices->cash());
     }
 }
