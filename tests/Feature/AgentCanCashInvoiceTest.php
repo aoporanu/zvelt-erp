@@ -36,6 +36,6 @@ class AgentCanCashInvoiceTest extends TestCase
         $user = User::factory()->create();
         $invoice = Invoice::factory()->create();
 
-        $this->assertTrue($user->invoices->cash());
+        $this->assertTrue($invoice->cash($user));
     }
 }
