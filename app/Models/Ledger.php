@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static inRandomOrder()
+ * @method static where(string $string, $ledger_id)
+ */
 class Ledger extends Model
 {
     use SoftDeletes, HasFactory;
@@ -16,7 +20,7 @@ class Ledger extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'type', 'user_id', 'balance'
+        'type', 'user_id', 'balance'
     ];
 
     /**

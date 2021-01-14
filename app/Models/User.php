@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 /**
  * @method static inRandomOrder()
  * @method static factory()
+ * @method static first()
  */
 class User extends Authenticatable
 {

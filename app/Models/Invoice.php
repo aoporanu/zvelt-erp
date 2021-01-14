@@ -10,11 +10,18 @@ use App\Traits\Multitenentable;
 /**
  * @method static where(string $string, $user_id)
  * @method static factory()
+ * @method static inRandomOrder()
+ * @property mixed total
+ * @property float|mixed amount_left
+ * @property mixed shop_id
  */
 class Invoice extends Model
 {
     use SoftDeletes, Multitenentable, HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'order_id', 'shop_id', 'client_id', 'agent_id'
     ];
@@ -44,8 +51,23 @@ class Invoice extends Model
         return $this->hasMany(Receipt::class);
     }
 
-    public function cash()
+    /**
+     * @param $user
+     * @param float $sum
+     * @return false
+     */
+    public function cash($user, float $sum = 0.0)
     {
-        return true;
+        dump(['agent_id' => $this->agent_id, 'user_id' => $user->id]);
+        if ($this->agent_id != $user->id)
+        {
+            return false;
+        }
+
+        $ledger = $user->ledger->first();
+        $receipt = Receipt::where('ledger_id', $ledger->id)
+            ->where('invoice_id', null)
+            ->first();
+        return $receipt->cutFor($this, $sum);
     }
 }
