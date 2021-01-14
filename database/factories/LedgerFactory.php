@@ -16,9 +16,11 @@ class LedgerFactory extends Factory
         return [
             'type'      => $this->faker->word(),
             'user_id'   => function () {
-                User::inRandomOrder()->first()->id;
+                return User::inRandomOrder()->first()->id;
             },
-            'balance'   => $this->faker->word()
+            'balance'   => $this->faker->numerify('####.##'),
+            'updated_at'=> now(),
+            'created_at'=> now()
         ];
     }
 }

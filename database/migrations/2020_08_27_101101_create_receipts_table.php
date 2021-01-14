@@ -19,10 +19,12 @@ class CreateReceiptsTable extends Migration
                 $table->unsignedBigInteger('ledger_id')->nullable();
                 $table->foreign('ledger_id')->references('id')->on('ledgers');
                 $table->unsignedBigInteger('shop_id');
-                $table->unsignedBigInteger('invoice_id');
+                $table->unsignedBigInteger('invoice_id')->nullable();
                 $table->string('observations');
+                $table->double('amount')->nullable();
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
+                $table->timestamp('deleted_at')->nullable();
             }
         );
     }
