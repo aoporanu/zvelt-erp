@@ -58,16 +58,15 @@ class Invoice extends Model
      */
     public function cash($user, float $sum = 0.0)
     {
-        dump(['agent_id' => $this->agent_id, 'user_id' => $user->id]);
         if ($this->agent_id != $user->id)
         {
             return false;
         }
 
-        $ledger = $user->ledger->first();
+        $ledger = Ledger::where('user_id', $user->id)->firstOrCreate(['user_id' => $user->id,'type' => 'asd', 'balance' => 0.00]);
         $receipt = Receipt::where('ledger_id', $ledger->id)
             ->where('invoice_id', null)
-            ->first();
+            ->firstOrCreate(['ledger_id' => $ledger->id, 'shop_id' => $this->shop_id, 'invoice_id' => $this->id, 'observations' => 'Balance for invoice #' . $this->id, 'amount' => $this->amount - $sum]);
         return $receipt->cutFor($this, $sum);
     }
 }

@@ -82,8 +82,7 @@ class Receipt extends Model
                 $invoice->amount_left = $invoice->total - $sum;
                 $invoice->save();
             }
-            $ledger = Ledger::where('id', $receipt->ledger_id)->firstOrCreate();
-            dump($receipt, $ledger);
+            $ledger = Ledger::where('id', $receipt->ledger_id)->firstOrCreate(['type' => 'asd', 'user_id' => $invoice->agent_id, 'balance' => $receipt->amount]);
             $ledger->balance += $receipt->amount;
             return true;
         } catch (\Exception $ex) {
