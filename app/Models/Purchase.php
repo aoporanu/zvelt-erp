@@ -4,6 +4,7 @@ namespace App\Models;
 
 
 use Dompdf\Dompdf;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,7 +26,7 @@ use Exception;
  */
 class Purchase extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
     /**
      * The attributes that are mass assignable.
      *

@@ -21,6 +21,7 @@ class CreateSuppliersTable extends Migration
                 $table->text('description');
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
+                $table->timestamp('deleted_at')->nullable();
             }
         );
     }
@@ -32,6 +33,6 @@ class CreateSuppliersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('suppliers');
+//        Schema::drop('suppliers');
     }
 }

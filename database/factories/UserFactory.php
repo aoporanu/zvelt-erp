@@ -13,7 +13,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
+            'name' => $this->faker->firstNameMale . ' ' . $this->faker->lastName,
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'role' => array_rand(['agent', 'operator', 'chief']),

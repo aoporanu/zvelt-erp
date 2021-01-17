@@ -14,7 +14,7 @@ class CreatePurchasedItemsTable extends Migration
     public function up()
     {
         Schema::create(
-            'item_purchase', function (Blueprint $table) {
+            'purchased_items', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('purchase_id');
                 $table->unsignedBigInteger('item_id');
@@ -24,6 +24,8 @@ class CreatePurchasedItemsTable extends Migration
                 $table->double('vat');
                 $table->integer('qty');
                 $table->string('lot');
+                $table->double('value');
+                $table->double('total');
                 $table->unsignedBigInteger('location_id');
                 $table->unsignedBigInteger('warehouse_id');
 
@@ -44,6 +46,6 @@ class CreatePurchasedItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('item_purchase');
+        Schema::dropIfExists('purchased_items');
     }
 }

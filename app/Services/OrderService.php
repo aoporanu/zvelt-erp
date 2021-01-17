@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Invoice;
-use App\Item;
-use App\Order;
-use App\OrderItem;
-use App\PurchasedItems;
-use App\Shop;
-use App\Visitation;
+use App\Models\Invoice;
+use App\Models\Item;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\PurchasedItems;
+use App\Models\Shop;
+use App\Models\Visitation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -78,10 +78,9 @@ class OrderService
             }
             OrderItem::insert($item);
         }
-        $order = Order::insert($request->all());
+        $order = Order::insert();
         $order->total = $total;
         $order->save();
-        // visit is not an object, neither is visitation
 
         $visitation->ceil -= $order->total;
         if($visitation->ceil - $order->total >= 0) {

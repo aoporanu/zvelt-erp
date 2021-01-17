@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
  * @method static paginate()
  * @method static insert($all)
  * @method static inRandomOrder()
+ * @method static factory()
  */
 class Order extends Model
 {
@@ -83,6 +84,4 @@ class Order extends Model
                 500);
         }
     }
-
-
 }
