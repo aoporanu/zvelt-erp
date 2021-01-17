@@ -31,6 +31,6 @@ class CreateWarehousesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('warehouses');
+//        Schema::drop('warehouses');
     }
 }

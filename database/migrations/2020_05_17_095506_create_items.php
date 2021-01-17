@@ -25,6 +25,8 @@ class CreateItems extends Migration
                 $table->string('packaging');
                 $table->string('per_packaging');
                 $table->unsignedBigInteger('brand_id')->index();
+                $table->double('weight')->nullable();
+                $table->timestamp('deleted_at')->nullable();
 
                 $table->timestamps();
             }

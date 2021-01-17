@@ -23,7 +23,8 @@ class CreatePurchasesTable extends Migration
                 $table->string('for_invoice');
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
-
+                $table->timestamp('deleted_at')->nullable();
+                $table->foreignId('supplier_id')->constrained();
             }
         );
     }
@@ -35,6 +36,6 @@ class CreatePurchasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchases');
+        Schema::drop('purchases');
     }
 }
