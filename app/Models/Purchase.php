@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @method static paginate(int $int)
@@ -164,5 +165,24 @@ class Purchase extends Model
     function transfer(Warehouse $where, Location $location)
     {
         // if ()
+    }
+
+    /**
+     * @param Warehouse $fromWH
+     * @param Warehouse $whereWH
+     * @param Location  $locationFL
+     * @param Location  $toLocation
+     * @param int       $count
+     */
+    public function moveStock(Warehouse $fromWH, Warehouse $whereWH, Location $locationFL, Location $toLocation, int $count=1)
+    {
+        DB::beginTransaction();
+        try {
+            DB::update('update purchased_items set warehouse_id = ?, location_id = ? where id in (select id from purchased_items where warehouse_id = ? and location_id = ? limit ?)', [$whereWH->id, $toLocation->id, $fromWH->id, $locationFL->id, $count]);
+            DB::commit();
+        } catch (Exception $ex) {
+            echo $ex->getMessage();
+            DB::rollBack();
+        }
     }
 }

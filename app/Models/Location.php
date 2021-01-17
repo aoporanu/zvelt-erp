@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static inRandomOrder()
+ * @method static create(array $array)
  */
 class Location extends Model
 {
@@ -26,7 +27,7 @@ class Location extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -51,7 +52,7 @@ class Location extends Model
      */
     public function warehouse()
     {
-        return $this->belongsTo(\App\Warehouse::class);
+        return $this->belongsTo(Warehouse::class);
     }
 
 }
