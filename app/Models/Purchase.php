@@ -169,20 +169,36 @@ class Purchase extends Model
 
     /**
      * @param Warehouse $fromWH
-     * @param Warehouse $whereWH
-     * @param Location  $locationFL
+     * @param Warehouse $toWH
+     * @param Location  $fromLocation
      * @param Location  $toLocation
      * @param int       $count
+     *
+     * @return false
      */
-    public function moveStock(Warehouse $fromWH, Warehouse $whereWH, Location $locationFL, Location $toLocation, int $count=1)
+    public function moveStock(Warehouse $fromWH,
+                              Warehouse $toWH,
+                              Location $fromLocation,
+                              Location $toLocation,
+                              int $count = 1)
     {
-        DB::beginTransaction();
-        try {
-            DB::update('update purchased_items set warehouse_id = ?, location_id = ? where id in (select id from purchased_items where warehouse_id = ? and location_id = ? limit ?)', [$whereWH->id, $toLocation->id, $fromWH->id, $locationFL->id, $count]);
-            DB::commit();
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-            DB::rollBack();
+        $purchasedItems = DB::table('purchased_items')
+            ->where('warehouse_id', $fromWH->id)
+            ->where('location_id', $fromLocation->id)
+            ->get();
+        if (count($purchasedItems) < $count) {
+            return false;
         }
+        DB::update('UPDATE
+    purchased_items
+SET warehouse_id = ?,
+    location_id = ?
+WHERE id IN (
+    SELECT id FROM purchased_items
+    WHERE warehouse_id = ?
+      AND location_id = ?
+    LIMIT ?
+    )', [$toWH->id, $toLocation->id, $fromWH->id, $fromLocation->id, $count]);
+        return true;
     }
 }

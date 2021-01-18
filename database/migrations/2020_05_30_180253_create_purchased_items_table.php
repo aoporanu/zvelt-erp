@@ -35,6 +35,7 @@ class CreatePurchasedItemsTable extends Migration
                 $table->foreign('location_id')->references('id')->on('locations');
                 $table->foreign('warehouse_id')->references('id')->on('warehouses');
                 $table->timestamps();
+                $table->timestamp('deleted_at')->nullable();
             }
         );
     }
