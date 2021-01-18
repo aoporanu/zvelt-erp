@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @method static inRandomOrder()
  * @method static factory()
+ * @method static where(string $string, int $int)
  */
 class Warehouse extends Model
 {

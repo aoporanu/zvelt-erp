@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @method static inRandomOrder()
  * @method static create(array $array)
+ * @method static where(string $string, int $int)
  */
 class Location extends Model
 {
