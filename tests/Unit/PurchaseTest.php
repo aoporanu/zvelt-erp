@@ -12,11 +12,13 @@ use App\Models\PurchasedItems;
 use App\Models\Supplier;
 use App\Models\UnitOfMeasure;
 use App\Models\Warehouse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class PurchaseTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      *
@@ -45,7 +47,48 @@ class PurchaseTest extends TestCase
         Warehouse::factory()->create();
         Location::factory()->create();
         PurchasedItems::factory()->times(10)->create();
+//        dump(DB::select('SELECT id FROM purchased_items WHERE warehouse_id=1'));
         $this->assertDatabaseCount('purchased_items', 10);
+        $purchase = Purchase::first();
+        $warehouse = Warehouse::first();
+        $warehouse1 = Warehouse::factory()->create();
+        DB::table('locations')
+            ->insert(
+                [
+                    'name' => 'OTB1',
+                    'type' => 'asd',
+                    'warehouse_id' => $warehouse1->id,
+                    'created_at'    => now(),
+                    'updated_at'    => now()
+                ]
+            );
+        $location = Location::first();
+        $location1 = Location::where('id',
+            '!=',
+            1)->first();
+        $purchase->moveStock($warehouse,
+            $warehouse1,
+            $location,
+            $location1,
+            5);
+        $purchase1 = DB::select('select * from purchased_items where location_id = ?',
+            [$location1->id]);
+
+        $this->assertCount(5, $purchase1);
+    }
+
+    /**
+     * @test
+     */
+    public function it_tests_if_return_is_false_if_there_are_fewer_rows_in_the_purchasedItems_table_than_count()
+    {
+        $this->create_models();
+        Purchase::factory()->create();
+        Warehouse::factory()->create();
+        Location::factory()->create();
+        $count = 5;
+        $toMove = 6;
+        PurchasedItems::factory()->times($count)->create();
         $purchase = Purchase::inRandomOrder()->first();
         $warehouse = Warehouse::inRandomOrder()->first();
         $warehouse1 = Warehouse::factory()->create();
@@ -59,12 +102,19 @@ class PurchaseTest extends TestCase
                     'updated_at'    => now()
                 ]
             );
-        $location = Location::where('id', 1)->first();
-        $location1 = Location::where('id', '!=', 1)->first();
-        $purchase->moveStock($warehouse, $warehouse1, $location, $location1, 5);
-        $purchase1 = DB::select('select * from purchased_items where location_id = ?', [$location1->id]);
-
-        $this->assertCount(5, $purchase1);
+        $location = Location::where('id',
+            1)->first();
+        $location1 = Location::where('id',
+            '!=',
+            1)->first();
+        $result = $purchase->moveStock($warehouse,
+            $warehouse1,
+            $location,
+            $location1,
+            $toMove);
+        $purchasedItems = PurchasedItems::all();
+        $this->assertNotEquals(count($purchasedItems), $toMove);
+        $this->assertFalse($result);
     }
 
     private function create_models()

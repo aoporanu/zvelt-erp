@@ -11,9 +11,9 @@ use App\Traits\Multitenentable;
  * @method static where(string $string, $user_id)
  * @method static factory()
  * @method static inRandomOrder()
- * @property mixed total
+ * @property mixed       total
  * @property float|mixed amount_left
- * @property mixed shop_id
+ * @property mixed       shop_id
  */
 class Invoice extends Model
 {
@@ -52,21 +52,30 @@ class Invoice extends Model
     }
 
     /**
-     * @param $user
+     * Cash an invoice, either the full invoice, or a part of the sum
+     * if the second parameter is present.
+     * USAGE: $invoice->cash($user) for the whole invoice
+     * OR
+     *          $invoice->cash($user, $invoice->total, $invoice->total - the_amount_to_be_deducted from total
+     *
+     * @param       $user
      * @param float $sum
-     * @return false
+     *
+     * @return bool
      */
     public function cash($user, float $sum = 0.0)
     {
-        if ($this->agent_id != $user->id)
-        {
-            return false;
-        }
-
-        $ledger = Ledger::where('user_id', $user->id)->firstOrCreate(['user_id' => $user->id,'type' => 'asd', 'balance' => 0.00]);
+        $ledger = Ledger::where('user_id', $user->id)->firstOrCreate(['user_id' => $user->id, 'type' => 'asd', 'balance' => 0.00]);
         $receipt = Receipt::where('ledger_id', $ledger->id)
             ->where('invoice_id', null)
-            ->firstOrCreate(['ledger_id' => $ledger->id, 'shop_id' => $this->shop_id, 'invoice_id' => $this->id, 'observations' => 'Balance for invoice #' . $this->id, 'amount' => $this->amount - $sum]);
-        return $receipt->cutFor($this, $sum);
+            ->firstOrCreate(['ledger_id' => $ledger->id, 'shop_id' => $this->shop_id, 'invoice_id' => $this->id, 'observations' => 'Balance for invoice #' . $this->id, 'amount' => $this->total - $sum]);
+        if ($sum !== 0.0) {
+            $this->amount_left = $this->total - $sum;
+            $this->save();
+        }
+        if ($receipt) {
+            return true;
+        }
+        return false;
     }
 }
