@@ -7,3 +7,4 @@
 /storage
 /config
 /laradock
+/.phpunit.result.cache
