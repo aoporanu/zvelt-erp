@@ -19,6 +19,8 @@ class OrderObserver
             echo 'Order cannot be created';
             return false;
         }
+        $order->status = 'pending';
+        $order->save();
 
         return true;
     }

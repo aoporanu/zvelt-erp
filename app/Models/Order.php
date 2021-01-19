@@ -19,11 +19,13 @@ use Illuminate\Support\Facades\DB;
  * @method static insert($all)
  * @method static inRandomOrder()
  * @method static factory()
- * @property Client client
- * @property mixed  total
- * @property mixed  payment_due
- * @property mixed  agent_id
- * @property mixed  client_id
+ * @method static find(int $int)
+ * @property Client       client
+ * @property mixed        total
+ * @property mixed        payment_due
+ * @property mixed        agent_id
+ * @property mixed        client_id
+ * @property mixed|string status
  */
 class Order extends Model
 {

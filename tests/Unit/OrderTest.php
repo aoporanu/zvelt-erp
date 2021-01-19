@@ -38,4 +38,20 @@ class OrderTest extends TestCase
         $order->save();
         $this->assertDatabaseCount('orders', 1);
     }
+
+    /**
+     * @test
+     */
+    public function it_tests_if_an_order_status_changes()
+    {
+        $this->withoutExceptionHandling();
+        User::factory()->create();
+        Client::factory()->create();
+        Shop::factory()->create();
+        Warehouse::factory()->create();
+        Order::factory()->create();
+        $this->assertDatabaseCount('orders', 1);
+        $order = Order::find(1)->get();
+        $this->assertEquals('initial', $order->status);
+    }
 }
