@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Invoice;
 use App\Models\Order;
+use App\Observers\InvoiceObserver;
 use App\Observers\OrderObserver;
 use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
@@ -29,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Order::observe(OrderObserver::class);
+        Invoice::observe(InvoiceObserver::class);
     }
 }

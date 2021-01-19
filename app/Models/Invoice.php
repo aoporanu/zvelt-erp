@@ -11,9 +11,11 @@ use App\Traits\Multitenentable;
  * @method static where(string $string, $user_id)
  * @method static factory()
  * @method static inRandomOrder()
+ * @method static first()
  * @property mixed       total
  * @property float|mixed amount_left
  * @property mixed       shop_id
+ * @property mixed       client
  */
 class Invoice extends Model
 {

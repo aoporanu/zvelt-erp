@@ -35,7 +35,6 @@ class InvoiceTest extends TestCase
 
         $this->assertTrue($invoice->cash($user, $invoice->total));
         $receipt = Receipt::where('invoice_id', $invoice->id)->first();
-//        $this->assertEquals($receipt->amount, $invoice->total);
     }
 
     /**
@@ -56,7 +55,6 @@ class InvoiceTest extends TestCase
 
         $this->assertTrue($invoice->cash($user, $invoice->total / 2));
         $receipt = Receipt::where('invoice_id', $invoice->id)->first();
-//        $this->assertEquals($receipt->amount, $invoice->total / 2);
         $this->assertNotNull($invoice->amount_left);
     }
 
@@ -108,6 +106,18 @@ class InvoiceTest extends TestCase
         $ledger = Ledger::where('user_id', $user1->id)->first();
         $receipts = Receipt::where('ledger_id', $ledger->id)->first();
         $this->assertNotEquals($invoice->total, $invoice->amount_left);
+    }
+
+    /**
+     * @test
+     */
+    public function it_tests_if_on_creating_an_invoice_the_customer_ceil_is_reduced()
+    {
+        $this->create_models();
+        $invoice = Invoice::factory()->create();
+//        dump($invoice);
+//        dump($invoice->client);
+        $this->assertNotEquals($invoice->client->ceil, $invoice->total);
     }
 
     private function create_models(): void

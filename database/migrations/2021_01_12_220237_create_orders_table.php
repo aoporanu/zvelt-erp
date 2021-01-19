@@ -22,10 +22,12 @@ class CreateOrdersTable extends Migration
             $table->foreignId('deliverer_id')->references('id')->on('users');
             $table->double('total');
             $table->double('weight');
+            $table->integer('payment_due')->default(0);
             $table->foreignId('warehouse_id')->constrained();
             $table->foreignId('agent_id')->references('id')->on('users');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
+            $table->string('pending', 10)->default('initial');
         });
     }
 

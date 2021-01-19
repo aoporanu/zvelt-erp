@@ -28,6 +28,7 @@ class CreateClientsTable extends Migration
                 $table->string('country');
                 $table->timestamps();
                 $table->timestamp('deleted_at')->nullable();
+                $table->double('ceil')->default(0.00);
             }
         );
     }
