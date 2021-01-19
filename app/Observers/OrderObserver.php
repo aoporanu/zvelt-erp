@@ -14,26 +14,32 @@ class OrderObserver
             ->where('agent_id', $order->agent_id)
             ->where('created_at', Carbon::now()->subDays(3))
             ->get();
-        if (count($invoices)) {
+//        dump($order);
+        if (count($invoices) > 0 && $order->payment_due > 0 && $order->client->ceil < $order->total) {
+            echo 'Order cannot be created';
             return false;
         }
+
+        return true;
     }
 
     /**
      * Handle the Order "created" event.
      *
-     * @param  \App\Models\Order  $order
+     * @param Order $order
+     *
      * @return void
      */
     public function created(Order $order)
     {
-        //
+
     }
 
     /**
      * Handle the Order "updated" event.
      *
-     * @param  \App\Models\Order  $order
+     * @param Order $order
+     *
      * @return void
      */
     public function updated(Order $order)
@@ -44,7 +50,8 @@ class OrderObserver
     /**
      * Handle the Order "deleted" event.
      *
-     * @param  \App\Models\Order  $order
+     * @param Order  $order
+     *
      * @return void
      */
     public function deleted(Order $order)
@@ -55,7 +62,8 @@ class OrderObserver
     /**
      * Handle the Order "restored" event.
      *
-     * @param  \App\Models\Order  $order
+     * @param  Order  $order
+     *
      * @return void
      */
     public function restored(Order $order)
@@ -66,7 +74,8 @@ class OrderObserver
     /**
      * Handle the Order "force deleted" event.
      *
-     * @param  \App\Models\Order  $order
+     * @param  Order  $order
+     *
      * @return void
      */
     public function forceDeleted(Order $order)

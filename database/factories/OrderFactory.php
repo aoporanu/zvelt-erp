@@ -37,7 +37,8 @@ class OrderFactory extends Factory
             'warehouse_id' => function () {
                 return Warehouse::inRandomOrder()->first()->id;
             },
-            'deleted_at' => null
+            'deleted_at' => null,
+            'payment_due' => array_rand([0, 7, 14, 21, 28, 30])
         ];
     }
 }

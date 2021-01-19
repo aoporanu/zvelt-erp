@@ -7,6 +7,7 @@ use App\Services\OrderService;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\JsonResponse;
@@ -18,6 +19,11 @@ use Illuminate\Support\Facades\DB;
  * @method static insert($all)
  * @method static inRandomOrder()
  * @method static factory()
+ * @property Client client
+ * @property mixed  total
+ * @property mixed  payment_due
+ * @property mixed  agent_id
+ * @property mixed  client_id
  */
 class Order extends Model
 {
@@ -28,7 +34,16 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'uid', 'user_id', 'client_id', 'shop_id', 'deliverer_id', 'total', 'weight', 'warehouse_id', 'agent_id'
+        'uid',
+        'user_id',
+        'client_id',
+        'shop_id',
+        'deliverer_id',
+        'total',
+        'weight',
+        'warehouse_id',
+        'agent_id',
+        'payment_due'
     ];
 
     /**
@@ -62,6 +77,14 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
 
     public static function storeOrder(Request $request): JsonResponse
