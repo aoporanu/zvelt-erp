@@ -34,6 +34,7 @@ class ItemTest extends TestCase
 
     public function test_item_can_be_purchased()
     {
+        $this->withoutExceptionHandling();
         $this->creates_models();
         Supplier::factory()->create();
         Purchase::factory()->create();
