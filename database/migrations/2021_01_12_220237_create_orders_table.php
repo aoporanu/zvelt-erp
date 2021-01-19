@@ -27,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('agent_id')->references('id')->on('users');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
+            $table->string('pending', 10)->default('initial');
         });
     }
 
