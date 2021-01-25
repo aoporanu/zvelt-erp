@@ -17,7 +17,6 @@
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
-        "webpatser/laravel-uuid": "^3.0.2",
         "yajra/laravel-datatables-buttons": "dev-master",
         "yajra/laravel-datatables-editor": "^1.0",
         "yajra/laravel-datatables-oracle": "9.15.2"
@@ -25,7 +24,6 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "3.5.2",
         "barryvdh/laravel-ide-helper": "2.9.0",
-        "beyondcode/laravel-query-detector": "^1.4",
         "enlightn/enlightn": "^1.4",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
@@ -33,7 +31,6 @@
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
         "phpunit/phpunit": "^9.3.3",
-        "pipe-dream/laravel-create": "0.2.1",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
