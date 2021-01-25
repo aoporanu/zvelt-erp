@@ -117,6 +117,19 @@ class PurchaseTest extends TestCase
         $this->assertFalse($result);
     }
 
+    public function test_logs_updated_when_purchase_is_deleted()
+    {
+        $this->create_models();
+        (new Purchase)->factory()->create();
+
+        $this->assertDatabaseCount('purchases', 1);
+
+        $purchase = Purchase::first();
+        $purchase->delete();
+        // $this->assertSoftDeleted('purchases', $purchase->toArray());
+        $this->assertDatabaseCount('logs', 1);
+    }
+
     private function create_models()
     {
         Brand::factory()->create();

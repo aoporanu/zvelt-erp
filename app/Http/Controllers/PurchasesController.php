@@ -25,7 +25,6 @@ use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
 use DB;
-use Illuminate\Database\Console\DbCommand;
 
 /**
  * Purchases Controller
