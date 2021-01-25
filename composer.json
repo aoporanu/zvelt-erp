@@ -16,6 +16,7 @@
         "laravel/framework": "^8.12",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.5",
+        "laravel/ui": "^3.2",
         "webpatser/laravel-uuid": "^3.0.2",
         "yajra/laravel-datatables-buttons": "dev-master",
         "yajra/laravel-datatables-editor": "^1.0",
