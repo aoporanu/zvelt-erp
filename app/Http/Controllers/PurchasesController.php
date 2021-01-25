@@ -24,6 +24,8 @@ use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
+use DB;
+use Illuminate\Database\Console\DbCommand;
 
 /**
  * Purchases Controller
@@ -192,10 +194,15 @@ class PurchasesController extends Controller
     {
         $pageTitle = 'Transfer stocks';
         $purchasedItem->load('location', 'warehouse');
+        $items = DB::select('select id, name from items');
+        $warehouses = DB::select('select id, name from warehouses');
+        $locations = DB::select('select id, name from locations');
         return view(
             'purchases.transfer', 
             [
-                'purchasedItem' => $purchasedItem,
+                'items'         => $items,
+                'warehouses'    => $warehouses,
+                'locations'     => $locations,
                 'pageTitle'     => $pageTitle
             ]
         );
