@@ -34,7 +34,13 @@ class Purchase extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'purchase_id', 'value', 'total', 'discount', 'for_invoice', 'supplier_id'
+        'id',
+        'purchase_id', 
+        'value', 
+        'total', 
+        'discount', 
+        'for_invoice', 
+        'supplier_id'
     ];
 
     /**
@@ -42,7 +48,7 @@ class Purchase extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -67,7 +73,17 @@ class Purchase extends Model
      */
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class)->withPivot('purchase_id', 'item_id', 'purchase_cost', 'selling_cost', 'lot', 'location_id', 'qty', 'warehouse_id');
+        return $this->belongsToMany(Item::class)
+            ->withPivot(
+                'purchase_id', 
+                'item_id', 
+                'purchase_cost', 
+                'selling_cost', 
+                'lot', 
+                'location_id', 
+                'qty', 
+                'warehouse_id'
+            );
     }
 
     /**
@@ -83,7 +99,11 @@ class Purchase extends Model
      */
     public function supplier(): BelongsTo
     {
-        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
+        return $this->belongsTo(
+            Supplier::class, 
+            'supplier_id', 
+            'id'
+        );
     }
 
     /**
@@ -176,12 +196,13 @@ class Purchase extends Model
      *
      * @return false
      */
-    public function moveStock(Warehouse $fromWH,
-                              Warehouse $toWH,
-                              Location $fromLocation,
-                              Location $toLocation,
-                              int $count = 1)
-    {
+    public function moveStock(
+        Warehouse $fromWH,
+        Warehouse $toWH,
+        Location $fromLocation,
+        Location $toLocation,
+        int $count = 1
+    ) {
         $purchasedItems = DB::table('purchased_items')
             ->where('warehouse_id', $fromWH->id)
             ->where('location_id', $fromLocation->id)
@@ -189,16 +210,22 @@ class Purchase extends Model
         if (count($purchasedItems) < $count) {
             return false;
         }
-        DB::update('UPDATE
-    purchased_items
-SET warehouse_id = ?,
-    location_id = ?
-WHERE id IN (
-    SELECT id FROM purchased_items
-    WHERE warehouse_id = ?
-      AND location_id = ?
-    LIMIT ?
+        DB::update(
+            'UPDATE
+                purchased_items
+            SET warehouse_id = ?,
+                location_id = ?
+            WHERE id IN (
+                SELECT id FROM purchased_items
+                WHERE warehouse_id = ?
+                AND location_id = ?
+                LIMIT ?
     )', [$toWH->id, $toLocation->id, $fromWH->id, $fromLocation->id, $count]);
         return true;
+    }
+
+    public function doNir()
+    {
+
     }
 }

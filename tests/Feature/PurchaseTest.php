@@ -57,4 +57,9 @@ class PurchaseTest extends TestCase
     //         );
     //     $response->assertSeeText('The given data was invalid');
     // }
+
+    public function test_log_updated_when_purchase_is_deleted()
+    {
+        
+    }
 }
