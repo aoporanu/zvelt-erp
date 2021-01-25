@@ -29,16 +29,22 @@ class PurchaseAPIController extends Controller
         try {
             $purchase = Purchase::storeOrder($request);
             DB::commit();
-            return response()->json([
-                'success' => true,
-                'message' => 'Purchase successfully stored',
-                'purchase' => [
-                    'object' => new PurchaseResource($purchase)
-                ]
-                ], 200);
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Purchase successfully stored',
+                    'purchase' => [
+                        'object' => new PurchaseResource($purchase)
+                    ]
+                ], 200
+            );
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'could not commit the purchase ' . $e->getMessage()], 500);
+            return response()->json(
+                [
+                    'success' => false, 'message' => 'could not commit the purchase ' . $e->getMessage()
+                ], 500
+            );
         }
     }
 

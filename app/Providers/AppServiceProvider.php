@@ -6,7 +6,6 @@ use App\Models\Invoice;
 use App\Models\Order;
 use App\Observers\InvoiceObserver;
 use App\Observers\OrderObserver;
-use Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -18,9 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
-            $this->app->register(IdeHelperServiceProvider::class);
-        }
+        Invoice::observe(InvoiceObserver::class);
     }
 
     /**

@@ -2,29 +2,42 @@
 
 namespace App\Observers;
 
-use App\Models\Client;
 use App\Models\Invoice;
 use Illuminate\Support\Facades\DB;
 
 class InvoiceObserver
 {
     /**
+     * Handle the Invoice "creating" event.
+     *
+     * @param Invoice $invoice The invoice model
+     *
+     * @return void
+     */
+    public function creating(Invoice $invoice)
+    {
+        
+    }
+
+    /**
      * Handle the Invoice "created" event.
      *
-     * @param Invoice $invoice
+     * @param Invoice $invoice The invoice model
      *
      * @return void
      */
     public function created(Invoice $invoice)
     {
-        $invoice->client->ceil -= $invoice->total;
-        $invoice->save();
+        DB::update(
+            'update clients set ceil = ceil - ? where id = ?', 
+            [$invoice->total, $invoice->client->id]
+        );
     }
 
     /**
      * Handle the Invoice "updated" event.
      *
-     * @param Invoice $invoice
+     * @param Invoice $invoice The invoice model
      *
      * @return void
      */
@@ -36,7 +49,7 @@ class InvoiceObserver
     /**
      * Handle the Invoice "deleted" event.
      *
-     * @param Invoice  $invoice
+     * @param Invoice $invoice The invoice model
      *
      * @return void
      */
@@ -48,7 +61,7 @@ class InvoiceObserver
     /**
      * Handle the Invoice "restored" event.
      *
-     * @param  Invoice  $invoice
+     * @param Invoice $invoice The invoice model
      *
      * @return void
      */
@@ -60,7 +73,7 @@ class InvoiceObserver
     /**
      * Handle the Invoice "force deleted" event.
      *
-     * @param  Invoice  $invoice
+     * @param Invoice $invoice The invoice model
      *
      * @return void
      */

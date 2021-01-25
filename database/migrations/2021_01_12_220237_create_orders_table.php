@@ -26,8 +26,9 @@ class CreateOrdersTable extends Migration
             $table->foreignId('warehouse_id')->constrained();
             $table->foreignId('agent_id')->references('id')->on('users');
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable();
-            $table->string('pending', 10)->default('initial');
+            $table->softDeletes();
+            $table->string('status', 10)->default('initial');
+            $table->boolean('derrogated')->default(0);
         });
     }
 

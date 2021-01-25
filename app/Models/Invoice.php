@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Traits\Multitenentable;
+use Illuminate\Database\Eloquent\Concerns\HasEvents;
 
 /**
  * @method static where(string $string, $user_id)
@@ -19,7 +19,7 @@ use App\Traits\Multitenentable;
  */
 class Invoice extends Model
 {
-    use SoftDeletes, Multitenentable, HasFactory;
+    use SoftDeletes, HasFactory, HasEvents;
 
     /**
      * @var string[]

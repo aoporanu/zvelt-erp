@@ -10,10 +10,12 @@ use App\Models\Receipt;
 use App\Models\Shop;
 use App\Models\User;
 use App\Models\Warehouse;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class InvoiceTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      *
@@ -115,8 +117,6 @@ class InvoiceTest extends TestCase
     {
         $this->create_models();
         $invoice = Invoice::factory()->create();
-//        dump($invoice);
-//        dump($invoice->client);
         $this->assertNotEquals($invoice->client->ceil, $invoice->total);
     }
 

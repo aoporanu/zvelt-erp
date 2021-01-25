@@ -1,20 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::resource('items', ItemController::class);
-Auth::routes();
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('purchase/stocks', [PurchasesController::class, 'stocks'])
-    ->name('purchase.stocks');
-Route::get('purchase/transfer/{purchasedItem}', [PurchasesController::class, 'transfer'])
-    ->name('purchase.transfer');
-Route::resource('purchase', PurchasesController::class);
-Route::resource('warehouse', WarehouseController::class);
-Route::resource('locations', LocationController::class);
-Route::resource('packagings', PackagingController::class);
-Route::resource('suppliers', SupplierController::class);
-Route::resource('invoices', InvoicesController::class);
-Route::resource('financials', FinancialsController::class);
+Route::get('/', function () {
+    return view('welcome');
+});

@@ -1,10 +1,12 @@
 <?php
+
 namespace App\Models;
 
 
 use App\Http\Resources\OrderResource;
 use App\Services\OrderService;
 use Exception;
+use Illuminate\Database\Eloquent\Concerns\HasEvents;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,7 +31,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Order extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, HasEvents;
     /**
      * The attributes that are mass assignable.
      *
@@ -45,7 +47,8 @@ class Order extends Model
         'weight',
         'warehouse_id',
         'agent_id',
-        'payment_due'
+        'payment_due',
+        'status'
     ];
 
     /**
@@ -93,20 +96,28 @@ class Order extends Model
     {
         DB::beginTransaction();
         try {
-            /** @noinspection PhpUndefinedFieldInspection */
-            $order = OrderService::createOrder($request->items,
+            /** 
+             * @noinspection PhpUndefinedFieldInspection 
+             */
+            $order = OrderService::createOrder(
+                $request->items,
                 $request->shop_id,
                 $request->user_id,
-                $request->warehouse_id);
+                $request->warehouse_id
+            );
             // 3. if all's good, then proceed to ...
-            return response()->json(['status' => true,
+            return response()->json(
+                ['status' => true,
                 'order' => new OrderResource($order)],
-                201);
+                201
+            );
         } catch (Exception $ex) {
             DB::rollBack();
-            return response()->json(['success' => false,
+            return response()->json(
+                ['success' => false,
                 'Could not commit your transaction ' . $ex->getMessage()],
-                500);
+                500
+            );
         }
     }
 }

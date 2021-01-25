@@ -13,6 +13,11 @@ class OrderFactory extends Factory
 {
     protected $model = Order::class;
 
+    /**
+     * Method for the Factory interface
+     * 
+     * @return array of fields for the factory
+     */
     public function definition()
     {
         return [
