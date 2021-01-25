@@ -24,6 +24,9 @@ class ItemTest extends TestCase
         $this->withoutExceptionHandling();
     }
 
+    /**
+     * @test
+     */
     public function test_item_can_be_created()
     {
         $this->creates_models();
@@ -31,6 +34,9 @@ class ItemTest extends TestCase
         $this->assertDatabaseCount('items', 1);
     }
 
+    /**
+     * @test
+     */
     public function test_item_can_be_purchased()
     {
         $this->withoutExceptionHandling();

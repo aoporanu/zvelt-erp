@@ -117,8 +117,6 @@ class InvoiceTest extends TestCase
     {
         $this->create_models();
         $invoice = Invoice::factory()->create();
-//        dump($invoice);
-//        dump($invoice->client);
         $this->assertNotEquals($invoice->client->ceil, $invoice->total);
     }
 

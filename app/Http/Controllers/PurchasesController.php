@@ -191,9 +191,11 @@ class PurchasesController extends Controller
     {
         $pageTitle = 'Transfer stocks';
         $purchasedItem->load('location', 'warehouse');
-        return view('purchases.transfer', [
-            'purchasedItem' => $purchasedItem,
-            'pageTitle'     => $pageTitle
+        return view(
+            'purchases.transfer', 
+            [
+                'purchasedItem' => $purchasedItem,
+                'pageTitle'     => $pageTitle
             ]
         );
     }
