@@ -199,4 +199,9 @@ class PurchaseService
                 ->addIndexColumn()
                 ->make(true);
     }
+
+    public function transfer($request)
+    {
+        
+    }
 }

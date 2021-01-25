@@ -11,10 +11,10 @@
  */
 namespace App\Http\Controllers;
 
-use App\Models\PurchasedItems;
 use Exception;
 use App\Models\Purchase;
 use Illuminate\View\View;
+use App\Models\PurchasedItems;
 use App\Services\PurchaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -23,6 +23,7 @@ use App\Http\Requests\PurchaseStoreRequest;
 use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
+use App\Http\Requests\TransferPurchaseRequest;
 
 /**
  * Purchases Controller
@@ -198,5 +199,17 @@ class PurchasesController extends Controller
                 'pageTitle'     => $pageTitle
             ]
         );
+    }
+
+    /**
+     * Do the actual transfer
+     * 
+     * @param TransferPurchaseRequest $request The form reqyest that needs to be validated
+     * 
+     * @return PurchaseService        The response from the service
+     */
+    public function doTransfer(TransferPurchaseRequest $request)
+    {
+        return $this->service->transfer($request->validated());
     }
 }
