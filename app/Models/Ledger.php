@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * The ledger file
+ * php version ^8.0
+ * 
+ * @category ERP
+ * @package  Sap-Killer
+ * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     http://zvelt-erp.com
+ */
 namespace App\Models;
 
 
@@ -8,8 +17,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @method static inRandomOrder()
- * @method static where(string $string, $ledger_id)
+ * The ledger model
+ * 
+ * @category ERP
+ * @package  Sap-Killer
+ * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
+ * @link     http://zvelt-erp.com
+ * @method   static inRandomOrder()
+ * @method   static where(string $string, $ledger_id)
  */
 class Ledger extends Model
 {
@@ -50,12 +66,19 @@ class Ledger extends Model
 
     /**
      * Get the Receipts for the Ledger.
+     * 
+     * @return hasMany Receipt(s)
      */
     public function receipts()
     {
         return $this->hasMany(Receipt::class);
     }
 
+    /**
+     * Belongs to user relationship
+     * 
+     * @return belongsTo User
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
