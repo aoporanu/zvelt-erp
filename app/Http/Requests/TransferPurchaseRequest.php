@@ -24,7 +24,7 @@ class TransferPurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            "item_name"     => 'required',
+            "item_id"     => 'required|exists:items,id',
             "from_warehose"  => 'required|exists:warehouses,id',
             "from_location"   => 'required|exists:locations,id',
             "to_warehouse"  => 'required|exists:warehouses,id',
