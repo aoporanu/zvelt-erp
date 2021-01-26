@@ -15,10 +15,10 @@ class AlterInvoicesMakeForeignKeys extends Migration
     {
         Schema::table(
             'invoices', function (Blueprint $table) {
-                $table->foreign('client_id')->references('id')->on('clients');
-                $table->foreign('shop_id')->references('id')->on('shops');
-                $table->foreign('order_id')->references('id')->on('orders');
-                $table->foreign('user_id')->references('id')->on('users');
+                // $table->foreign('client_id')->references('id')->on('clients');
+                // $table->foreign('shop_id')->references('id')->on('shops');
+                // $table->foreign('order_id')->references('id')->on('orders');
+                // $table->foreign('user_id')->references('id')->on('users');
             }
         );
     }

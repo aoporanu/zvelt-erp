@@ -22,7 +22,7 @@ class PurchaseObserver
             (level, message, created_at, updated_at)
              values (?, ?, ?, ?)', 
             [
-                 'pur-created_'.$purchase, 
+                 'pur-created_'.$purchase->purchase_id, 
                  'A new purchase was created', 
                  Carbon::now(), 
                  Carbon::now()

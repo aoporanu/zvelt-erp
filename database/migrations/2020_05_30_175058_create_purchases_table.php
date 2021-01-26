@@ -24,7 +24,6 @@ class CreatePurchasesTable extends Migration
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
                 $table->timestamp('deleted_at')->nullable();
-                $table->foreignId('supplier_id')->constrained();
             }
         );
     }

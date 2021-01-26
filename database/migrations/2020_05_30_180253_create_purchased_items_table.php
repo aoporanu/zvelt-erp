@@ -18,7 +18,7 @@ class CreatePurchasedItemsTable extends Migration
                 $table->id();
                 $table->unsignedBigInteger('purchase_id');
                 $table->unsignedBigInteger('item_id');
-                $table->unsignedBigInteger('supplier_id');
+                // $table->unsignedBigInteger('supplier_id');
                 $table->double('purchase_cost');
                 $table->double('selling_cost');
                 $table->double('vat');
@@ -26,14 +26,12 @@ class CreatePurchasedItemsTable extends Migration
                 $table->string('lot');
                 $table->double('value');
                 $table->double('total');
-                $table->unsignedBigInteger('location_id');
-                $table->unsignedBigInteger('warehouse_id');
+                // $table->unsignedBigInteger('location_id');
+                // $table->unsignedBigInteger('warehouse_id');
 
                 $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
                 $table->foreign('item_id')->references('id')->on('items');
-                $table->foreign('supplier_id')->references('id')->on('suppliers');
-                $table->foreign('location_id')->references('id')->on('locations');
-                $table->foreign('warehouse_id')->references('id')->on('warehouses');
+                
                 $table->timestamps();
                 $table->timestamp('deleted_at')->nullable();
             }

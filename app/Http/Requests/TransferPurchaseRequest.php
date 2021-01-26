@@ -11,7 +11,7 @@ class TransferPurchaseRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,11 +24,11 @@ class TransferPurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            "item_id"     => 'required|exists:items,id',
-            "from_warehose"  => 'required|exists:warehouses,id',
-            "from_location"   => 'required|exists:locations,id',
-            "to_warehouse"  => 'required|exists:warehouses,id',
-            "to_location"   => 'required|exists:locations,id'
+            "item_id"           => 'required|exists:items,id',
+            "from_warehose"     => 'required|exists:warehouses,id',
+            "from_location"     => 'required|exists:locations,id',
+            "to_warehouse"      => 'required|exists:warehouses,id',
+            "to_location"       => 'required|exists:locations,id'
         ];
     }
 }
