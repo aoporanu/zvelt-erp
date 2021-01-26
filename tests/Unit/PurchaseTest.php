@@ -12,6 +12,7 @@ use App\Models\PurchasedItems;
 use App\Models\Supplier;
 use App\Models\UnitOfMeasure;
 use App\Models\Warehouse;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
@@ -43,15 +44,14 @@ class PurchaseTest extends TestCase
     public function it_tests_if_a_purchased_item_can_be_moved_between_locations()
     {
         $this->create_models();
-        Purchase::factory()->create();
-        Warehouse::factory()->create();
+        (new Purchase)->factory()->create();
+        (new Warehouse)->factory()->create();
         Location::factory()->create();
         PurchasedItems::factory()->times(10)->create();
-//        dump(DB::select('SELECT id FROM purchased_items WHERE warehouse_id=1'));
         $this->assertDatabaseCount('purchased_items', 10);
-        $purchase = Purchase::first();
-        $warehouse = Warehouse::first();
-        $warehouse1 = Warehouse::factory()->create();
+        $purchase = (new Purchase)->first();
+        $warehouse = (new Warehouse)->first();
+        $warehouse1 = (new Warehouse)->factory()->create();
         DB::table('locations')
             ->insert(
                 [
@@ -63,16 +63,22 @@ class PurchaseTest extends TestCase
                 ]
             );
         $location = Location::first();
-        $location1 = Location::where('id',
+        $location1 = (new Location)->where(
+            'id',
             '!=',
-            1)->first();
-        $purchase->moveStock($warehouse,
+            1
+        )->first();
+        $purchase->moveStock(
+            $warehouse,
             $warehouse1,
             $location,
             $location1,
-            5);
-        $purchase1 = DB::select('select * from purchased_items where location_id = ?',
-            [$location1->id]);
+            5
+        );
+        $purchase1 = DB::select(
+            'select * from purchased_items where location_id = ?',
+            [$location1->id]
+        );
 
         $this->assertCount(5, $purchase1);
     }
@@ -83,15 +89,15 @@ class PurchaseTest extends TestCase
     public function it_tests_if_return_is_false_if_there_are_fewer_rows_in_the_purchasedItems_table_than_count()
     {
         $this->create_models();
-        Purchase::factory()->create();
-        Warehouse::factory()->create();
-        Location::factory()->create();
+        (new Purchase)->factory()->create();
+        (new Warehouse)->factory()->create();
+        (new Location)->factory()->create();
         $count = 5;
         $toMove = 6;
         PurchasedItems::factory()->times($count)->create();
-        $purchase = Purchase::inRandomOrder()->first();
-        $warehouse = Warehouse::inRandomOrder()->first();
-        $warehouse1 = Warehouse::factory()->create();
+        $purchase = (new Purchase)->inRandomOrder()->first();
+        $warehouse = (new Warehouse)->inRandomOrder()->first();
+        $warehouse1 = (new Warehouse)->factory()->create();
         DB::table('locations')
             ->insert(
                 [
@@ -102,16 +108,24 @@ class PurchaseTest extends TestCase
                     'updated_at'    => now()
                 ]
             );
-        $location = Location::where('id',
-            1)->first();
-        $location1 = Location::where('id',
+        $location = (new Location)->where(
+            'id',
+            1
+        )
+            ->first();
+        $location1 = (new Location)->where(
+            'id',
             '!=',
-            1)->first();
-        $result = $purchase->moveStock($warehouse,
+            1
+        )
+            ->first();
+        $result = $purchase->moveStock(
+            $warehouse,
             $warehouse1,
             $location,
             $location1,
-            $toMove);
+            $toMove
+        );
         $purchasedItems = PurchasedItems::all();
         $this->assertNotEquals(count($purchasedItems), $toMove);
         $this->assertFalse($result);
@@ -123,11 +137,12 @@ class PurchaseTest extends TestCase
         (new Purchase)->factory()->create();
 
         $this->assertDatabaseCount('purchases', 1);
-
+        $user = (new User)->factory()->create();
+        $this->be($user);
         $purchase = Purchase::first();
         $purchase->delete();
-        // $this->assertSoftDeleted('purchases', $purchase->toArray());
-        $this->assertDatabaseCount('logs', 1);
+        $logs = DB::select('select * from logs');
+        $this->assertDatabaseCount('logs', 4);
     }
 
     private function create_models()

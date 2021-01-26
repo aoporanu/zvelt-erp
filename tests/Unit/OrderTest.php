@@ -33,7 +33,7 @@ class OrderTest extends TestCase
         $this->assertDatabaseCount('orders', 1);
         $invoice->created_at = Carbon::now()->subDays(3);
         $invoice->save();
-        Order::create(
+        $order = Order::create(
             [
                 'uid'           => 123-1121231,
                 'user_id'       => User::first()->id,
@@ -49,6 +49,7 @@ class OrderTest extends TestCase
                 'derrogated'    => 0,
             ]
         );
+        // $this->assertFalse($order);
         $this->assertDatabaseCount('orders', 1);
     }
 
