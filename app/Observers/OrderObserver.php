@@ -28,7 +28,6 @@ class OrderObserver
             && $order->client->ceil < $order->total 
             && is_null($order->derrogated)
         ) {
-            echo 'Order cannot be created';
             return false;
         }
         $order->status = 'pending';
