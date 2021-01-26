@@ -200,8 +200,12 @@ class PurchaseService
                 ->make(true);
     }
 
-    public function transfer($request)
+    /**
+     * @param $request
+     * @return bool
+     */
+    public function transfer(array $request): bool
     {
-        
+        return true;
     }
 }

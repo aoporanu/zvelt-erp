@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @method static get(array)
  * @method static inRandomOrder()
- * @method static factory(...$parameters)
+ * @method static factory()
  */
 class Supplier extends Model
 {

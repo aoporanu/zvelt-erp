@@ -56,7 +56,7 @@ class PurchasesController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse|View
+     * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View|JsonResponse|View
      * @throws Exception
      */
     public function index()
@@ -74,9 +74,9 @@ class PurchasesController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return View
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function create(): View
+    public function create()
     {
         $arrayForView = $this->service->loadViewArray();
         $pageTitle = 'Create purchase';
@@ -100,6 +100,7 @@ class PurchasesController extends Controller
      * @param PurchaseStoreRequest $request the request object
      *
      * @return RedirectResponse
+     * @throws Exception
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
@@ -125,9 +126,9 @@ class PurchasesController extends Controller
      *
      * @param Purchase $purchase the Purchase object
      *
-     * @return View
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(Purchase $purchase): View
+    public function edit(Purchase $purchase)
     {
         return view('purchases.edit', compact('purchase'));
     }
@@ -140,7 +141,7 @@ class PurchasesController extends Controller
      *
      * @return RedirectResponse
      */
-    public function update(PurchaseUpdateRequest $request, Purchase $purchase)
+    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
     {
         if ($purchase->update($request->validated())) {
             return redirect()->back()
@@ -161,8 +162,10 @@ class PurchasesController extends Controller
     {
         if (Purchase::destroy($purchase)) {
             return response()->json(
-                ['success' => true,
-                'message' => 'The purchase was deleted']
+                [
+                    'success' => true,
+                    'message' => 'The purchase was deleted'
+                ]
             );
         }
     }
@@ -170,7 +173,7 @@ class PurchasesController extends Controller
     /**
      * Load the stocks for a given product
      *
-     * @return View
+     * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View
      */
     public function stocks()
     {
@@ -185,9 +188,9 @@ class PurchasesController extends Controller
     /**
      * Move stock between locations
      *
-     * @param PurchasedItem $purchasedItem the item which will be transferred
+     * @param PurchasedItems $purchasedItem the item which will be transferred
      *
-     * @return View
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
     public function transfer(PurchasedItems $purchasedItem)
     {
@@ -197,7 +200,7 @@ class PurchasesController extends Controller
         $warehouses = DB::select('select id, name from warehouses');
         $locations = DB::select('select id, name from locations');
         return view(
-            'purchases.transfer', 
+            'purchases.transfer',
             [
                 'items'         => $items,
                 'warehouses'    => $warehouses,
@@ -209,10 +212,10 @@ class PurchasesController extends Controller
 
     /**
      * Do the actual transfer
-     * 
-     * @param TransferPurchaseRequest $request The form reqyest that needs to be validated
-     * 
-     * @return PurchaseService        The response from the service
+     *
+     * @param TransferPurchaseRequest $request The form request that needs to be validated
+     *
+     * @return bool
      */
     public function doTransfer(TransferPurchaseRequest $request)
     {

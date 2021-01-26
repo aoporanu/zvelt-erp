@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
  * @method static create(array $all)
  * @method static inRandomOrder()
  * @method static factory()
+ * @method static factory()
  */
 class Purchase extends Model
 {
