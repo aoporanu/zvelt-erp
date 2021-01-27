@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Item extends Model
 {
     use SoftDeletes, HasFactory;
+
     protected $fillable = [
         'name',
         'vat',
@@ -30,8 +31,9 @@ class Item extends Model
         'brand_id',
         'unit_of_measure',
         'packaging',
-        'per_packaging'
+        'per_packaging',
     ];
+
 
     /**
      * @return BelongsTo
@@ -39,7 +41,9 @@ class Item extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
-    }
+
+    }//end category()
+
 
     /**
      * @return BelongsTo
@@ -47,7 +51,9 @@ class Item extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
-    }
+
+    }//end brand()
+
 
     /**
      * @return HasMany
@@ -55,7 +61,9 @@ class Item extends Model
     public function options()
     {
         return $this->hasMany(Option::class);
-    }
+
+    }//end options()
+
 
     /**
      * @return BelongsToMany
@@ -63,5 +71,8 @@ class Item extends Model
     public function purchases()
     {
         return $this->belongsToMany(Purchase::class, 'purchased_items');
-    }
-}
+
+    }//end purchases()
+
+
+}//end class

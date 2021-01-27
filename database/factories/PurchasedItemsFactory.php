@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PurchasedItemsFactory extends Factory
 {
+
     protected $model = PurchasedItems::class;
+
 
     public function definition()
     {
@@ -24,13 +26,13 @@ class PurchasedItemsFactory extends Factory
                 return Item::inRandomOrder()->first()->id;
             },
             'value'         => $this->faker->word(),
-            'location_id'      => function () {
+            'location_id'   => function () {
                 return Location::inRandomOrder()->first()->id;
             },
             'supplier_id'   => function () {
                 return Supplier::inRandomOrder()->first()->id;
             },
-            'warehouse_id'   => function () {
+            'warehouse_id'  => function () {
                 return Warehouse::inRandomOrder()->first()->id;
             },
             'purchase_cost' => $this->faker->numerify('##.##'),
@@ -38,7 +40,10 @@ class PurchasedItemsFactory extends Factory
             'total'         => $this->faker->numerify('###.##'),
             'qty'           => $this->faker->randomDigitNotNull,
             'vat'           => $this->faker->randomDigitNotNull,
-            'lot'           => $this->faker->numerify('#######')
+            'lot'           => $this->faker->numerify('#######'),
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

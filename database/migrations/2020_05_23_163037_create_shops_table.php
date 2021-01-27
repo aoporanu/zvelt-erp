@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateShopsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateShopsTable extends Migration
     public function up()
     {
         Schema::create(
-            'shops', function (Blueprint $table) {
+            'shops',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('identifier');
@@ -31,7 +34,9 @@ class CreateShopsTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -41,5 +46,8 @@ class CreateShopsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('shops');
-    }
-}
+
+    }//end down()
+
+
+}//end class

@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class LedgerSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class LedgerSeeder extends Seeder
     public function run()
     {
         Ledger::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

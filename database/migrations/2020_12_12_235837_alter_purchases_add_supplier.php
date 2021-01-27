@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class AlterPurchasesAddSupplier extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,30 +16,32 @@ class AlterPurchasesAddSupplier extends Migration
     public function up()
     {
         Schema::table(
-            'purchases', function (Blueprint $table) {
-                $table->foreignId('supplier_id')
-                    ->constrained()->nullable();
+            'purchases',
+            function (Blueprint $table) {
+                $table->foreignId('supplier_id')->constrained()->nullable();
             }
         );
         Schema::table(
-            'purchased_items', function (Blueprint $table) {
-                $table->foreignId('supplier_id')
-                    ->constrained();
+            'purchased_items',
+            function (Blueprint $table) {
+                $table->foreignId('supplier_id')->constrained();
             }
         );
         Schema::table(
-            'purchased_items', function (Blueprint $table) {
-                $table->foreignId('location_id')
-                    ->constrained();
+            'purchased_items',
+            function (Blueprint $table) {
+                $table->foreignId('location_id')->constrained();
             }
         );
         Schema::table(
-            'purchased_items', function (Blueprint $table) {
-                $table->foreignId('warehouse_id')
-                    ->constrained();
+            'purchased_items',
+            function (Blueprint $table) {
+                $table->foreignId('warehouse_id')->constrained();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -46,10 +50,13 @@ class AlterPurchasesAddSupplier extends Migration
      */
     public function down()
     {
-//        Schema::table(
-//            'purchases', function (Blueprint $table) {
-//                $table->dropForeign('supplier_id');
-//            }
-//        );
-    }
-}
+        // Schema::table(
+        // 'purchases', function (Blueprint $table) {
+        // $table->dropForeign('supplier_id');
+        // }
+        // );
+
+    }//end down()
+
+
+}//end class

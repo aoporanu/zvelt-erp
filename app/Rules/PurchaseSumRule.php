@@ -6,6 +6,8 @@ use Illuminate\Contracts\Validation\Rule;
 
 class PurchaseSumRule implements Rule
 {
+
+
     /**
      * Create a new rule instance.
      *
@@ -13,20 +15,22 @@ class PurchaseSumRule implements Rule
      */
     public function __construct()
     {
-        //
-    }
+
+    }//end __construct()
+
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
+     * @param  string $attribute
      * @param  mixed  $value
-     * @return bool
+     * @return boolean
      */
     public function passes($attribute, $value)
     {
-        //
-    }
+
+    }//end passes()
+
 
     /**
      * Get the validation error message.
@@ -36,5 +40,8 @@ class PurchaseSumRule implements Rule
     public function message()
     {
         return 'The validation error message.';
-    }
-}
+
+    }//end message()
+
+
+}//end class

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PurchasedItems extends Model
 {
     use SoftDeletes, HasFactory;
+
     protected $table = 'purchased_items';
 
     /**
@@ -36,7 +37,7 @@ class PurchasedItems extends Model
         'selling_cost',
         'lot',
         'location_id',
-        'warehouse_id'
+        'warehouse_id',
     ];
 
     /**
@@ -44,25 +45,25 @@ class PurchasedItems extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      *
@@ -70,25 +71,36 @@ class PurchasedItems extends Model
     public function batch()
     {
         return $this->belongsTo(Batch::class);
-    }
+
+    }//end batch()
+
 
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);
-    }
+
+    }//end purchase()
+
 
     public function item()
     {
         return $this->belongsTo(Item::class, 'item_id', 'id');
-    }
+
+    }//end item()
+
 
     public function location()
     {
         return $this->belongsTo(Location::class);
-    }
+
+    }//end location()
+
 
     public function warehouse()
     {
         return $this->belongsTo(Warehouse::class);
-    }
-}
+
+    }//end warehouse()
+
+
+}//end class

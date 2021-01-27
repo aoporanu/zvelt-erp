@@ -12,15 +12,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Batch extends Model
 {
     use SoftDeletes, HasFactory;
+
     protected $fillable = [
         'name',
         'from_qty',
         'to_qty',
-        'expiry_date'
+        'expiry_date',
     ];
+
 
     public function purchasedItem()
     {
         return $this->hasOne(PurchasedItems::class);
-    }
-}
+
+    }//end purchasedItem()
+
+
+}//end class

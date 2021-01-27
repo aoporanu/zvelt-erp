@@ -6,15 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PackagingStoreRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
+     * @return boolean
      */
     public function authorize()
     {
         return true;
-    }
+
+    }//end authorize()
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,8 +27,9 @@ class PackagingStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|unique:packagings,name'
-        ];
-    }
-}
+        return ['name' => 'required|unique:packagings,name'];
+
+    }//end rules()
+
+
+}//end class

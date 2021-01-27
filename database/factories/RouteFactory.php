@@ -12,18 +12,21 @@ class RouteFactory extends Factory
 
     protected $model = Route::class;
 
+
     public function definition()
     {
         return [
-            'user_id' => function () {
+            'user_id'     => function () {
                 return User::inRandomOrder()->first()->id;
             },
-            'shop_id' => function () {
+            'shop_id'     => function () {
                 return Shop::inRandomOrder()->first()->id;
             },
-            'day_of_week' => array_rand([1,2,3,4,5]),
-            'payment' => array_rand([0, 7, 14,21,28,30])
+            'day_of_week' => array_rand([1, 2, 3, 4, 5]),
+            'payment'     => array_rand([0, 7, 14, 21, 28, 30]),
         ];
-    }
-}
 
+    }//end definition()
+
+
+}//end class

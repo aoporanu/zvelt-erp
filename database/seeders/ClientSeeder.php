@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class ClientSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class ClientSeeder extends Seeder
     public function run()
     {
         Client::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

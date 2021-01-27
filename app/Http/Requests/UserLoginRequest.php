@@ -6,15 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserLoginRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
+     * @return boolean
      */
     public function authorize()
     {
         return true;
-    }
+
+    }//end authorize()
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,8 +28,11 @@ class UserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required'
+            'email'    => 'required|email',
+            'password' => 'required',
         ];
-    }
-}
+
+    }//end rules()
+
+
+}//end class

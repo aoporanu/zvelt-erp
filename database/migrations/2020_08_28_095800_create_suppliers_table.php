@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateSuppliersTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateSuppliersTable extends Migration
     public function up()
     {
         Schema::create(
-            'suppliers', function (Blueprint $table) {
+            'suppliers',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('uid');
                 $table->string('name');
@@ -24,7 +27,9 @@ class CreateSuppliersTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -33,6 +38,9 @@ class CreateSuppliersTable extends Migration
      */
     public function down()
     {
-//        Schema::drop('suppliers');
-    }
-}
+        // Schema::drop('suppliers');
+
+    }//end down()
+
+
+}//end class

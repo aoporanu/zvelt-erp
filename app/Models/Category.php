@@ -16,11 +16,16 @@ class Category extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
-        'name', 'description'
+        'name',
+        'description',
     ];
+
 
     public function items()
     {
         return $this->hasMany(Item::class);
-    }
-}
+
+    }//end items()
+
+
+}//end class

@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class UnitOfMeasureSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class UnitOfMeasureSeeder extends Seeder
     public function run()
     {
         UnitOfMeasure::factory()->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

@@ -6,15 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class WarehouseStoreRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
+     * @return boolean
      */
     public function authorize()
     {
         return true;
-    }
+
+    }//end authorize()
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -23,8 +27,9 @@ class WarehouseStoreRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|min:2|unique:warehouses,name'
-        ];
-    }
-}
+        return ['name' => 'required|min:2|unique:warehouses,name'];
+
+    }//end rules()
+
+
+}//end class

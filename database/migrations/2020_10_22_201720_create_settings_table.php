@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSettingsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,12 +16,15 @@ class CreateSettingsTable extends Migration
     public function up()
     {
         Schema::create(
-            'settings', function (Blueprint $table) {
+            'settings',
+            function (Blueprint $table) {
                 $table->id();
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -29,5 +34,8 @@ class CreateSettingsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('settings');
-    }
-}
+
+    }//end down()
+
+
+}//end class

@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 
 class PurchasedItemsSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -13,5 +15,8 @@ class PurchasedItemsSeeder extends Seeder
     public function run()
     {
         factory(PurchasedItems::class, 10)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

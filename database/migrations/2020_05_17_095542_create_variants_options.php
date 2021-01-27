@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateVariantsOptions extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,12 +16,15 @@ class CreateVariantsOptions extends Migration
     public function up()
     {
         Schema::create(
-            'variants_options', function (Blueprint $table) {
+            'variants_options',
+            function (Blueprint $table) {
                 $table->id();
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -29,5 +34,8 @@ class CreateVariantsOptions extends Migration
     public function down()
     {
         Schema::dropIfExists('variants_options');
-    }
-}
+
+    }//end down()
+
+
+}//end class

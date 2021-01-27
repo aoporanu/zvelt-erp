@@ -16,7 +16,10 @@ use App\Http\Requests\ItemUpdateRequest;
 
 class ItemController extends Controller
 {
+
     protected $service;
+
+
     /**
      * ItemController constructor.
      */
@@ -24,7 +27,9 @@ class ItemController extends Controller
     {
         $this->service = $service;
         $this->middleware('auth');
-    }
+
+    }//end __construct()
+
 
     /**
      * Display a listing of the resource.
@@ -40,45 +45,71 @@ class ItemController extends Controller
 
         $pageTitle = 'Item index';
         return view('items.index', compact('pageTitle'));
-    }
+
+    }//end index()
+
 
     public function create()
     {
         $categories = Category::get(['id', 'name']);
-        $brands = Brand::get(['id', 'name']);
+        $brands     = Brand::get(['id', 'name']);
         $packagings = Packaging::get(['id', 'name']);
-        $pageTitle = 'Create Item';
+        $pageTitle  = 'Create Item';
 
-        return view('items.create', compact('categories', 'brands', 'pageTitle', 'packagings'));
-    }
+        return view(
+            'items.create',
+            compact(
+                'categories',
+                'brands',
+                'pageTitle',
+                'packagings'
+            )
+        );
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ItemStoreRequest $request
+     * @param  ItemStoreRequest $request
      * @return ItemResource
      */
     public function store(ItemStoreRequest $request): ItemResource
     {
-        return new ItemResource(Item::create($request->all()));
-    }
+        return new ItemResource(
+            Item::create($request->validated())
+        );
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param Item $item
+     * @param  Item $item
      * @return ItemResource
      */
     public function show(Item $item): ItemResource
     {
-        return new ItemResource($item->load(['categories', 'brands']));
-    }
+        return new ItemResource(
+            $item->load(
+                [
+                    'categories',
+                    'brands',
+                ]
+            )
+        );
+
+    }//end show()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  Item $item
+     * @param Request $request The validated request
+     * @param Item $item The item model
+     * 
      * @return ItemResource
      */
     public function update(ItemUpdateRequest $request, Item $item): ItemResource
@@ -86,13 +117,15 @@ class ItemController extends Controller
         $item->update($request->validated());
 
         return new ItemResource($item);
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
-     * @param Item $item
+     * @param  Request $request
+     * @param  Item    $item
      * @return Response
      * @throws \Exception
      */
@@ -101,5 +134,8 @@ class ItemController extends Controller
         $item->delete();
 
         return response()->noContent();
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

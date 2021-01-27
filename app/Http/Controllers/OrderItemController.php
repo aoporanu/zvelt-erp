@@ -10,4 +10,4 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class OrderItemController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-}
+}//end class

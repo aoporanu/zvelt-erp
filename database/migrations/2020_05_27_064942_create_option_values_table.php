@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOptionValuesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateOptionValuesTable extends Migration
     public function up()
     {
         Schema::create(
-            'option_values', function (Blueprint $table) {
+            'option_values',
+            function (Blueprint $table) {
                 $table->id();
                 $table->timestamps();
 
@@ -25,7 +28,9 @@ class CreateOptionValuesTable extends Migration
                 $table->foreign('option_id')->references('id')->on('options')->onDelete('cascade');
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -35,5 +40,8 @@ class CreateOptionValuesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('option_values');
-    }
-}
+
+    }//end down()
+
+
+}//end class

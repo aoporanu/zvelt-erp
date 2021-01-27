@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOauthPersonalAccessClientsTable extends Migration
 {
+
     /**
      * The database schema.
      *
      * @var \Illuminate\Database\Schema\Builder
      */
     protected $schema;
+
 
     /**
      * Create a new migration instance.
@@ -21,7 +23,9 @@ class CreateOauthPersonalAccessClientsTable extends Migration
     public function __construct()
     {
         $this->schema = Schema::connection($this->getConnection());
-    }
+
+    }//end __construct()
+
 
     /**
      * Run the migrations.
@@ -31,13 +35,16 @@ class CreateOauthPersonalAccessClientsTable extends Migration
     public function up()
     {
         $this->schema->create(
-            'oauth_personal_access_clients', function (Blueprint $table) {
+            'oauth_personal_access_clients',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('client_id');
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -47,7 +54,9 @@ class CreateOauthPersonalAccessClientsTable extends Migration
     public function down()
     {
         $this->schema->dropIfExists('oauth_personal_access_clients');
-    }
+
+    }//end down()
+
 
     /**
      * Get the migration connection name.
@@ -57,5 +66,8 @@ class CreateOauthPersonalAccessClientsTable extends Migration
     public function getConnection()
     {
         return config('passport.storage.database.connection');
-    }
-}
+
+    }//end getConnection()
+
+
+}//end class

@@ -25,7 +25,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role'
+        'name',
+        'role',
+        'email',
+        'password',
+        'role',
     ];
 
     /**
@@ -34,7 +38,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -42,17 +47,21 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $casts = ['email_verified_at' => 'datetime'];
+
 
     public function ledger()
     {
         return $this->hasOne(Ledger::class);
-    }
+
+    }//end ledger()
+
 
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
-    }
-}
+
+    }//end invoices()
+
+
+}//end class

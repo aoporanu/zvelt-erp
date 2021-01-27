@@ -15,13 +15,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Receipt extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'ledger_id', 'shop_id', 'invoice_id', 'observations', 'amount'
+        'id',
+        'ledger_id',
+        'shop_id',
+        'invoice_id',
+        'observations',
+        'amount',
     ];
 
     /**
@@ -29,25 +35,25 @@ class Receipt extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * Get the Ledger for the Receipt.
@@ -55,39 +61,49 @@ class Receipt extends Model
     public function ledger()
     {
         return $this->belongsTo(Ledger::class);
-    }
+
+    }//end ledger()
+
 
     public function invoice()
     {
         return $this->belongsTo(Invoice::class);
-    }
+
+    }//end invoice()
+
 
     /**
      * Cut a receipt for the user's invoice
      *
-     * @param Invoice $invoice
-     * @param float $sum
-     * @return bool
+     * @param  Invoice $invoice
+     * @param  float   $sum
+     * @return boolean
      */
-    public function cutFor(Invoice $invoice, float $sum = 0.0)
+    public function cutFor(Invoice $invoice, float $sum=0.0)
     {
         try {
-            $receipt = $this->create([
-                'invoice_id' => $invoice->id,
-                'shop_id' => $invoice->shop_id,
-                'observations' => 'asd',
-                'amount' => 0.0 ? $invoice->total : $sum
-            ]);
+            $receipt = $this->create(
+                [
+                    'invoice_id'   => $invoice->id,
+                    'shop_id'      => $invoice->shop_id,
+                    'observations' => 'asd',
+                    'amount'       => 0.0 ? $invoice->total : $sum,
+                ]
+            );
             if ($sum !== 0.0) {
-                $invoice->amount_left = $invoice->total - $sum;
+                $invoice->amount_left = ($invoice->total - $sum);
                 $invoice->save();
             }
-            $ledger = Ledger::where('id', $receipt->ledger_id)->firstOrCreate(['type' => 'asd', 'user_id' => $invoice->agent_id, 'balance' => $receipt->amount]);
+
+            $ledger           = Ledger::where('id', $receipt->ledger_id)->firstOrCreate(['type' => 'asd', 'user_id' => $invoice->agent_id, 'balance' => $receipt->amount]);
             $ledger->balance += $receipt->amount;
             return true;
         } catch (\Exception $ex) {
             echo $ex->getMessage();
             return false;
-        }
-    }
-}
+        }//end try
+
+    }//end cutFor()
+
+
+}//end class

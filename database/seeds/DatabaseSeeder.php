@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class DatabaseSeeder extends Seeder
 {
+
+
     /**
      * Seed the application's database.
      *
@@ -19,5 +21,8 @@ class DatabaseSeeder extends Seeder
         // $this->call(PackagingSeeder::class);
         // $this->call(UnitOfMeasureSeeder::class);
         $this->call(ItemSeed::class);
-    }
-}
+
+    }//end run()
+
+
+}//end class

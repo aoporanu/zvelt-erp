@@ -9,6 +9,8 @@ use Illuminate\Http\Response;
 
 class ClientController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +25,9 @@ class ClientController extends Controller
         }
 
         return response()->json(['success' => true, 'clients' => $clients, 'message' => 'Client database is loaded']);
-    }
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,13 +36,14 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ClientStoreRequest $request
+     * @param  ClientStoreRequest $request
      * @return void
      */
     public function store(ClientStoreRequest $request)
@@ -47,13 +52,16 @@ class ClientController extends Controller
         if ($client->save()) {
             return response()->json(['success' => true, 'message' => 'Safely saved to database']);
         }
+
         return response()->json(['success' => false, 'message' => 'We couldn\'t save the resource']);
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  integer $id
      * @return Response
      */
     public function show($id)
@@ -61,28 +69,33 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
 
         return response()->json(['success' => true, 'client' => $client]);
-    }
+
+    }//end show()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param  Request $request
+     * @param  integer $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  integer $id
      * @return Response
      */
     public function destroy($id)
     {
-        //
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

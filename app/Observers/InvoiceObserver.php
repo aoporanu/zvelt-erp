@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 class InvoiceObserver
 {
+
+
     /**
      * Handle the Invoice "creating" event.
      *
@@ -16,8 +18,9 @@ class InvoiceObserver
      */
     public function creating(Invoice $invoice)
     {
-        
-    }
+
+    }//end creating()
+
 
     /**
      * Handle the Invoice "created" event.
@@ -29,10 +32,15 @@ class InvoiceObserver
     public function created(Invoice $invoice)
     {
         DB::update(
-            'update clients set ceil = ceil - ? where id = ?', 
-            [$invoice->total, $invoice->client->id]
+            'update clients set ceil = ceil - ? where id = ?',
+            [
+                $invoice->total,
+                $invoice->client->id,
+            ]
         );
-    }
+
+    }//end created()
+
 
     /**
      * Handle the Invoice "updated" event.
@@ -43,8 +51,9 @@ class InvoiceObserver
      */
     public function updated(Invoice $invoice)
     {
-        //
-    }
+
+    }//end updated()
+
 
     /**
      * Handle the Invoice "deleted" event.
@@ -55,8 +64,9 @@ class InvoiceObserver
      */
     public function deleted(Invoice $invoice)
     {
-        //
-    }
+
+    }//end deleted()
+
 
     /**
      * Handle the Invoice "restored" event.
@@ -67,8 +77,9 @@ class InvoiceObserver
      */
     public function restored(Invoice $invoice)
     {
-        //
-    }
+
+    }//end restored()
+
 
     /**
      * Handle the Invoice "force deleted" event.
@@ -79,6 +90,8 @@ class InvoiceObserver
      */
     public function forceDeleted(Invoice $invoice)
     {
-        //
-    }
-}
+
+    }//end forceDeleted()
+
+
+}//end class

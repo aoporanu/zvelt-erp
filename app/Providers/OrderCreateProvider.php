@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 class OrderCreateProvider extends ServiceProvider
 {
+
+
     /**
      * Register services.
      *
@@ -13,8 +15,9 @@ class OrderCreateProvider extends ServiceProvider
      */
     public function register()
     {
-        //
-    }
+
+    }//end register()
+
 
     /**
      * Bootstrap services.
@@ -23,8 +26,12 @@ class OrderCreateProvider extends ServiceProvider
      */
     public function boot()
     {
-        Order::creating(function($model) {
-            
-        });
-    }
-}
+        Order::creating(
+            function ($model) {
+            }
+        );
+
+    }//end boot()
+
+
+}//end class

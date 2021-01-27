@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UnitOfMeasureFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = UnitOfMeasure::class;
+
 
     /**
      * Define the model's default state.
@@ -21,8 +23,9 @@ class UnitOfMeasureFactory extends Factory
      */
     public function definition()
     {
-        return [
-            'name' => 'L'
-        ];
-    }
-}
+        return ['name' => 'L'];
+
+    }//end definition()
+
+
+}//end class

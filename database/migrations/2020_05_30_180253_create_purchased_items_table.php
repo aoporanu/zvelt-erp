@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePurchasedItemsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreatePurchasedItemsTable extends Migration
     public function up()
     {
         Schema::create(
-            'purchased_items', function (Blueprint $table) {
+            'purchased_items',
+            function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('purchase_id');
                 $table->unsignedBigInteger('item_id');
@@ -28,15 +31,16 @@ class CreatePurchasedItemsTable extends Migration
                 $table->double('total');
                 // $table->unsignedBigInteger('location_id');
                 // $table->unsignedBigInteger('warehouse_id');
-
                 $table->foreign('purchase_id')->references('id')->on('purchases')->onDelete('cascade');
                 $table->foreign('item_id')->references('id')->on('items');
-                
+
                 $table->timestamps();
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -46,5 +50,8 @@ class CreatePurchasedItemsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('purchased_items');
-    }
-}
+
+    }//end down()
+
+
+}//end class

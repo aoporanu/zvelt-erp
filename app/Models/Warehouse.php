@@ -15,13 +15,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Warehouse extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'name'
+        'id',
+        'name',
     ];
 
     /**
@@ -29,25 +31,25 @@ class Warehouse extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * Get the Locations for the Warehouse.
@@ -55,6 +57,8 @@ class Warehouse extends Model
     public function locations()
     {
         return $this->hasMany(Location::class);
-    }
 
-}
+    }//end locations()
+
+
+}//end class

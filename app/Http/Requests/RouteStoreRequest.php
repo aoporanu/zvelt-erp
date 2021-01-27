@@ -6,15 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class RouteStoreRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
+     * @return boolean
      */
     public function authorize()
     {
         return true;
-    }
+
+    }//end authorize()
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -26,7 +30,10 @@ class RouteStoreRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'shop_id' => 'required|exists:shops,id',
-            'payment' => 'required|min:1'
+            'payment' => 'required|min:1',
         ];
-    }
-}
+
+    }//end rules()
+
+
+}//end class

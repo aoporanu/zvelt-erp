@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateWarehousesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateWarehousesTable extends Migration
     public function up()
     {
         Schema::create(
-            'warehouses', function (Blueprint $table) {
+            'warehouses',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('name');
                 $table->timestamp('created_at')->nullable();
@@ -22,7 +25,9 @@ class CreateWarehousesTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -31,6 +36,9 @@ class CreateWarehousesTable extends Migration
      */
     public function down()
     {
-//        Schema::drop('warehouses');
-    }
-}
+        // Schema::drop('warehouses');
+
+    }//end down()
+
+
+}//end class

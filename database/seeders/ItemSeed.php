@@ -7,6 +7,8 @@ use App\Models\Item;
 
 class ItemSeed extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class ItemSeed extends Seeder
     public function run()
     {
         Item::factory()->times(500)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

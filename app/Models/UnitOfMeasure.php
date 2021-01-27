@@ -12,4 +12,4 @@ use Illuminate\Database\Eloquent\Model;
 class UnitOfMeasure extends Model
 {
     use HasFactory;
-}
+}//end class

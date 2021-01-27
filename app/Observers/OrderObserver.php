@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Receipt;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\Invoice;
@@ -9,12 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class OrderObserver
 {
+
+
     /**
      * Handle the Order "creating" event.
      *
      * @param Order $order The order object
      *
-     * @return void
+     * @return bool
      */
     public function creating(Order $order)
     {
@@ -23,17 +26,28 @@ class OrderObserver
             ->where('agent_id', $order->agent_id)
             ->where('created_at', Carbon::now()->subDays(3))
             ->first();
-        if (!is_null($invoice) 
-            && $order->payment_due > 0 
-            && $order->client->ceil < $order->total 
+        if ($invoice) {
+            $receipt = (new Receipt)
+                ->where('shop_id', $order->shop_id)
+                ->where('invoice_id', $invoice->id)
+                ->where('amount', $invoice->total)
+                ->count();
+        }
+        if (!is_null($invoice)
+            && $order->payment_due > 0
+            && $order->client->ceil < $order->total
             && is_null($order->derrogated)
+            && (isset($receipt) && $receipt < 1)
         ) {
             return false;
         }
+
         $order->status = 'pending';
 
         return true;
-    }
+
+    }//end creating()
+
 
     /**
      * Handle the Order "created" event.
@@ -45,7 +59,8 @@ class OrderObserver
     public function created(Order $order)
     {
 
-    }
+    }//end created()
+
 
     /**
      * Handle the Order "updated" event.
@@ -56,8 +71,9 @@ class OrderObserver
      */
     public function updated(Order $order)
     {
-        //
-    }
+
+    }//end updated()
+
 
     /**
      * Handle the Order "deleted" event.
@@ -69,11 +85,18 @@ class OrderObserver
     public function deleted(Order $order)
     {
         DB::insert(
-            'insert into logs(level, message, created_at, updated_at) 
-            values (?, ?, ?, ?)', 
-            ["warning", "Order $order->uid has been deleted by user $order->user_id at " . Carbon::now(), Carbon::now(), Carbon::now()]
+            'insert into logs(level, message, created_at, updated_at)
+            values (?, ?, ?, ?)',
+            [
+                'warning',
+                "Order $order->uid has been deleted by user $order->user_id at ".Carbon::now(),
+                Carbon::now(),
+                Carbon::now(),
+            ]
         );
-    }
+
+    }//end deleted()
+
 
     /**
      * Handle the Order "restored" event.
@@ -84,8 +107,9 @@ class OrderObserver
      */
     public function restored(Order $order)
     {
-        //
-    }
+
+    }//end restored()
+
 
     /**
      * Handle the Order "force deleted" event.
@@ -97,14 +121,17 @@ class OrderObserver
     public function forceDeleted(Order $order)
     {
         DB::insert(
-            'insert into logs(level, message, created_at, updated_at) 
-            values (?, ?, ?, ?)', 
-            ["highrisk", 
-            "Order $order->uid has been permadeleted by user $order->user_id at " . 
-            Carbon::now(), 
-            Carbon::now(), 
-            Carbon::now()
+            'insert into logs(level, message, created_at, updated_at)
+            values (?, ?, ?, ?)',
+            [
+                'highrisk',
+                "Order $order->uid has been permadeleted by user $order->user_id at ".Carbon::now(),
+                Carbon::now(),
+                Carbon::now(),
             ]
         );
-    }
-}
+
+    }//end forceDeleted()
+
+
+}//end class

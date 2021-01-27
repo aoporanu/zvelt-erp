@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 
 class ReceiptSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -13,5 +15,8 @@ class ReceiptSeeder extends Seeder
     public function run()
     {
         factory(Receipt::class, 10)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

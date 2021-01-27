@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class AlterInvoiceAddAgent extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,12 +16,15 @@ class AlterInvoiceAddAgent extends Migration
     public function up()
     {
         Schema::table(
-            'invoices', function (Blueprint $table) {
+            'invoices',
+            function (Blueprint $table) {
                 // $table->bigInteger('agent_id');
                 // $table->foreign('agent_id')->references('id')->on('users');
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -29,9 +34,13 @@ class AlterInvoiceAddAgent extends Migration
     public function down()
     {
         Schema::table(
-            'invoices', function (Blueprint $table) {
-//                $table->dropForeign('agent_id');
+            'invoices',
+            function (Blueprint $table) {
+                // $table->dropForeign('agent_id');
             }
         );
-    }
-}
+
+    }//end down()
+
+
+}//end class

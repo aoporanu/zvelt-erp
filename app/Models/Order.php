@@ -17,21 +17,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @method static paginate()
- * @method static insert($all)
- * @method static inRandomOrder()
- * @method static factory()
- * @method static find(int $int)
+ * @method   static paginate()
+ * @method   static insert($all)
+ * @method   static inRandomOrder()
+ * @method   static factory()
+ * @method   static find(int $int)
  * @property Client       client
  * @property mixed        total
  * @property mixed        payment_due
  * @property mixed        agent_id
  * @property mixed        client_id
  * @property mixed|string status
+ * @property mixed derrogated
  */
 class Order extends Model
 {
     use SoftDeletes, HasFactory, HasEvents;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -48,7 +50,7 @@ class Order extends Model
         'warehouse_id',
         'agent_id',
         'payment_due',
-        'status'
+        'status',
     ];
 
     /**
@@ -56,25 +58,25 @@ class Order extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * Get the OrderItems for the Order.
@@ -82,7 +84,9 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
-    }
+
+    }//end orderItems()
+
 
     /**
      * @return BelongsTo
@@ -90,14 +94,16 @@ class Order extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
-    }
+
+    }//end client()
+
 
     public static function storeOrder(Request $request): JsonResponse
     {
         DB::beginTransaction();
         try {
-            /** 
-             * @noinspection PhpUndefinedFieldInspection 
+            /*
+             * @noinspection PhpUndefinedFieldInspection
              */
             $order = OrderService::createOrder(
                 $request->items,
@@ -107,17 +113,24 @@ class Order extends Model
             );
             // 3. if all's good, then proceed to ...
             return response()->json(
-                ['status' => true,
-                'order' => new OrderResource($order)],
+                [
+                    'status' => true,
+                    'order'  => new OrderResource($order),
+                ],
                 201
             );
         } catch (Exception $ex) {
             DB::rollBack();
             return response()->json(
-                ['success' => false,
-                'Could not commit your transaction ' . $ex->getMessage()],
+                [
+                    'success' => false,
+                    'Could not commit your transaction '.$ex->getMessage()
+                ],
                 500
             );
-        }
-    }
-}
+        }//end try
+
+    }//end storeOrder()
+
+
+}//end class

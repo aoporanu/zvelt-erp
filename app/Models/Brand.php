@@ -12,4 +12,4 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Brand extends Model
 {
     use HasFactory;
-}
+}//end class

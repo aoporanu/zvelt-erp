@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class PackagingSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class PackagingSeeder extends Seeder
     public function run()
     {
         Packaging::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

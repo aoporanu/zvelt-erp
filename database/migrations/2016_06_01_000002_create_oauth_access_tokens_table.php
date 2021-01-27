@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOauthAccessTokensTable extends Migration
 {
+
     /**
      * The database schema.
      *
      * @var \Illuminate\Database\Schema\Builder
      */
     protected $schema;
+
 
     /**
      * Create a new migration instance.
@@ -21,7 +23,9 @@ class CreateOauthAccessTokensTable extends Migration
     public function __construct()
     {
         $this->schema = Schema::connection($this->getConnection());
-    }
+
+    }//end __construct()
+
 
     /**
      * Run the migrations.
@@ -31,7 +35,8 @@ class CreateOauthAccessTokensTable extends Migration
     public function up()
     {
         $this->schema->create(
-            'oauth_access_tokens', function (Blueprint $table) {
+            'oauth_access_tokens',
+            function (Blueprint $table) {
                 $table->string('id', 100)->primary();
                 $table->unsignedBigInteger('user_id')->nullable()->index();
                 $table->unsignedBigInteger('client_id');
@@ -42,7 +47,9 @@ class CreateOauthAccessTokensTable extends Migration
                 $table->dateTime('expires_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -52,7 +59,9 @@ class CreateOauthAccessTokensTable extends Migration
     public function down()
     {
         $this->schema->dropIfExists('oauth_access_tokens');
-    }
+
+    }//end down()
+
 
     /**
      * Get the migration connection name.
@@ -62,5 +71,8 @@ class CreateOauthAccessTokensTable extends Migration
     public function getConnection()
     {
         return config('passport.storage.database.connection');
-    }
-}
+
+    }//end getConnection()
+
+
+}//end class
