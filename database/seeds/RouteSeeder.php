@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 
 class RouteSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -13,5 +15,8 @@ class RouteSeeder extends Seeder
     public function run()
     {
         factory(Route::class, 10)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

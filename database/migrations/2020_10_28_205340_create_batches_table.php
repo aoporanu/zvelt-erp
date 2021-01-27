@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBatchesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateBatchesTable extends Migration
     public function up()
     {
         Schema::create(
-            'batches', function (Blueprint $table) {
+            'batches',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->integer('from_qty')->default(0);
@@ -24,7 +27,9 @@ class CreateBatchesTable extends Migration
                 $table->integer('qty');
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -34,5 +39,8 @@ class CreateBatchesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('batches');
-    }
-}
+
+    }//end down()
+
+
+}//end class

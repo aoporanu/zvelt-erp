@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class InvoiceSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class InvoiceSeeder extends Seeder
     public function run()
     {
         Invoice::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBrandsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateBrandsTable extends Migration
     public function up()
     {
         Schema::create(
-            'brands', function (Blueprint $table) {
+            'brands',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('identifier');
@@ -23,7 +26,9 @@ class CreateBrandsTable extends Migration
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -33,5 +38,8 @@ class CreateBrandsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('brands');
-    }
-}
+
+    }//end down()
+
+
+}//end class

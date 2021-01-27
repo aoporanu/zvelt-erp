@@ -1,0 +1,6 @@
+{
+    "editor.wordWrap": "wordWrapColumn",
+    "html.format.wrapLineLength": 80,
+    "bladeFormatter.format.wrapAttributes": "force-aligned",
+    "bladeFormatter.format.wrapLineLength": 80
+}

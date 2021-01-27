@@ -11,15 +11,18 @@ class LocationFactory extends Factory
 
     protected $model = Location::class;
 
+
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
-            'type' => $this->faker->word(),
+            'name'         => $this->faker->name(),
+            'type'         => $this->faker->word(),
             'warehouse_id' => function () {
                 return Warehouse::inRandomOrder()->first()->id;
-            }
+            },
         ];
-    }
-}
 
+    }//end definition()
+
+
+}//end class

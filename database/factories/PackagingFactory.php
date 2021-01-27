@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class PackagingFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Packaging::class;
+
 
     /**
      * Define the model's default state.
@@ -24,5 +26,8 @@ class PackagingFactory extends Factory
         return [
             'name' => $this->faker->word(),
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

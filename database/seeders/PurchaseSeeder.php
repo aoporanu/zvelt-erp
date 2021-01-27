@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class PurchaseSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class PurchaseSeeder extends Seeder
     public function run()
     {
         Purchase::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 
 class OrderItemSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -13,5 +15,8 @@ class OrderItemSeeder extends Seeder
     public function run()
     {
         factory(OrderItem::class, 10)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

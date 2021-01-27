@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WarehouseFactory extends Factory
 {
+
     protected $model = Warehouse::class;
+
 
     public function definition()
     {
         return [
-            'name' => $this->faker->name()
+            'name' => $this->faker->name(),
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

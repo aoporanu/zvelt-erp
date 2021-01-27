@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateClientsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateClientsTable extends Migration
     public function up()
     {
         Schema::create(
-            'clients', function (Blueprint $table) {
+            'clients',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('identifier');
                 $table->string('name');
@@ -31,7 +34,9 @@ class CreateClientsTable extends Migration
                 $table->double('ceil')->default(0.00);
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -41,5 +46,8 @@ class CreateClientsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('clients');
-    }
-}
+
+    }//end down()
+
+
+}//end class

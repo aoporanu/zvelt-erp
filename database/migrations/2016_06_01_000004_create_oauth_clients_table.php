@@ -6,12 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOauthClientsTable extends Migration
 {
+
     /**
      * The database schema.
      *
      * @var \Illuminate\Database\Schema\Builder
      */
     protected $schema;
+
 
     /**
      * Create a new migration instance.
@@ -21,7 +23,9 @@ class CreateOauthClientsTable extends Migration
     public function __construct()
     {
         $this->schema = Schema::connection($this->getConnection());
-    }
+
+    }//end __construct()
+
 
     /**
      * Get the migration connection name.
@@ -31,7 +35,9 @@ class CreateOauthClientsTable extends Migration
     public function getConnection()
     {
         return config('passport.storage.database.connection');
-    }
+
+    }//end getConnection()
+
 
     /**
      * Run the migrations.
@@ -41,7 +47,8 @@ class CreateOauthClientsTable extends Migration
     public function up()
     {
         $this->schema->create(
-            'oauth_clients', function (Blueprint $table) {
+            'oauth_clients',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('user_id')->nullable()->index();
                 $table->string('name');
@@ -54,7 +61,9 @@ class CreateOauthClientsTable extends Migration
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -64,5 +73,8 @@ class CreateOauthClientsTable extends Migration
     public function down()
     {
         $this->schema->dropIfExists('oauth_clients');
-    }
-}
+
+    }//end down()
+
+
+}//end class

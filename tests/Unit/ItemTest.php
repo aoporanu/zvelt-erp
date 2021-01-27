@@ -18,11 +18,13 @@ class ItemTest extends TestCase
 {
     use RefreshDatabase;
 
+
     public function setUp(): void
     {
         parent::setUp();
         $this->withoutExceptionHandling();
-    }
+    }//end setUp()
+
 
     /**
      * @test
@@ -32,7 +34,8 @@ class ItemTest extends TestCase
         $this->creates_models();
 
         $this->assertDatabaseCount('items', 1);
-    }
+    }//end test_item_can_be_created()
+
 
     /**
      * @test
@@ -48,7 +51,8 @@ class ItemTest extends TestCase
         PurchasedItems::factory()->create();
 
         $this->assertDatabaseCount('purchases', 1);
-    }
+    }//end test_item_can_be_purchased()
+
 
     /**
      *
@@ -61,5 +65,5 @@ class ItemTest extends TestCase
         Supplier::factory()->create();
         Category::factory()->create();
         Item::factory()->create();
-    }
-}
+    }//end creates_models()
+}//end class

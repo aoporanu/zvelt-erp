@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateLocationsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateLocationsTable extends Migration
     public function up()
     {
         Schema::create(
-            'locations', function (Blueprint $table) {
+            'locations',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('name');
                 $table->string('type');
@@ -23,7 +26,9 @@ class CreateLocationsTable extends Migration
                 $table->timestamp('updated_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -32,6 +37,9 @@ class CreateLocationsTable extends Migration
      */
     public function down()
     {
-//        Schema::drop('locations');
-    }
-}
+        // Schema::drop('locations');
+
+    }//end down()
+
+
+}//end class

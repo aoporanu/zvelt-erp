@@ -15,11 +15,14 @@ use App\Models\Warehouse;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
+
+
     /**
      * A basic unit test example.
      *
@@ -36,7 +39,8 @@ class PurchaseTest extends TestCase
         $this->assertDatabaseCount('categories', 1);
         $this->assertDatabaseCount('items', 1);
         $this->assertDatabaseCount('purchases', 1);
-    }
+    }//end test_purchase_can_be_created()
+
 
     /**
      * @test
@@ -49,20 +53,19 @@ class PurchaseTest extends TestCase
         Location::factory()->create();
         PurchasedItems::factory()->times(10)->create();
         $this->assertDatabaseCount('purchased_items', 10);
-        $purchase = (new Purchase)->first();
-        $warehouse = (new Warehouse)->first();
+        $purchase   = (new Purchase)->first();
+        $warehouse  = (new Warehouse)->first();
         $warehouse1 = (new Warehouse)->factory()->create();
-        DB::table('locations')
-            ->insert(
-                [
-                    'name' => 'OTB1',
-                    'type' => 'asd',
-                    'warehouse_id' => $warehouse1->id,
-                    'created_at'    => now(),
-                    'updated_at'    => now()
-                ]
-            );
-        $location = Location::first();
+        DB::table('locations')->insert(
+            [
+                'name'         => 'OTB1',
+                'type'         => 'asd',
+                'warehouse_id' => $warehouse1->id,
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]
+        );
+        $location  = Location::first();
         $location1 = (new Location)->where(
             'id',
             '!=',
@@ -81,7 +84,8 @@ class PurchaseTest extends TestCase
         );
 
         $this->assertCount(5, $purchase1);
-    }
+    }//end it_tests_if_a_purchased_item_can_be_moved_between_locations()
+
 
     /**
      * @test
@@ -92,34 +96,31 @@ class PurchaseTest extends TestCase
         (new Purchase)->factory()->create();
         (new Warehouse)->factory()->create();
         (new Location)->factory()->create();
-        $count = 5;
+        $count  = 5;
         $toMove = 6;
         PurchasedItems::factory()->times($count)->create();
-        $purchase = (new Purchase)->inRandomOrder()->first();
-        $warehouse = (new Warehouse)->inRandomOrder()->first();
+        $purchase   = (new Purchase)->inRandomOrder()->first();
+        $warehouse  = (new Warehouse)->inRandomOrder()->first();
         $warehouse1 = (new Warehouse)->factory()->create();
-        DB::table('locations')
-            ->insert(
-                [
-                    'name' => 'OTB1',
-                    'type' => 'asd',
-                    'warehouse_id' => $warehouse1->id,
-                    'created_at'    => now(),
-                    'updated_at'    => now()
-                ]
-            );
-        $location = (new Location)->where(
+        DB::table('locations')->insert(
+            [
+                'name'         => 'OTB1',
+                'type'         => 'asd',
+                'warehouse_id' => $warehouse1->id,
+                'created_at'   => now(),
+                'updated_at'   => now(),
+            ]
+        );
+        $location       = (new Location)->where(
             'id',
             1
-        )
-            ->first();
-        $location1 = (new Location)->where(
+        )->first();
+        $location1      = (new Location)->where(
             'id',
             '!=',
             1
-        )
-            ->first();
-        $result = $purchase->moveStock(
+        )->first();
+        $result         = $purchase->moveStock(
             $warehouse,
             $warehouse1,
             $location,
@@ -129,7 +130,8 @@ class PurchaseTest extends TestCase
         $purchasedItems = PurchasedItems::all();
         $this->assertNotEquals(count($purchasedItems), $toMove);
         $this->assertFalse($result);
-    }
+    }//end it_tests_if_return_is_false_if_there_are_fewer_rows_in_the_purchasedItems_table_than_count()
+
 
     public function test_logs_updated_when_purchase_is_deleted()
     {
@@ -143,8 +145,36 @@ class PurchaseTest extends TestCase
         $purchase->delete();
         $logs = DB::select('select * from logs');
         $this->assertDatabaseCount('logs', 4);
+    }//end test_logs_updated_when_purchase_is_deleted()
+
+
+    public function test_if_nir_not_generated_if_purchase_printed()
+    {
+        $this->create_models();
+        (new Purchase)->factory()->create();
+        $this->assertDatabaseCount('purchases', 1);
+        $purchase = (new Purchase)->first();
+        $purchase->printed = true;
+        $response = $purchase->generateNir($purchase)->getData();
+        $this->assertNotTrue($response->success);
+        $this->assertEqualsIgnoringCase("This NIR has already been generated", $response->message);
     }
 
+
+    public function test_if_nir_gets_printed()
+    {
+        $this->create_models();
+        (new Purchase)->factory()->create();
+        $this->assertDatabaseCount('purchases', 1);
+        $purchase = (new Purchase)->first();
+        $response = $purchase->generateNir($purchase)->getData();
+        $this->assertTrue($response->success);
+        $this->assertObjectNotHasAttribute('message', $response);
+    }
+
+    /**
+     *
+     */
     private function create_models()
     {
         Brand::factory()->create();
@@ -153,5 +183,5 @@ class PurchaseTest extends TestCase
         Supplier::factory()->create();
         Category::factory()->create();
         Item::factory()->create();
-    }
-}
+    }//end create_models()
+}//end class

@@ -19,7 +19,12 @@ class Visitation extends Model
      * @var array
      */
     protected $fillable = [
-        'id', 'user_id', 'shop_id', 'day_of_week', 'payment', 'ceil'
+        'id',
+        'user_id',
+        'shop_id',
+        'day_of_week',
+        'payment',
+        'ceil',
     ];
 
     /**
@@ -27,25 +32,24 @@ class Visitation extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
 
 
-}
+}//end class

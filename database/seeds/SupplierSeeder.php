@@ -5,6 +5,8 @@ use Illuminate\Database\Seeder;
 
 class SupplierSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -13,5 +15,8 @@ class SupplierSeeder extends Seeder
     public function run()
     {
         Supplier::factory()->times(30)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

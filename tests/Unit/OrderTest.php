@@ -17,6 +17,7 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
+
     /**
      * @test
      */
@@ -35,23 +36,24 @@ class OrderTest extends TestCase
         $invoice->save();
         $order = Order::create(
             [
-                'uid'           => 123-1121231,
-                'user_id'       => User::first()->id,
-                'agent_id'      => User::first()->id,
-                'client_id'     => Client::first()->id,
-                'shop_id'       => Shop::first()->id,
-                'deliverer_id'  => User::first()->id,
-                'total'         => '326.29',
-                'weight'        => '32.93',
-                'warehouse_id'  => Warehouse::first()->id,
-                'deleted_at'    => null,
-                'payment_due'   => 7,
-                'derrogated'    => 0,
+                'uid'          => (123 - 1121231),
+                'user_id'      => User::first()->id,
+                'agent_id'     => User::first()->id,
+                'client_id'    => Client::first()->id,
+                'shop_id'      => Shop::first()->id,
+                'deliverer_id' => User::first()->id,
+                'total'        => '326.29',
+                'weight'       => '32.93',
+                'warehouse_id' => Warehouse::first()->id,
+                'deleted_at'   => null,
+                'payment_due'  => 7,
+                'derrogated'   => 0,
             ]
         );
         // $this->assertFalse($order);
         $this->assertDatabaseCount('orders', 1);
-    }
+    }//end it_tests_if_an_order_can_be_created_with_outstanding_invoice()
+
 
     /**
      * @test
@@ -67,7 +69,8 @@ class OrderTest extends TestCase
         $this->assertDatabaseCount('orders', 1);
         $order = (new Order)->first();
         $this->assertEquals('pending', $order->status);
-    }
+    }//end it_tests_if_an_order_status_changes()
+
 
     /**
      * @test
@@ -85,14 +88,15 @@ class OrderTest extends TestCase
         $this->assertDatabaseCount('orders', 1);
         $invoice->created_at = Carbon::now()->subDays(3);
         $invoice->save();
-        $order = (new Order)->factory()->create();
-        $order->payment_due = 7;
-        $order->derrogated = 1;
+        $order               = (new Order)->factory()->create();
+        $order->payment_due  = 7;
+        $order->derrogated   = 1;
         $order->client->ceil = 0.00;
         $order->save();
         $this->assertEquals(1, $order->derrogated);
         $this->assertDatabaseCount('orders', 2);
-    }
+    }//end it_tests_if_an_order_can_be_created_if_it_is_derrogated()
+
 
     /**
      * @test
@@ -111,7 +115,8 @@ class OrderTest extends TestCase
         $this->assertSoftDeleted('orders', $order->toArray());
         $this->assertDatabaseCount('logs', 1);
         DB::table('logs')->truncate();
-    }
+    }//end it_tests_if_order_is_added_to_logs_on_deletion()
+
 
     /**
      * @test
@@ -129,5 +134,5 @@ class OrderTest extends TestCase
         $order->forceDelete();
         $this->assertDeleted('orders', $order->toArray());
         $this->assertDatabaseCount('logs', 2);
-    }
-}
+    }//end it_tests_if_order_can_be_forcefully_deleted()
+}//end class

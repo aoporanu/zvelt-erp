@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateItems extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateItems extends Migration
     public function up()
     {
         Schema::create(
-            'items', function (Blueprint $table) {
+            'items',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('vat');
@@ -32,7 +35,8 @@ class CreateItems extends Migration
             }
         );
 
-    }
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -42,5 +46,8 @@ class CreateItems extends Migration
     public function down()
     {
         Schema::dropIfExists('items');
-    }
-}
+
+    }//end down()
+
+
+}//end class

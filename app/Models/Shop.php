@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 class Shop extends Model
 {
     use SoftDeletes, HasFactory;
+
     protected $fillable = [
         'name',
         'identifier',
@@ -24,8 +25,9 @@ class Shop extends Model
         'client_id',
         'city',
         'state',
-        'country'
+        'country',
     ];
+
 
     /**
      * @return mixed
@@ -33,22 +35,31 @@ class Shop extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
-    }
+
+    }//end client()
+
 
     public function discounts()
     {
         return $this->belongsToMany(Discount::class)->withPivot(['value', 'brand_id']);
-    }
+
+    }//end discounts()
+
 
     public function hasDiscountFor(Item $item)
     {
         $discount = DB::select('select id,value from discount_shop where shop_id=? and brand_id=?', [$this->id, $item->brand->id]);
         // dd($discount);
         return 0;
-    }
+
+    }//end hasDiscountFor()
+
 
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
-    }
-}
+
+    }//end invoices()
+
+
+}//end class

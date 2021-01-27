@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class WarehouseSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class WarehouseSeeder extends Seeder
     public function run()
     {
         Warehouse::factory()->timex(100)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

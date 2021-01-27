@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ReceiptFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Receipt::class;
+
 
     /**
      * Define the model's default state.
@@ -25,13 +27,16 @@ class ReceiptFactory extends Factory
     public function definition()
     {
         return [
-            'ledger_id' => function () {
+            'ledger_id'    => function () {
                 return Ledger::inRandomOrder()->first()->id;
             },
-            'shop_id' => function () {
+            'shop_id'      => function () {
                 return Shop::inRandomOrder()->first()->id;
             },
-            'observations' => 'asd'
+            'observations' => 'asd',
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

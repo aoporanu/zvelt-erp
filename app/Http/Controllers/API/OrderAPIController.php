@@ -15,60 +15,78 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class OrderAPIController extends Controller
 {
+
     private $orderService;
+
 
     /**
      * OrderAPIController constructor.
+     *
      * @param OrderService $orderService
      */
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
-    }
+
+    }//end __construct()
+
 
     public function index(): OrderCollection
     {
         return new OrderCollection(Order::paginate());
-    }
+
+    }//end index()
+
 
     public function show(Order $order): OrderResource
     {
         return new OrderResource($order->load(['orderItems']));
-    }
+
+    }//end show()
+
 
     public function store(OrderStoreRequest $request)
     {
         return Order::storeOrder($request);
-    }
+
+    }//end store()
+
 
     public function update(OrderUpdateRequest $request, Order $order): OrderResource
     {
         $order->update($request->all());
 
         return new OrderResource($order);
-    }
+
+    }//end update()
+
 
     public function destroy(Request $request, Order $order): \Illuminate\Http\Response
     {
         $order->delete();
 
         return response()->noContent();
-    }
+
+    }//end destroy()
+
 
     public function latest(): \Illuminate\Http\JsonResponse
     {
         return response()->json(['status' => true, 'order' => Order::latest()->first()]);
-    }
 
-    private function checkIfOrderIsProcessable(Order $order) 
+    }//end latest()
+
+
+    private function checkIfOrderIsProcessable(Order $order)
     {
         if ($order->state !== 'processable') {
-            return response()
-                ->json(['success' => false, 'message' => 'The order is not processable'], 400);
+            return response()->json(['success' => false, 'message' => 'The order is not processable'], 400);
         }
-        
+
         return true;
-    }
+
+    }//end checkIfOrderIsProcessable()
+
 
     public function process(Order $order)
     {
@@ -77,19 +95,21 @@ class OrderAPIController extends Controller
         }
 
         $order->load('orderItems');
-        $pdf = PDF::loadView('pdf.preorder', compact('order'))
-            ->setPaper('a4', 'portrait');
+        $pdf = PDF::loadView('pdf.preorder', compact('order'))->setPaper('a4', 'portrait');
         if (!file_exists('orders')) {
             mkdir('orders');
         }
-        $pdf->save('orders/order_' . $order->id . '.pdf');
-        return response()->json(['order' => new OrderResource($order), 'extra' => '/api/orders/save/' . $order->id], 200);
-    }
+
+        $pdf->save('orders/order_'.$order->id.'.pdf');
+        return response()->json(['order' => new OrderResource($order), 'extra' => '/api/orders/save/'.$order->id], 200);
+
+    }//end process()
+
 
     /**
      * This method should be used only when the order has been
      * processed by the warehouse.
-     * 
+     *
      * @author Adi Oporanu
      */
     public function save(Order $order)
@@ -97,10 +117,13 @@ class OrderAPIController extends Controller
         if ($this->checkIfOrderIsProcessable($order)) {
             return $this->checkIfOrderIsProcessable($order);
         }
+
         $order->state = 'invoiceable';
         $order->save();
 
-        return response()
-            ->json(['success' => true, 'message' => 'The order is invoiceable now', 'order' => new OrderResource($order)]);
-    }
-}
+        return response()->json(['success' => true, 'message' => 'The order is invoiceable now', 'order' => new OrderResource($order)]);
+
+    }//end save()
+
+
+}//end class

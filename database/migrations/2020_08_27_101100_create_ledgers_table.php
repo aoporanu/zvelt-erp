@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateLedgersTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateLedgersTable extends Migration
     public function up()
     {
         Schema::create(
-            'ledgers', function (Blueprint $table) {
+            'ledgers',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('type');
                 $table->unsignedBigInteger('user_id');
@@ -24,7 +27,9 @@ class CreateLedgersTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -34,5 +39,8 @@ class CreateLedgersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('ledgers');
-    }
-}
+
+    }//end down()
+
+
+}//end class

@@ -24,11 +24,13 @@ use Illuminate\Support\Facades\DB;
  * @method static create(array $all)
  * @method static inRandomOrder()
  * @method static factory()
- * @method static factory()
+ * @method first()
+ * @property mixed printed
  */
 class Purchase extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,12 +38,12 @@ class Purchase extends Model
      */
     protected $fillable = [
         'id',
-        'purchase_id', 
-        'value', 
-        'total', 
-        'discount', 
-        'for_invoice', 
-        'supplier_id'
+        'purchase_id',
+        'value',
+        'total',
+        'discount',
+        'for_invoice',
+        'supplier_id',
     ];
 
     /**
@@ -49,43 +51,45 @@ class Purchase extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * @return BelongsToMany
      */
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class)
-            ->withPivot(
-                'purchase_id', 
-                'item_id', 
-                'purchase_cost', 
-                'selling_cost', 
-                'lot', 
-                'location_id', 
-                'qty', 
-                'warehouse_id'
-            );
-    }
+        return $this->belongsToMany(Item::class)->withPivot(
+            'purchase_id',
+            'item_id',
+            'purchase_cost',
+            'selling_cost',
+            'lot',
+            'location_id',
+            'qty',
+            'warehouse_id'
+        );
+
+    }//end items()
+
 
     /**
      * @return HasMany
@@ -93,7 +97,9 @@ class Purchase extends Model
     public function purchasedItems(): HasMany
     {
         return $this->hasMany(PurchasedItems::class);
-    }
+
+    }//end purchasedItems()
+
 
     /**
      * @return BelongsTo
@@ -101,44 +107,47 @@ class Purchase extends Model
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(
-            Supplier::class, 
-            'supplier_id', 
+            Supplier::class,
+            'supplier_id',
             'id'
         );
-    }
+
+    }//end supplier()
+
 
     /**
      * @param Request $request
      *
-     * @return bool
+     * @return boolean
      */
     public static function storeOrder(Request $request): bool
     {
-        $total = 0;
-        $purchase = Purchase::create($request->all());
+        $total    = 0;
+        $purchase = self::create($request->all());
         foreach ($request->get('purchase_items') as $item) {
-            $batch = Batch::firstOrNew($item['lot']);
+            $batch      = Batch::firstOrNew($item['lot']);
             $batch->qty = $item['qty'];
             if ($purchase->discount != 0) {
-                $item['selling_cost'] = $item['selling_cost'] * ((100 - $purchase->discount) / 100);
-                $item['purchase_cost'] = $item['purchase_cost'] * ((100 - $purchase->discount) / 100);
+                $item['selling_cost']  = ($item['selling_cost'] * ((100 - $purchase->discount) / 100));
+                $item['purchase_cost'] = ($item['purchase_cost'] * ((100 - $purchase->discount) / 100));
             }
-            $total += (float)$item['selling_cost'] * $item['qty'];
+
+            $total += ((float) $item['selling_cost'] * $item['qty']);
             // compute total from the PurchasedItems total + purchased_item quantity
             $purchasedItem = new PurchasedItems(
                 [
-                    'purchase_id' => $item['purchase_id'],
-                    'item_id' => $item['item_id'],
+                    'purchase_id'   => $item['purchase_id'],
+                    'item_id'       => $item['item_id'],
                     'purchase_cost' => $item['purchase_cost'],
-                    'selling_cost' => $item['selling_cost'],
-                    'qty' => $item['qty'],
-                    'total' => $item['selling_cost'] * $item['qty'],
-                    'lot' => $batch->name,
-                    'location_id' => $item['location_id'],
-                    'warehouse_id' => $item['warehouse_id']
+                    'selling_cost'  => $item['selling_cost'],
+                    'qty'           => $item['qty'],
+                    'total'         => ($item['selling_cost'] * $item['qty']),
+                    'lot'           => $batch->name,
+                    'location_id'   => $item['location_id'],
+                    'warehouse_id'  => $item['warehouse_id'],
                 ]
             );
-            $inventory = PurchasedItems::where('item_id', $item['item_id'])->first();
+            $inventory     = PurchasedItems::where('item_id', $item['item_id'])->first();
             if ($inventory) {
                 // get original qty
                 $batch->from_qty = $inventory->qty;
@@ -150,50 +159,53 @@ class Purchase extends Model
             } else {
                 $purchase->purchasedItems()->save($purchasedItem);
             }
-        }
+        }//end foreach
+
         $purchase->total = $total;
         if ($purchase->save()) {
             // (new self)::generateNir();
             return true;
         }
+
         return false;
-    }
+
+    }//end storeOrder()
+
 
     /**
-     * @param Purchase $purchase
+     * @param  Purchase $purchase
      * @return JsonResponse
      */
     public function generateNir(Purchase $purchase): JsonResponse
     {
-        if ($purchase->printed) {
+        if ($purchase->printed === true) {
             return response()->json(['success' => false, 'message' => 'This NIR has already been generated']);
         }
+
         try {
             $purchase->load('purchasedItems');
             $pdf = PDF::loadView('pdf.invoice', compact('purchase'))->setPaper('a4', 'landscape');
             if (!file_exists('nir')) {
                 mkdir('nir');
             }
+
             $purchase->printed = true;
             $purchase->save();
-            $pdf->save('nir/nir_' . $purchase->id . '.pdf');
+            $pdf->save('nir/nir_'.$purchase->id.'.pdf');
             return response()->json(['success' => true]);
         } catch (Exception $ex) {
-            return response()->json(['success' => false, 'message' => 'There was an error ' . $ex->getMessage()], 400);
+            return response()->json(['success' => false, 'message' => 'There was an error '.$ex->getMessage()], 400);
         }
-    }
 
-    function transfer(Warehouse $where, Location $location)
-    {
-        // if ()
-    }
+    }//end generateNir()
+
 
     /**
      * @param Warehouse $fromWH
      * @param Warehouse $toWH
      * @param Location  $fromLocation
      * @param Location  $toLocation
-     * @param int       $count
+     * @param integer   $count
      *
      * @return false
      */
@@ -202,15 +214,13 @@ class Purchase extends Model
         Warehouse $toWH,
         Location $fromLocation,
         Location $toLocation,
-        int $count = 1
+        int $count=1
     ) {
-        $purchasedItems = DB::table('purchased_items')
-            ->where('warehouse_id', $fromWH->id)
-            ->where('location_id', $fromLocation->id)
-            ->get();
+        $purchasedItems = DB::table('purchased_items')->where('warehouse_id', $fromWH->id)->where('location_id', $fromLocation->id)->get();
         if (count($purchasedItems) < $count) {
             return false;
         }
+
         DB::update(
             'UPDATE
                 purchased_items
@@ -221,12 +231,18 @@ class Purchase extends Model
                 WHERE warehouse_id = ?
                 AND location_id = ?
                 LIMIT ?
-    )', [$toWH->id, $toLocation->id, $fromWH->id, $fromLocation->id, $count]);
+    )',
+            [
+                $toWH->id,
+                $toLocation->id,
+                $fromWH->id,
+                $fromLocation->id,
+                $count,
+            ]
+        );
         return true;
-    }
 
-    public function doNir()
-    {
+    }//end moveStock()
 
-    }
-}
+
+}//end class

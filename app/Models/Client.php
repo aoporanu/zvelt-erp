@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * @method static inRandomOrder()
- * @method static where(string $string, $id)
+ * @method   static inRandomOrder()
+ * @method   static where(string $string, $id)
  * @property mixed ceil
  */
 class Client extends Model
@@ -27,8 +27,9 @@ class Client extends Model
         'city',
         'state',
         'country',
-        'ceil'
+        'ceil',
     ];
+
 
     /**
      * @return HasMany
@@ -36,5 +37,8 @@ class Client extends Model
     public function shops()
     {
         return $this->hasMany(Shop::class);
-    }
-}
+
+    }//end shops()
+
+
+}//end class

@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateReceiptsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateReceiptsTable extends Migration
     public function up()
     {
         Schema::create(
-            'receipts', function (Blueprint $table) {
+            'receipts',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('ledger_id')->nullable();
                 $table->foreign('ledger_id')->references('id')->on('ledgers');
@@ -27,7 +30,9 @@ class CreateReceiptsTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -37,5 +42,8 @@ class CreateReceiptsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('receipts');
-    }
-}
+
+    }//end down()
+
+
+}//end class

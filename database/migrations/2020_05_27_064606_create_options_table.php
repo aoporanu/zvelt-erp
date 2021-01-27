@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOptionsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateOptionsTable extends Migration
     public function up()
     {
         Schema::create(
-            'options', function (Blueprint $table) {
+            'options',
+            function (Blueprint $table) {
                 $table->id();
                 $table->timestamps();
                 $table->string('name');
@@ -23,7 +26,9 @@ class CreateOptionsTable extends Migration
                 $table->foreign('item_id')->references('id')->on('items');
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -33,5 +38,8 @@ class CreateOptionsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('options');
-    }
-}
+
+    }//end down()
+
+
+}//end class

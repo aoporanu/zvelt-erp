@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUnitOfMeasuresTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,14 +16,17 @@ class CreateUnitOfMeasuresTable extends Migration
     public function up()
     {
         Schema::create(
-            'unit_of_measures', function (Blueprint $table) {
+            'unit_of_measures',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->integer('parent_id')->nullable();
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -31,5 +36,8 @@ class CreateUnitOfMeasuresTable extends Migration
     public function down()
     {
         Schema::dropIfExists('unit_of_measures');
-    }
-}
+
+    }//end down()
+
+
+}//end class

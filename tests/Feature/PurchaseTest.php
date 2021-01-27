@@ -18,6 +18,7 @@ class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
+
     /**
      * A basic feature test example.
      *
@@ -25,11 +26,11 @@ class PurchaseTest extends TestCase
      */
     public function test_transfer()
     {
-        $user = (new User)->factory()->create();
-        $response = $this->be($user)
-            ->get('/purchase/transfer');
+        $user     = (new User)->factory()->create();
+        $response = $this->be($user)->get('/purchase/transfer');
         $response->assertStatus(200);
-    }
+    }//end test_transfer()
+
 
     public function test_do_transfer()
     {
@@ -44,17 +45,17 @@ class PurchaseTest extends TestCase
         (new Warehouse)->factory()->create();
         (new Location)->factory()->create();
         (new Location)->factory()->create();
-        $response = $this->actingAs($user)
-            ->withSession(['user' => 'adyopo'])
-            ->post(
-                '/purchase/transfer', 
-                [
-                    'item_id' => 1, 
-                    'from_warehouse' => 1, 'from_location' => 1,
-                    'to_warehouse' => 1, 'to_location' => 2
-                ]
-            );
+        $response = $this->actingAs($user)->withSession(['user' => 'adyopo'])->post(
+            '/purchase/transfer',
+            [
+                'item_id'        => 1,
+                'from_warehouse' => 1,
+                'from_location'  => 1,
+                'to_warehouse'   => 1,
+                'to_location'    => 2,
+            ]
+        );
             Log::info('response', [$response]);
             $response->assertStatus(302);
-    }
-}
+    }//end test_do_transfer()
+}//end class

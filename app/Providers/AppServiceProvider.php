@@ -12,6 +12,8 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+
     /**
      * Register any application services.
      *
@@ -20,7 +22,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Invoice::observe(InvoiceObserver::class);
-    }
+
+    }//end register()
+
 
     /**
      * Bootstrap any application services.
@@ -32,5 +36,8 @@ class AppServiceProvider extends ServiceProvider
         Order::observe(OrderObserver::class);
         Invoice::observe(InvoiceObserver::class);
         Purchase::observe(PurchaseObserver::class);
-    }
-}
+
+    }//end boot()
+
+
+}//end class

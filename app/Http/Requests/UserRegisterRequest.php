@@ -6,15 +6,19 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UserRegisterRequest extends FormRequest
 {
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
-     * @return bool
+     * @return boolean
      */
     public function authorize()
     {
         return true;
-    }
+
+    }//end authorize()
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,8 +28,11 @@ class UserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users'
+            'name'  => 'required',
+            'email' => 'required|email|unique:users',
         ];
-    }
-}
+
+    }//end rules()
+
+
+}//end class

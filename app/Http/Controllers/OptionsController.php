@@ -10,6 +10,8 @@ use Illuminate\Http\Response;
 
 class OptionsController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +24,11 @@ class OptionsController extends Controller
         if ($options->count() < 1) {
             return response()->json(['success' => false, 'message' => 'You have no options in the database']);
         }
+
         return response()->json(['success' => true, 'options' => $options]);
-    }
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,21 +37,24 @@ class OptionsController extends Controller
      */
     public function create()
     {
-        //
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request $request
      * @return JsonResponse
      */
     public function store(Request $request)
     {
-        $option = Option::create([
-            'name' => $request->get('name'),
-            'item_id' => $request->get('item_id')
-        ]);
+        $option = Option::create(
+            [
+                'name'    => $request->get('name'),
+                'item_id' => $request->get('item_id'),
+            ]
+        );
 
         if (!$option) {
             return response()->json(['success' => false, 'message' => 'Could not save option']);
@@ -58,16 +66,19 @@ class OptionsController extends Controller
             if ($values->count() < 1) {
                 $values = OptionValue::create(['name' => $value->name]);
             }
+
             $option->values()->save($values);
         }
 
         return response()->json(['success' => true, 'message' => 'Option saved successfully']);
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  integer $id
      * @return JsonResponse
      */
     public function show($id)
@@ -79,24 +90,27 @@ class OptionsController extends Controller
         }
 
         return response()->json(['success' => true, 'option' => $option]);
-    }
+
+    }//end show()
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  integer $id
      * @return Response
      */
     public function edit($id)
     {
-        //
-    }
+
+    }//end edit()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param  Request $request
+     * @param  integer $id
      * @return JsonResponse
      */
     public function update(Request $request, $id)
@@ -107,13 +121,16 @@ class OptionsController extends Controller
         if ($option->save()) {
             return response()->json(['success' => true, 'message' => 'The selected option has been updated', 'option' => $option]);
         }
+
         return response()->json(['success' => false, 'message' => 'The option could not be updated']);
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  integer $id
      * @return JsonResponse
      */
     public function destroy($id)
@@ -123,5 +140,8 @@ class OptionsController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Option could not be deleted']);
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

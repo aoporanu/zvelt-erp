@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SupplierFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Supplier::class;
+
 
     /**
      * Define the model's default state.
@@ -22,9 +24,12 @@ class SupplierFactory extends Factory
     public function definition()
     {
         return [
-            'uid' => $this->faker->word(),
-            'name' => $this->faker->name(),
-            'description' => $this->faker->realText()
+            'uid'         => $this->faker->word(),
+            'name'        => $this->faker->name(),
+            'description' => $this->faker->realText(),
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

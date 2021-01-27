@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BrandFactory extends Factory
 {
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
     protected $model = Brand::class;
+
 
     /**
      * Define the model's default state.
@@ -22,10 +24,13 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            'name'          => $this->faker->word(),
-            'identifier'    => $this->faker->unique()->creditCardNumber(),
-            'address'       => $this->faker->address(),
-            'cui'           => $this->faker->unique()->creditCardNumber()
+            'name'       => $this->faker->word(),
+            'identifier' => $this->faker->unique()->creditCardNumber(),
+            'address'    => $this->faker->address(),
+            'cui'        => $this->faker->unique()->creditCardNumber(),
         ];
-    }
-}
+
+    }//end definition()
+
+
+}//end class

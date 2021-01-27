@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class UserSeeder extends Seeder
     public function run()
     {
         User::factory()->times(40)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

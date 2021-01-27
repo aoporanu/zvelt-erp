@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class InvoicesController extends Controller
 {
+
+
     public function __contstruct()
     {
-        # code...
-    }
+        // code...
+
+    }//end __contstruct()
+
 
     /**
      * Display a listing of the resource.
@@ -19,8 +23,9 @@ class InvoicesController extends Controller
      */
     public function index()
     {
-        //
-    }
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -29,58 +34,63 @@ class InvoicesController extends Controller
      */
     public function create()
     {
-        //
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Invoice  $invoice
+     * @param  \App\Invoice $invoice
      * @return \Illuminate\Http\Response
      */
     public function show(Invoice $invoice)
     {
-        //
-    }
+
+    }//end show()
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Invoice  $invoice
+     * @param  \App\Invoice $invoice
      * @return \Illuminate\Http\Response
      */
     public function edit(Invoice $invoice)
     {
-        //
-    }
+
+    }//end edit()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Invoice  $invoice
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Invoice             $invoice
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Invoice  $invoice
+     * @param  \App\Invoice $invoice
      * @return \Illuminate\Http\Response
      */
     public function destroy(Invoice $invoice)
@@ -88,5 +98,8 @@ class InvoicesController extends Controller
         $invoice->delete();
 
         return response()->noContent();
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

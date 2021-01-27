@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateRoutesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateRoutesTable extends Migration
     public function up()
     {
         Schema::create(
-            'routes', function (Blueprint $table) {
+            'routes',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('shop_id');
@@ -23,10 +26,11 @@ class CreateRoutesTable extends Migration
                 $table->double('ceil')->default(0);
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
-
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -36,5 +40,8 @@ class CreateRoutesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('routes');
-    }
-}
+
+    }//end down()
+
+
+}//end class

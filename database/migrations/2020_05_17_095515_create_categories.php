@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCategories extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateCategories extends Migration
     public function up()
     {
         Schema::create(
-            'categories', function (Blueprint $table) {
+            'categories',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->text('description');
@@ -22,7 +25,9 @@ class CreateCategories extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -32,5 +37,8 @@ class CreateCategories extends Migration
     public function down()
     {
         Schema::dropIfExists('categories');
-    }
-}
+
+    }//end down()
+
+
+}//end class

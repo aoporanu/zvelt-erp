@@ -5,7 +5,7 @@
  *
  * @category ERP
  * @package  SapKiller
- * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @author   Squiz Pty Ltd <products@squiz.net>
  * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @link     http://zvelt-erp.com
  */
@@ -37,21 +37,25 @@ use DB;
  */
 class PurchasesController extends Controller
 {
-    protected $service;
+
+    protected $_service;
+
 
     /**
      * PurchasesController constructor.
      *
-     * @param PurchaseService $service the service which
-     *                                 implements the
-     *                                 methods that
-     *                                 operate on the Purchase model
+     * @param PurchaseService $_service the _service which
+     *                                  implements the
+     *                                  methods that
+     *                                  operate on the Purchase model
      */
-    public function __construct(PurchaseService $service)
+    public function __construct(PurchaseService $_service)
     {
         $this->middleware('auth');
-        $this->service = $service;
-    }
+        $this->_service = $_service;
+
+    }//end __construct()
+
 
     /**
      * Display a listing of the resource.
@@ -62,14 +66,17 @@ class PurchasesController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            return $this->service->loadIndex();
+            return $this->_service->loadIndex();
         }
+
         $pageTitle = 'Purchases index';
         return view(
             'purchases.index',
             compact('pageTitle')
         );
-    }
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -78,21 +85,23 @@ class PurchasesController extends Controller
      */
     public function create()
     {
-        $arrayForView = $this->service->loadViewArray();
-        $pageTitle = 'Create purchase';
-        $lastPurchaseId = (int)Purchase::latest()->first()->purchase_id;
+        $arrayForView   = $this->_service->loadViewArray();
+        $pageTitle      = 'Create purchase';
+        $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
         return view(
             'purchases.create',
             [
-                'suppliers'         => $arrayForView['suppliers'],
-                'items'             => $arrayForView['items'],
-                'pageTitle'         => $pageTitle,
-                'warehouses'        => $arrayForView['warehouses'],
-                'locations'         => $arrayForView['locations'],
-                'lastPurchaseId'    => $lastPurchaseId ? $lastPurchaseId+=1 : '1'
+                'suppliers'      => $arrayForView['suppliers'],
+                'items'          => $arrayForView['items'],
+                'pageTitle'      => $pageTitle,
+                'warehouses'     => $arrayForView['warehouses'],
+                'locations'      => $arrayForView['locations'],
+                'lastPurchaseId' => $lastPurchaseId ? $lastPurchaseId += 1 : '1',
             ]
         );
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
@@ -104,9 +113,11 @@ class PurchasesController extends Controller
      */
     public function store(PurchaseStoreRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
+        $this->_service->create($request->validated());
         return redirect()->back()->with('message', 'The purchase has been created');
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
@@ -119,7 +130,9 @@ class PurchasesController extends Controller
     {
         $pageTitle = 'Showing purchased item';
         return view('purchases.show', compact('purchase', 'pageTitle'));
-    }
+
+    }//end show()
+
 
     /**
      * Show the form for editing the specified resource.
@@ -131,7 +144,9 @@ class PurchasesController extends Controller
     public function edit(Purchase $purchase)
     {
         return view('purchases.edit', compact('purchase'));
-    }
+
+    }//end edit()
+
 
     /**
      * Update the specified resource in storage.
@@ -144,12 +159,16 @@ class PurchasesController extends Controller
     public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
     {
         if ($purchase->update($request->validated())) {
-            return redirect()->back()
-                ->with('message', 'The Purchase has been updated');
+            return redirect()->back()->with(
+                'message',
+                'The Purchase has been updated'
+            );
         }
 
         return redirect()->back()->with('message', 'Could not update the model');
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
@@ -164,11 +183,13 @@ class PurchasesController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'The purchase was deleted'
+                    'message' => 'The purchase was deleted',
                 ]
             );
         }
-    }
+
+    }//end destroy()
+
 
     /**
      * Load the stocks for a given product
@@ -178,12 +199,15 @@ class PurchasesController extends Controller
     public function stocks()
     {
         if (request()->ajax()) {
-            return $this->service->loadStocks();
+            return $this->_service->loadStocks();
         }
+
         $pageTitle = 'Company stocks';
 
         return view('purchases.stocks', compact('pageTitle'));
-    }
+
+    }//end stocks()
+
 
     /**
      * Move stock between locations
@@ -196,29 +220,34 @@ class PurchasesController extends Controller
     {
         $pageTitle = 'Transfer stocks';
         $purchasedItem->load('location', 'warehouse');
-        $items = DB::select('select id, name from items');
+        $items      = DB::select('select id, name from items');
         $warehouses = DB::select('select id, name from warehouses');
-        $locations = DB::select('select id, name from locations');
+        $locations  = DB::select('select id, name from locations');
         return view(
             'purchases.transfer',
             [
-                'items'         => $items,
-                'warehouses'    => $warehouses,
-                'locations'     => $locations,
-                'pageTitle'     => $pageTitle
+                'items'      => $items,
+                'warehouses' => $warehouses,
+                'locations'  => $locations,
+                'pageTitle'  => $pageTitle,
             ]
         );
-    }
+
+    }//end transfer()
+
 
     /**
      * Do the actual transfer
      *
      * @param TransferPurchaseRequest $request The form request that needs to be validated
      *
-     * @return bool
+     * @return boolean
      */
     public function doTransfer(TransferPurchaseRequest $request)
     {
-        return $this->service->transfer($request->validated());
-    }
-}
+        return $this->_service->transfer($request->validated());
+
+    }//end doTransfer()
+
+
+}//end class

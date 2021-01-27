@@ -14,15 +14,21 @@ use Illuminate\Http\Request;
 
 class InvoiceAPIController extends Controller
 {
+
+
     public function index()
     {
         return new InvoiceCollection(Invoice::paginate());
-    }
+
+    }//end index()
+
 
     public function show(Invoice $invoice)
     {
         return new InvoiceResource($invoice->load(['invoiceItems', 'invoiceClient']));
-    }
+
+    }//end show()
+
 
     public function store(InvoiceStoreRequest $request)
     {
@@ -30,29 +36,40 @@ class InvoiceAPIController extends Controller
         $order = Order::where('id', $request->order_id);
         switch ($order->status) {
             case 'processed':
-                return response()->json(['success' => false, 'message' => 'The order has already been processed']);
+            return response()->json(['success' => false, 'message' => 'The order has already been processed']);
+
                 break;
             case 'rejected':
-                return response()->json(['success' => false, 'message' => 'The order has been rejected by someone at the office']);
+            return response()->json(['success' => false, 'message' => 'The order has been rejected by someone at the office']);
+
                 break;
             case 'cancelled':
-                return response()->json(['success' => false, 'message' => 'The order has been cancelled by the client']);
+            return response()->json(['success' => false, 'message' => 'The order has been cancelled by the client']);
+
                 break;
         }
+
         return new InvoiceResource(Invoice::create($request->all()));
-    }
+
+    }//end store()
+
 
     public function update(InvoiceUpdateRequest $request, Invoice $invoice)
     {
         $invoice->update($request->all());
 
         return new InvoiceResource($invoice);
-    }
+
+    }//end update()
+
 
     public function destroy(Request $request, Invoice $invoice)
     {
         $invoice->delete();
 
         return response()->noContent();
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

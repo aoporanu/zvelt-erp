@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePurchasesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreatePurchasesTable extends Migration
     public function up()
     {
         Schema::create(
-            'purchases', function (Blueprint $table) {
+            'purchases',
+            function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->string('purchase_id');
                 $table->string('value');
@@ -24,9 +27,12 @@ class CreatePurchasesTable extends Migration
                 $table->timestamp('created_at')->nullable();
                 $table->timestamp('updated_at')->nullable();
                 $table->timestamp('deleted_at')->nullable();
+                $table->boolean('printed')->default(false);
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -36,5 +42,8 @@ class CreatePurchasesTable extends Migration
     public function down()
     {
         Schema::drop('purchases');
-    }
-}
+
+    }//end down()
+
+
+}//end class

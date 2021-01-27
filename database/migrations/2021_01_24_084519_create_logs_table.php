@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateLogsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -13,13 +15,18 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('level', 10);
-            $table->string('message', 500);
-            $table->timestamps();
-        });
-    }
+        Schema::create(
+            'logs',
+            function (Blueprint $table) {
+                $table->id();
+                $table->string('level', 10);
+                $table->string('message', 500);
+                $table->timestamps();
+            }
+        );
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -29,5 +36,8 @@ class CreateLogsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('logs');
-    }
-}
+
+    }//end down()
+
+
+}//end class

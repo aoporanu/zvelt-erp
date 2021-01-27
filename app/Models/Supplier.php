@@ -16,13 +16,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Supplier extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'id', 'uid', 'name', 'description'
+        'id',
+        'uid',
+        'name',
+        'description',
     ];
 
     /**
@@ -30,25 +34,25 @@ class Supplier extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * @return HasMany
@@ -56,7 +60,9 @@ class Supplier extends Model
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
-    }
+
+    }//end items()
+
 
     /**
      * @return HasMany
@@ -64,5 +70,8 @@ class Supplier extends Model
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);
-    }
-}
+
+    }//end purchases()
+
+
+}//end class

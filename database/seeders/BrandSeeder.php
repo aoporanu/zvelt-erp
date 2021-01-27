@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class BrandSeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class BrandSeeder extends Seeder
     public function run()
     {
         Brand::factory()->times(30)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateInvoicesTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,7 +16,8 @@ class CreateInvoicesTable extends Migration
     public function up()
     {
         Schema::create(
-            'invoices', function (Blueprint $table) {
+            'invoices',
+            function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('client_id');
                 $table->unsignedBigInteger('user_id');
@@ -28,7 +31,9 @@ class CreateInvoicesTable extends Migration
                 $table->timestamp('deleted_at')->nullable();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -38,5 +43,8 @@ class CreateInvoicesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('invoices');
-    }
-}
+
+    }//end down()
+
+
+}//end class

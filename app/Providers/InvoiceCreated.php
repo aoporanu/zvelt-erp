@@ -14,6 +14,7 @@ class InvoiceCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
     /**
      * Create a new event instance.
      *
@@ -21,8 +22,9 @@ class InvoiceCreated
      */
     public function __construct()
     {
-        //
-    }
+
+    }//end __construct()
+
 
     /**
      * Get the channels the event should broadcast on.
@@ -32,5 +34,8 @@ class InvoiceCreated
     public function broadcastOn()
     {
         return new PrivateChannel('channel-name');
-    }
-}
+
+    }//end broadcastOn()
+
+
+}//end class

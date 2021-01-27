@@ -6,6 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateOrderItemsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,18 +16,20 @@ class CreateOrderItemsTable extends Migration
     public function up()
     {
         // Schema::create('order_items', function (Blueprint $table) {
-        //     $table->bigIncrements('id');
-        //     $table->unsignedBigInteger('order_id')->nullable();
-        //     $table->foreign('order_id')->references('id')->on('orders');
-        //     $table->unsignedBigInteger('item_id');
-        //     $table->foreign('item_id')->references('id')->on('items');
-        //     $table->string('qty');
-        //     $table->unsignedBigInteger('location_id');
-        //     $table->foreign('location_id')->references('id')->on('locations');
-        //     $table->timestamp('created_at')->nullable();
-        //     $table->timestamp('updated_at')->nullable();
+        // $table->bigIncrements('id');
+        // $table->unsignedBigInteger('order_id')->nullable();
+        // $table->foreign('order_id')->references('id')->on('orders');
+        // $table->unsignedBigInteger('item_id');
+        // $table->foreign('item_id')->references('id')->on('items');
+        // $table->string('qty');
+        // $table->unsignedBigInteger('location_id');
+        // $table->foreign('location_id')->references('id')->on('locations');
+        // $table->timestamp('created_at')->nullable();
+        // $table->timestamp('updated_at')->nullable();
         // });
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -35,5 +39,8 @@ class CreateOrderItemsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('order_items');
-    }
-}
+
+    }//end down()
+
+
+}//end class

@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
+
+
     /**
      * Run the database seeds.
      *
@@ -15,5 +17,8 @@ class CategorySeeder extends Seeder
     public function run()
     {
         Category::factory()->times(50)->create();
-    }
-}
+
+    }//end run()
+
+
+}//end class

@@ -2,10 +2,10 @@
 /**
  * The ledger file
  * php version ^8.0
- * 
+ *
  * @category ERP
  * @package  Sap-Killer
- * @author   Adi Oporanu <aoporanu@gmail.com>
+ * @author   Squiz Pty Ltd <products@squiz.net>
  * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @link     http://zvelt-erp.com
  */
@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * The ledger model
- * 
+ *
  * @category ERP
  * @package  Sap-Killer
  * @author   Adi Oporanu <aoporanu@gmail.com>
@@ -30,13 +30,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Ledger extends Model
 {
     use SoftDeletes, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'type', 'user_id', 'balance'
+        'type',
+        'user_id',
+        'balance',
     ];
 
     /**
@@ -44,44 +47,48 @@ class Ledger extends Model
      *
      * @var array
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-    protected $hidden = [
-        //
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
-    protected $casts = [
-        //
-    ];
+    protected $casts = [];
+
 
     /**
      * Get the Receipts for the Ledger.
-     * 
+     *
      * @return hasMany Receipt(s)
      */
     public function receipts()
     {
         return $this->hasMany(Receipt::class);
-    }
+
+    }//end receipts()
+
 
     /**
      * Belongs to user relationship
-     * 
+     *
      * @return belongsTo User
      */
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
 
-}
+    }//end user()
+
+
+}//end class

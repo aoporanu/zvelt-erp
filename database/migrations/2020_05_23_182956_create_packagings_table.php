@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePackagingsTable extends Migration
 {
+
+
     /**
      * Run the migrations.
      *
@@ -14,13 +16,16 @@ class CreatePackagingsTable extends Migration
     public function up()
     {
         Schema::create(
-            'packagings', function (Blueprint $table) {
+            'packagings',
+            function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->timestamps();
             }
         );
-    }
+
+    }//end up()
+
 
     /**
      * Reverse the migrations.
@@ -30,5 +35,8 @@ class CreatePackagingsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('packagings');
-    }
-}
+
+    }//end down()
+
+
+}//end class
