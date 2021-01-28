@@ -223,10 +223,11 @@ class PurchasesController extends Controller
         $items      = DB::select('select id, name from items');
         $warehouses = DB::select('select id, name from warehouses');
         $locations  = DB::select('select id, name from locations');
+
         return view(
             'purchases.transfer',
             [
-                'items'      => $items,
+                'items'      => json_encode($items),
                 'warehouses' => $warehouses,
                 'locations'  => $locations,
                 'pageTitle'  => $pageTitle,
