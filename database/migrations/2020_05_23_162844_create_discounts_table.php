@@ -21,6 +21,7 @@ class CreateDiscountsTable extends Migration
                 $table->id();
                 $table->string('name');
                 $table->double('amount');
+                $table->integer('type');
                 $table->timestamps();
             }
         );

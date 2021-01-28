@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemDeleteRequest;
 use App\Item;
 use App\Brand;
 use App\Category;
 use App\Packaging;
+use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Services\ItemService;
 use Illuminate\Http\Response;
 use App\Http\Resources\ItemResource;
@@ -17,11 +20,12 @@ use App\Http\Requests\ItemUpdateRequest;
 class ItemController extends Controller
 {
 
-    protected $service;
+    protected ItemService $service;
 
 
     /**
      * ItemController constructor.
+     * @param ItemService $service
      */
     public function __construct(ItemService $service)
     {
@@ -34,8 +38,8 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return View
-     * @throws \Exception
+     * @return Application|Factory|\Illuminate\Contracts\View\View|View
+     * @throws Exception
      */
     public function index()
     {
@@ -49,6 +53,9 @@ class ItemController extends Controller
     }//end index()
 
 
+    /**
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
     public function create()
     {
         $categories = Category::get(['id', 'name']);
@@ -107,9 +114,9 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request The validated request
+     * @param ItemUpdateRequest $request The validated request
      * @param Item $item The item model
-     * 
+     *
      * @return ItemResource
      */
     public function update(ItemUpdateRequest $request, Item $item): ItemResource
@@ -124,12 +131,12 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Request $request
+     * @param  ItemDeleteRequest $request
      * @param  Item    $item
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      */
-    public function destroy(Request $request, Item $item): Response
+    public function destroy(ItemDeleteRequest $request, Item $item): Response
     {
         $item->delete();
 
