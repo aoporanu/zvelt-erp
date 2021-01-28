@@ -41,4 +41,11 @@ class Client extends Model
     }//end shops()
 
 
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'discounts_client')
+            ->as('clientDiscounts');
+    }// end discounts()
+
+
 }//end class
