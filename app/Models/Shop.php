@@ -38,7 +38,9 @@ class Shop extends Model
 
     }//end client()
 
-
+    /**
+     * @return belongsToMany
+     */
     public function discounts()
     {
         return $this->belongsToMany(Discount::class)->withPivot(['value', 'brand_id']);

@@ -12,4 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Brand extends Model
 {
     use HasFactory;
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'brand_discounts')
+            ->withTimestamps()
+            ->withPivot(['discount_type', 'discount_id', 'brand_id']);
+    }
 }//end class
