@@ -33,9 +33,9 @@ class ItemTest extends TestCase
     /**
      * @test
      */
-    public function test_item_can_be_created()
+    public function testItemCanBeCreated()
     {
-        $this->creates_models();
+        $this->createsModels();
 
         $this->assertDatabaseCount('items', 1);
     }//end test_item_can_be_created()
@@ -44,10 +44,10 @@ class ItemTest extends TestCase
     /**
      * @test
      */
-    public function test_item_can_be_purchased()
+    public function testItemCanBePurchased()
     {
         $this->withoutExceptionHandling();
-        $this->creates_models();
+        $this->createsModels();
         Supplier::factory()->create();
         Purchase::factory()->create();
         Warehouse::factory()->create();
@@ -58,10 +58,13 @@ class ItemTest extends TestCase
     }//end test_item_can_be_purchased()
 
 
-    public function test_item_can_be_deleted()
+    /**
+     * @test
+     */
+    public function testItemCenBeDeleted()
     {
         $this->withoutExceptionHandling();
-        $this->creates_models();
+        $this->createsModels();
         $user = (new User)->factory()->create();
         $user->role = 'admin';
         $this->be($user);
@@ -73,33 +76,47 @@ class ItemTest extends TestCase
         $this->assertDatabaseCount('logs', 1);
     }
 
-    public function test_item_can_have_discounts()
+    /**
+     * @test
+     */
+    public function testItemCanHaveDiscounts()
     {
         $this->withoutExceptionHandling();
-        $this->creates_models();
+        $this->createsModels();
         $item = (new Item)->first();
         Discount::factory()->create();
         $discount = Discount::first();
         DB::insert(
-            'insert into brand_discounts(discount_id, brand_id, discount_type, created_at, updated_at) values(?, ?, ?, ?, ?)', 
+            'insert into brand_discounts(
+                discount_id,
+                brand_id,
+                discount_type,
+                created_at,
+                updated_at
+                ) values(?, ?, ?, ?, ?)',
             [
-                $discount->id, 
-                $item->brand->id, 
-                $discount->type, 
-                Carbon::now(), 
+                $discount->id,
+                $item->brand->id,
+                $discount->type,
+                Carbon::now(),
                 Carbon::now()
             ]
         );
         $discounts = $item->brand->discounts->all();
         $this->assertNotEmpty($discounts);
-        $this->assertDatabaseHas('brand_discounts', ['discount_id' => $discount->id]);
+        $this->assertDatabaseHas(
+            'brand_discounts',
+            [
+                'discount_id' => $discount->id
+            ]
+        );
     }
 
 
     /**
      *
      */
-    private function creates_models(): void
+    private function createsModels(): void
     {
         Brand::factory()->create();
         UnitOfMeasure::factory()->create();

@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\File;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestListenerDefaultImplementation;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\TestHook;
 
-class DatabaseListener implements TestListener
+class DatabaseListener implements TestHook
 {
     use TestListenerDefaultImplementation;
 

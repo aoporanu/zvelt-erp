@@ -69,10 +69,22 @@ class OrderObserver
     public function saved(Order $order)
     {
         $discounts = DB::select(
-            'select * from discounts_order left join discounts on discounts.id = discounts_order.discount_id where order_id = ?', [$order->id]
+            'select * 
+            from discounts_order 
+            left join 
+            discounts on discounts.id = discounts_order.discount_id
+             where order_id = ?', [$order->id]
         );
 
         foreach ($discounts as $discount) {
+            (double)$order->total -= (double)$discount->amount;
+        }
+
+        $clientDiscounts = DB::select(
+            'select * from discounts_client left join discounts on discounts.id = discounts_client.discount_id where client_id = ?', [$order->client->id]
+        );
+
+        foreach ($clientDiscounts as $discount) {
             (double)$order->total -= (double)$discount->amount;
         }
     }
