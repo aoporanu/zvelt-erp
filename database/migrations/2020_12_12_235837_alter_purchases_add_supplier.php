@@ -18,7 +18,7 @@ class AlterPurchasesAddSupplier extends Migration
         Schema::table(
             'purchases',
             function (Blueprint $table) {
-                $table->foreignId('supplier_id')->constrained()->nullable();
+                $table->foreignId('supplier_id')->constrained();
             }
         );
         Schema::table(
