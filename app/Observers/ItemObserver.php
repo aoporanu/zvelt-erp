@@ -16,7 +16,7 @@ class ItemObserver
      */
     public function created(Item $item)
     {
-        //
+        
     }
 
     /**

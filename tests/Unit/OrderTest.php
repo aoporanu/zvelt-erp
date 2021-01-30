@@ -132,9 +132,17 @@ class OrderTest extends TestCase
         (new Discount)->factory()->create();
         $order = Order::first();
         $discount = Discount::first();
-        $order->discounts()->save($discount);
+        DB::insert('insert into discounts_order (order_id, discount_id) values (?, ?)', [$order->id, $discount->id]);
         $order->save();
+        $this->assertDatabaseMissing(
+            'orders', 
+            [
+                'id' => $order->id, 
+                'total' => (double)$order->total - (double)$discount->amount
+            ]
+        );
         $this->assertNotEmpty($order->discounts);
+        $this->assertDatabaseHas('discounts_order', ['order_id' => $order->id]);
     }
 
 

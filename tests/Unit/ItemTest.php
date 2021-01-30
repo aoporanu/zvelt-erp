@@ -80,10 +80,19 @@ class ItemTest extends TestCase
         $item = (new Item)->first();
         Discount::factory()->create();
         $discount = Discount::first();
-        DB::insert('insert into brand_discounts(discount_id, brand_id, discount_type, created_at, updated_at) values(?, ?, ?, ?, ?)', [$discount->id, $item->brand->id, $discount->type, Carbon::now(), Carbon::now()]);
+        DB::insert(
+            'insert into brand_discounts(discount_id, brand_id, discount_type, created_at, updated_at) values(?, ?, ?, ?, ?)', 
+            [
+                $discount->id, 
+                $item->brand->id, 
+                $discount->type, 
+                Carbon::now(), 
+                Carbon::now()
+            ]
+        );
         $discounts = $item->brand->discounts->all();
         $this->assertNotEmpty($discounts);
-
+        $this->assertDatabaseHas('brand_discounts', ['discount_id' => $discount->id]);
     }
 
 
