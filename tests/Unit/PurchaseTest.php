@@ -28,9 +28,9 @@ class PurchaseTest extends TestCase
      *
      * @return void
      */
-    public function test_purchase_can_be_created()
+    public function testPurchaseCanBeCreated()
     {
-        $this->create_models();
+        $this->createModels();
         Purchase::factory()->create();
         $this->assertDatabaseCount('brands', 1);
         $this->assertDatabaseCount('unit_of_measures', 1);
@@ -45,9 +45,9 @@ class PurchaseTest extends TestCase
     /**
      * @test
      */
-    public function it_tests_if_a_purchased_item_can_be_moved_between_locations()
+    public function testIfPurchasedItemCanBeMovedBetweenLocations()
     {
-        $this->create_models();
+        $this->createModels();
         (new Purchase)->factory()->create();
         (new Warehouse)->factory()->create();
         Location::factory()->create();
@@ -90,9 +90,9 @@ class PurchaseTest extends TestCase
     /**
      * @test
      */
-    public function it_tests_if_return_is_false_if_there_are_fewer_rows_in_the_purchasedItems_table_than_count()
+    public function testIfReturnIsFalseIfThereAreFewerRowsInItemsPurchasedTableThanInCollection()
     {
-        $this->create_models();
+        $this->createModels();
         (new Purchase)->factory()->create();
         (new Warehouse)->factory()->create();
         (new Location)->factory()->create();
@@ -133,9 +133,12 @@ class PurchaseTest extends TestCase
     }//end it_tests_if_return_is_false_if_there_are_fewer_rows_in_the_purchasedItems_table_than_count()
 
 
-    public function test_logs_updated_when_purchase_is_deleted()
+    /**
+     * @test
+     */
+    public function testLogsUpdatedWhenPurchaseIsDeleted()
     {
-        $this->create_models();
+        $this->createModels();
         (new Purchase)->factory()->create();
 
         $this->assertDatabaseCount('purchases', 1);
@@ -147,10 +150,12 @@ class PurchaseTest extends TestCase
         $this->assertDatabaseCount('logs', 4);
     }//end test_logs_updated_when_purchase_is_deleted()
 
-
-    public function test_if_nir_not_generated_if_purchase_printed()
+    /**
+     * @test
+     */
+    public function testIfNIRNotGeneratedIfPurchasePrinted()
     {
-        $this->create_models();
+        $this->createModels();
         (new Purchase)->factory()->create();
         $this->assertDatabaseCount('purchases', 1);
         $purchase = (new Purchase)->first();
@@ -160,22 +165,27 @@ class PurchaseTest extends TestCase
         $this->assertEqualsIgnoringCase("This NIR has already been generated", $response->message);
     }
 
-
-    public function test_if_nir_gets_printed()
+    /**
+     * @test
+     */
+    public function testIfNirGetsPrinted()
     {
-        $this->create_models();
+        $this->withoutExceptionHandling();
+
+        $this->createModels();
         (new Purchase)->factory()->create();
         $this->assertDatabaseCount('purchases', 1);
         $purchase = (new Purchase)->first();
         $response = $purchase->generateNir($purchase)->getData();
         $this->assertTrue($response->success);
         $this->assertObjectNotHasAttribute('message', $response);
+        $this->assertFileExists('nir/nir_' . $purchase->id);
     }
 
     /**
      *
      */
-    private function create_models()
+    private function createModels()
     {
         Brand::factory()->create();
         UnitOfMeasure::factory()->create();

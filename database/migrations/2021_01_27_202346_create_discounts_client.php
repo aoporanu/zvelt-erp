@@ -15,6 +15,8 @@ class CreateDiscountsClient extends Migration
     {
         Schema::create('discounts_client', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->constrained();
+            $table->foreignId('discount_id')->constrained();
             $table->timestamps();
         });
     }

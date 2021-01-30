@@ -4,9 +4,9 @@
          bootstrap="vendor/autoload.php"
          colors="true"
 >
-    <listeners>
-        <listener class="Tests\DatabaseListener" />
-    </listeners>
+<!--    <listeners>-->
+<!--        <listener class="Tests\DatabaseListener" />-->
+<!--    </listeners>-->
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
