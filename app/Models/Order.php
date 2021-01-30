@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\DB;
  * @property mixed        client_id
  * @property mixed|string status
  * @property mixed derrogated
+ * @covers Order
  */
 class Order extends Model
 {
@@ -133,4 +134,11 @@ class Order extends Model
     }//end storeOrder()
 
 
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'discounts_order')
+            ->as('discountsOrder');
+    }//end discounts
+
+    
 }//end class

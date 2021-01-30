@@ -8,6 +8,7 @@ use App\Models\Shop;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Client;
+use App\Models\Discount;
 use App\Models\Invoice;
 use App\Models\Warehouse;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,33 @@ class OrderTest extends TestCase
         $this->assertDatabaseCount('logs', 1);
         DB::table('logs')->truncate();
     }//end it_tests_if_order_is_added_to_logs_on_deletion()
+
+
+    public function test_order_can_have_discounts()
+    {
+        // I think the discounts should be more appropiately placed
+        // on the orderItems relationship then on the order itself.
+        $this->withoutExceptionHandling();
+        (new User)->factory()->create();
+        (new Client)->factory()->create();
+        (new Shop)->factory()->create();
+        (new Warehouse)->factory()->create();
+        (new Order)->factory()->create();
+        (new Discount)->factory()->create();
+        $order = Order::first();
+        $discount = Discount::first();
+        DB::insert('insert into discounts_order (order_id, discount_id) values (?, ?)', [$order->id, $discount->id]);
+        $order->save();
+        $this->assertDatabaseMissing(
+            'orders', 
+            [
+                'id' => $order->id, 
+                'total' => (double)$order->total - (double)$discount->amount
+            ]
+        );
+        $this->assertNotEmpty($order->discounts);
+        $this->assertDatabaseHas('discounts_order', ['order_id' => $order->id]);
+    }
 
 
     /**

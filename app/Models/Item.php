@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static firstOrFail(mixed $item_id)
  * @method static get(array)
  * @method static inRandomOrder()
+ * @method first()
  */
 class Item extends Model
 {
