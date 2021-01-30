@@ -177,7 +177,7 @@ class PurchaseTest extends TestCase
         $this->assertDatabaseCount('purchases', 1);
         $purchase = (new Purchase)->first();
         $response = $purchase->generateNir($purchase)->getData();
-        $this->assertJson("['success' => true]", $response);
+        $this->assertJson($response, "['success' => true]");
 //        $this->assertTrue($response->success);
         $this->assertObjectNotHasAttribute('message', $response);
 //        $this->assertFileExists('nir/nir_' . $purchase->id);
