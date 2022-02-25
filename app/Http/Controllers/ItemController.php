@@ -38,10 +38,9 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|\Illuminate\Contracts\View\View|View
      * @throws Exception
      */
-    public function index()
+    public function index(): Factory | View
     {
         if (request()->ajax()) {
             return $this->service->index();
@@ -56,7 +55,7 @@ class ItemController extends Controller
     /**
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function create()
+    public function create(): Factory|View
     {
         $categories = Category::get(['id', 'name']);
         $brands     = Brand::get(['id', 'name']);
@@ -116,8 +115,6 @@ class ItemController extends Controller
      *
      * @param ItemUpdateRequest $request The validated request
      * @param Item $item The item model
-     *
-     * @return ItemResource
      */
     public function update(ItemUpdateRequest $request, Item $item): ItemResource
     {
@@ -143,6 +140,4 @@ class ItemController extends Controller
         return response()->noContent();
 
     }//end destroy()
-
-
 }//end class
