@@ -53,7 +53,7 @@ class ItemFactory extends Factory
                 return Category::inRandomOrder()->first()->id;
             },
             'sku'             => $this->faker->unique()->creditCardNumber(),
-            'weight'          => $this->faker->randomDigit,
+            'weight'          => $this->faker->randomDigitNotNull(),
             'brand_id'        => function () {
                 return Brand::inRandomOrder()->first()->id;
             },
@@ -63,7 +63,7 @@ class ItemFactory extends Factory
             'packaging'       => function () {
                 return Packaging::inRandomOrder()->first()->id;
             },
-            'per_packaging'   => $this->faker->randomDigit,
+            'per_packaging'   => $this->faker->randomDigitNotNull(),
         ];
 
     }//end definition()

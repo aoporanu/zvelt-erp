@@ -38,8 +38,8 @@ class PurchasedItemsFactory extends Factory
             'purchase_cost' => $this->faker->numerify('##.##'),
             'selling_cost'  => $this->faker->numerify('##.##'),
             'total'         => $this->faker->numerify('###.##'),
-            'qty'           => $this->faker->randomDigitNotNull,
-            'vat'           => $this->faker->randomDigitNotNull,
+            'qty'           => $this->faker->randomDigitNotNull(),
+            'vat'           => $this->faker->randomDigitNotNull(),
             'lot'           => $this->faker->numerify('#######'),
         ];
 
