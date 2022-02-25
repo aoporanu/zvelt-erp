@@ -9,7 +9,7 @@ class InvoicesController extends Controller
 {
 
 
-    public function __contstruct()
+    public function __construct()
     {
         // code...
 
@@ -23,7 +23,20 @@ class InvoicesController extends Controller
      */
     public function index()
     {
+      $pageTitle = 'Invoices';
+    if (request()->ajax()) {
+      $model = Invoice::select('*');
+      return Datatables::of($model)
+        ->addIndexColumn()
+        ->addColumn('action', function ($row) {
+          $btn = '<a href="javascript:void" class="edit btn btn-primary btn-sm">View</a>';
 
+          return $btn;
+        })->rawColumns(['action'])->make(true);
+
+    }
+    
+        return view('invoices.index', ['pageTitle' => $pageTitle]);
     }//end index()
 
 
