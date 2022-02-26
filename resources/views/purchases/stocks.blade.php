@@ -17,6 +17,9 @@
         </div>
     </div>
 @endsection
+@section('sidebar')
+@include('partials.admin.sidebar')
+@endsection
 
 @push('scripts')
 <script type="text/javascript">
