@@ -18,7 +18,6 @@ class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
-
     /**
      * A basic feature test example.
      *
@@ -34,7 +33,6 @@ class PurchaseTest extends TestCase
 
     public function test_do_transfer()
     {
-        // $this->withoutExceptionHandling();
         $user = (new User)->factory()->create();
         (new Category)->factory()->create();
         (new Brand)->factory()->create();
