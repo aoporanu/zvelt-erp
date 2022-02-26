@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class LocationStoreRequest extends FormRequest
 {
 
+  protected $errorBag = 'location';
 
     /**
      * Determine if the user is authorized to make this request.

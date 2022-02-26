@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class WarehouseStoreRequest extends FormRequest
 {
 
+  protected $errorBag = 'warehouse';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +17,6 @@ class WarehouseStoreRequest extends FormRequest
     public function authorize()
     {
         return true;
-
     }//end authorize()
 
 
@@ -28,7 +28,6 @@ class WarehouseStoreRequest extends FormRequest
     public function rules()
     {
         return ['name' => 'required|min:2|unique:warehouses,name'];
-
     }//end rules()
 
 
