@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
     {
     Category::factory(100)->create();
     Brand::factory(100)->create();
+    User::factory(100)->create();
         // \App\Models\User::factory(10)->create();
 
     }//end run()
