@@ -311,6 +311,8 @@
             </div>
         </div>
     </div>
+        <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+        {!! Toastr::message() !!}
 </div>
 
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
