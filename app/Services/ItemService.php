@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Item;
+use App\Models\Item;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 
