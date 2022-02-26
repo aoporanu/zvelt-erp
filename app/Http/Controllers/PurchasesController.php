@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Asd
  * php version ^8.0
@@ -9,10 +10,12 @@
  * @license  http://opensource.org/licenses/gpl-license.php  GNU Public License
  * @link     http://zvelt-erp.com
  */
+
 namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Purchase;
+use Illuminate\Contracts\View\View as IlluminateView;
 use Illuminate\View\View;
 use App\Models\PurchasedItems;
 use App\Services\PurchaseService;
@@ -38,222 +41,199 @@ use DB;
 class PurchasesController extends Controller
 {
 
-    protected $_service;
+  protected $_service;
 
 
-    /**
-     * PurchasesController constructor.
-     *
-     * @param PurchaseService $_service the _service which
-     *                                  implements the
-     *                                  methods that
-     *                                  operate on the Purchase model
-     */
-    public function __construct(PurchaseService $_service)
-    {
-        $this->middleware('auth');
-        $this->_service = $_service;
-
-    }//end __construct()
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View|JsonResponse|View
-     * @throws Exception
-     */
-    public function index()
-    {
-        if (request()->ajax()) {
-            return $this->_service->loadIndex();
-        }
-
-        $pageTitle = 'Purchases index';
-        return view(
-            'purchases.index',
-            compact('pageTitle')
-        );
-
-    }//end index()
+  /**
+   * PurchasesController constructor.
+   *
+   * @param PurchaseService $_service the _service which
+   *                                  implements the
+   *                                  methods that
+   *                                  operate on the Purchase model
+   */
+  public function __construct(PurchaseService $_service)
+  {
+    $this->middleware('auth');
+    $this->_service = $_service;
+  } //end __construct()
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|\Illuminate\Contracts\View\View
-     */
-    public function create()
-    {
-        $arrayForView   = $this->_service->loadViewArray();
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View|JsonResponse|View
+   * @throws Exception
+   */
+  public function index()
+  {
+    if (request()->ajax()) {
+      return $this->_service->loadIndex();
+    }
+
+    $pageTitle = 'Purchases index';
+    return view(
+      'purchases.index',
+      compact('pageTitle')
+    );
+  } //end index()
+
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return Application|Factory|\Illuminate\Contracts\View\View
+   */
+  public function create()
+  {
+    $arrayForView   = $this->_service->loadViewArray();
     $pageTitle      = 'Create purchase';
-        $purchaseCount = Purchase::count();
-        if ($purchaseCount) {
-    $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
-  } else {
+    $purchaseCount = Purchase::count();
+    if ($purchaseCount) {
+      $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
+    } else {
       $lastPurchaseId = 1;
     }
-        return view(
-            'purchases.create',
-            [
-                'suppliers'      => $arrayForView['suppliers'],
-                'items'          => $arrayForView['items'],
-                'pageTitle'      => $pageTitle,
-                'warehouses'     => $arrayForView['warehouses'],
-                'locations'      => $arrayForView['locations'],
-                'lastPurchaseId' => $lastPurchaseId ? $lastPurchaseId += 1 : '1',
-            ]
-        );
+    return view(
+      'purchases.create',
+      [
+        'suppliers'      => $arrayForView['suppliers'],
+        'items'          => $arrayForView['items'],
+        'pageTitle'      => $pageTitle,
+        'warehouses'     => $arrayForView['warehouses'],
+        'locations'      => $arrayForView['locations'],
+        'lastPurchaseId' => $lastPurchaseId,
+      ]
+    );
+  } //end create()
 
-    }//end create()
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param PurchaseStoreRequest $request the request object
+   *
+   * @return RedirectResponse
+   * @throws Exception
+   */
+  public function store(PurchaseStoreRequest $request): RedirectResponse
+  {
+    $this->_service->create($request->validated());
+    return redirect()->back()->with('message', 'The purchase has been created');
+  } //end store()
 
+  /**
+   * Display the specified resource.
+   *
+   * @param Purchase $purchase the Purchase object
+   *
+   * @return Application|Factory|View
+   */
+  public function show(Purchase $purchase)
+  {
+    $pageTitle = 'Showing purchased item';
+    return view('purchases.show', compact('purchase', 'pageTitle'));
+  } //end show()
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param PurchaseStoreRequest $request the request object
-     *
-     * @return RedirectResponse
-     * @throws Exception
-     */
-    public function store(PurchaseStoreRequest $request): RedirectResponse
-    {
-        $this->_service->create($request->validated());
-        return redirect()->back()->with('message', 'The purchase has been created');
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param Purchase $purchase the Purchase object
+   *
+   * @return Application|Factory|\Illuminate\Contracts\View\View
+   */
+  public function edit(Purchase $purchase): Application|Factory|IlluminateView
+  {
+    return view('purchases.edit', compact('purchase'));
+  } //end edit()
 
-    }//end store()
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param PurchaseUpdateRequest $request  request sent to the update method
+   * @param Purchase              $purchase the Purchase object
+   *
+   * @return RedirectResponse
+   */
+  public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
+  {
+    if ($purchase->update($request->validated())) {
+      return redirect()->back()->with(
+        'message',
+        'The Purchase has been updated'
+      );
+    }
 
+    return redirect()->back()->with('message', 'Could not update the model');
+  } //end update()
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Purchase $purchase the Purchase object
-     *
-     * @return Application|Factory|View
-     */
-    public function show(Purchase $purchase)
-    {
-        $pageTitle = 'Showing purchased item';
-        return view('purchases.show', compact('purchase', 'pageTitle'));
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param Purchase $purchase the Purchase object
+   *
+   * @return JsonResponse
+   */
+  public function destroy(Purchase $purchase): JsonResponse
+  {
+    if (Purchase::destroy($purchase)) {
+      return response()->json(
+        [
+          'success' => true,
+          'message' => 'The purchase was deleted',
+        ]
+      );
+    }
+  } //end destroy()
 
-    }//end show()
+  /**
+   * Load the stocks for a given product
+   *
+   * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View
+   */
+  public function stocks(): JsonResponse|Application|Factory|IlluminateView
+  {
+    if (request()->ajax()) {
+      return $this->_service->loadStocks();
+    }
 
+    $pageTitle = 'Company stocks';
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Purchase $purchase the Purchase object
-     *
-     * @return Application|Factory|\Illuminate\Contracts\View\View
-     */
-    public function edit(Purchase $purchase)
-    {
-        return view('purchases.edit', compact('purchase'));
+    return view('purchases.stocks', compact('pageTitle'));
+  } //end stocks()
 
-    }//end edit()
+  /**
+   * Move stock between locations
+   *
+   * @param PurchasedItems $purchasedItem the item which will be transferred
+   *
+   * @return Application|Factory|\Illuminate\Contracts\View\View
+   */
+  public function transfer(PurchasedItems $purchasedItem): Application|Factory|IlluminateView
+  {
+    $pageTitle = 'Transfer stocks';
+    $purchasedItem->load('location', 'warehouse');
+    $items      = DB::select('select id, name from items');
+    $warehouses = DB::select('select id, name from warehouses');
+    $locations  = DB::select('select id, name from locations');
 
+    return view(
+      'purchases.transfer',
+      [
+        'items'      => json_encode($items),
+        'warehouses' => $warehouses,
+        'locations'  => $locations,
+        'pageTitle'  => $pageTitle,
+      ]
+    );
+  } //end transfer()
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param PurchaseUpdateRequest $request  request sent to the update method
-     * @param Purchase              $purchase the Purchase object
-     *
-     * @return RedirectResponse
-     */
-    public function update(PurchaseUpdateRequest $request, Purchase $purchase): RedirectResponse
-    {
-        if ($purchase->update($request->validated())) {
-            return redirect()->back()->with(
-                'message',
-                'The Purchase has been updated'
-            );
-        }
-
-        return redirect()->back()->with('message', 'Could not update the model');
-
-    }//end update()
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Purchase $purchase the Purchase object
-     *
-     * @return JsonResponse
-     */
-    public function destroy(Purchase $purchase): JsonResponse
-    {
-        if (Purchase::destroy($purchase)) {
-            return response()->json(
-                [
-                    'success' => true,
-                    'message' => 'The purchase was deleted',
-                ]
-            );
-        }
-
-    }//end destroy()
-
-
-    /**
-     * Load the stocks for a given product
-     *
-     * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View
-     */
-    public function stocks()
-    {
-        if (request()->ajax()) {
-            return $this->_service->loadStocks();
-        }
-
-        $pageTitle = 'Company stocks';
-
-        return view('purchases.stocks', compact('pageTitle'));
-
-    }//end stocks()
-
-
-    /**
-     * Move stock between locations
-     *
-     * @param PurchasedItems $purchasedItem the item which will be transferred
-     *
-     * @return Application|Factory|\Illuminate\Contracts\View\View
-     */
-    public function transfer(PurchasedItems $purchasedItem)
-    {
-        $pageTitle = 'Transfer stocks';
-        $purchasedItem->load('location', 'warehouse');
-        $items      = DB::select('select id, name from items');
-        $warehouses = DB::select('select id, name from warehouses');
-        $locations  = DB::select('select id, name from locations');
-
-        return view(
-            'purchases.transfer',
-            [
-                'items'      => json_encode($items),
-                'warehouses' => $warehouses,
-                'locations'  => $locations,
-                'pageTitle'  => $pageTitle,
-            ]
-        );
-
-    }//end transfer()
-
-
-    /**
-     * Do the actual transfer
-     *
-     * @param TransferPurchaseRequest $request The form request that needs to be validated
-     *
-     * @return boolean
-     */
-    public function doTransfer(TransferPurchaseRequest $request)
-    {
-        return $this->_service->transfer($request->validated());
-
-    }//end doTransfer()
-
-
+  /**
+   * Do the actual transfer
+   *
+   * @param TransferPurchaseRequest $request The form request that needs to be validated
+   */
+  public function doTransfer(TransferPurchaseRequest $request): bool
+  {
+    dd($request->validated());
+    return $this->_service->transfer($request->validated());
+  } //end doTransfer()
 }//end class
