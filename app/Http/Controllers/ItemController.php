@@ -21,124 +21,117 @@ use Illuminate\Http\JsonResponse;
 class ItemController extends Controller
 {
 
-    protected ItemService $service;
+  protected ItemService $service;
 
 
-    /**
-     * ItemController constructor.
-     * @param ItemService $service
-     */
-    public function __construct(ItemService $service)
-    {
-        $this->service = $service;
-        $this->middleware('auth');
-
-    }//end __construct()
-
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @throws Exception
-     */
-    public function index(): Factory | View | JsonResponse
-    {
-        if (request()->ajax()) {
-            return $this->service->index();
-        }
-
-        $pageTitle = 'Item index';
-        return view('items.index', compact('pageTitle'));
-
-    }//end index()
+  /**
+   * ItemController constructor.
+   * @param ItemService $service
+   */
+  public function __construct(ItemService $service)
+  {
+    $this->service = $service;
+    $this->middleware('auth');
+  } //end __construct()
 
 
-    /**
-     * @return Application|Factory|\Illuminate\Contracts\View\View
-     */
-    public function create(): Factory|View
-    {
-        $categories = Category::get(['id', 'name']);
-        $brands     = Brand::get(['id', 'name']);
-        $packagings = Packaging::get(['id', 'name']);
-        $pageTitle  = 'Create Item';
+  /**
+   * Display a listing of the resource.
+   *
+   * @throws Exception
+   */
+  public function index(): Factory | View | JsonResponse
+  {
+    if (request()->ajax()) {
+      return $this->service->index();
+    }
 
-        return view(
-            'items.create',
-            compact(
-                'categories',
-                'brands',
-                'pageTitle',
-                'packagings'
-            )
-        );
-
-    }//end create()
+    $pageTitle = 'Item index';
+    return view('items.index', compact('pageTitle'));
+  } //end index()
 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  ItemStoreRequest $request
-     * @return ItemResource
-     */
-    public function store(ItemStoreRequest $request): ItemResource
-    {
-        return new ItemResource(
-            Item::create($request->validated())
-        );
+  /**
+   * @return Application|Factory|\Illuminate\Contracts\View\View
+   */
+  public function create(): Factory|View
+  {
+    $categories = Category::get(['id', 'name']);
+    $brands     = Brand::get(['id', 'name']);
+    $packagings = Packaging::get(['id', 'name']);
+    $pageTitle  = 'Create Item';
 
-    }//end store()
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  Item $item
-     * @return ItemResource
-     */
-    public function show(Item $item): ItemResource
-    {
-        return new ItemResource(
-            $item->load(
-                [
-                    'categories',
-                    'brands',
-                ]
-            )
-        );
-
-    }//end show()
+    return view(
+      'items.create',
+      compact(
+        'categories',
+        'brands',
+        'pageTitle',
+        'packagings'
+      )
+    );
+  } //end create()
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param ItemUpdateRequest $request The validated request
-     * @param Item $item The item model
-     */
-    public function update(ItemUpdateRequest $request, Item $item): ItemResource
-    {
-        $item->update($request->validated());
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  ItemStoreRequest $request
+   * @return ItemResource
+   */
+  public function store(ItemStoreRequest $request): ItemResource
+  {
+    return new ItemResource(
+      Item::create($request->validated())
+    );
+  } //end store()
 
-        return new ItemResource($item);
 
-    }//end update()
+  /**
+   * Display the specified resource.
+   *
+   * @param  Item $item
+   * @return ItemResource
+   */
+  public function show(Item $item): ItemResource
+  {
+    return new ItemResource(
+      $item->load(
+        [
+          'categories',
+          'brands',
+        ]
+      )
+    );
+  } //end show()
 
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  ItemDeleteRequest $request
-     * @param  Item    $item
-     * @return Response
-     * @throws Exception
-     */
-    public function destroy(ItemDeleteRequest $request, Item $item): Response
-    {
-        $item->delete();
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param ItemUpdateRequest $request The validated request
+   * @param Item $item The item model
+   */
+  public function update(ItemUpdateRequest $request, Item $item): ItemResource
+  {
+    $item->update($request->validated());
 
-        return response()->noContent();
+    return new ItemResource($item);
+  } //end update()
 
-    }//end destroy()
+
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  ItemDeleteRequest $request
+   * @param  Item    $item
+   * @return Response
+   * @throws Exception
+   */
+  public function destroy(ItemDeleteRequest $request, Item $item): Response
+  {
+    $item->delete();
+
+    return response()->noContent();
+  } //end destroy()
 }//end class
