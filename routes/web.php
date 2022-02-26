@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PurchasesController;
@@ -9,27 +10,28 @@ use App\Http\Controllers\PackagingController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\FinancialsController;
+use App\Http\Controllers\HomeController;
 
 Route::resource('items', ItemController::class);
 Auth::routes();
-
+Route::get('home', [HomeController::class, 'index']);
 Route::get(
-    'purchase/stocks', 
-    [PurchasesController::class, 'stocks']
+  'purchase/stocks',
+  [PurchasesController::class, 'stocks']
 )->name('purchase.stocks');
 Route::get(
-    'purchase/transfer',
-    [
-        PurchasesController::class,
-        'transfer',
-    ]
+  'purchase/transfer',
+  [
+    PurchasesController::class,
+    'transfer',
+  ]
 )->name('purchase.transfer');
 Route::post(
-    'purchase/transfer',
-    [
-        PurchasesController::class,
-        'doTransfer',
-    ]
+  'purchase/transfer',
+  [
+    PurchasesController::class,
+    'doTransfer',
+  ]
 )->name('purchase.transfer');
 Route::resource('purchase', PurchasesController::class);
 Route::resource('warehouse', WarehouseController::class);
