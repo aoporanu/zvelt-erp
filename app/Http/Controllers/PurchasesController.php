@@ -86,8 +86,13 @@ class PurchasesController extends Controller
     public function create()
     {
         $arrayForView   = $this->_service->loadViewArray();
-        $pageTitle      = 'Create purchase';
-        $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
+    $pageTitle      = 'Create purchase';
+        $purchaseCount = Purchase::count();
+        if ($purchaseCount) {
+    $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
+  } else {
+      $lastPurchaseId = 1;
+    }
         return view(
             'purchases.create',
             [
