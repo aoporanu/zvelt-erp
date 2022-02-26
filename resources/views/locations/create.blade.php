@@ -22,7 +22,7 @@
         <div class="form-group @error('type', 'location') has-error has-feedback @enderror">
           <label for="warehouses">{{ __('locations.create.warehouse') }}</label>
           <select name="warehouse_id" id="warehouses" class="form-control">
-              <option value="">__('locations.create.select-warehouse')</option>
+              <option value="">{{__('locations.create.select-warehouse')}}</option>
             @forelse($warehouses as $warehouse)
               <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
             @empty
