@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemDeleteRequest;
-use App\Item;
-use App\Brand;
-use App\Category;
-use App\Packaging;
+use App\Models\Item;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Packaging;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,6 +16,7 @@ use Illuminate\Http\Response;
 use App\Http\Resources\ItemResource;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
+use Illuminate\Http\JsonResponse;
 
 class ItemController extends Controller
 {
@@ -40,7 +41,7 @@ class ItemController extends Controller
      *
      * @throws Exception
      */
-    public function index(): Factory | View
+    public function index(): Factory | View | JsonResponse
     {
         if (request()->ajax()) {
             return $this->service->index();

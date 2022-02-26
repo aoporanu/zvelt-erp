@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Packaging;
+use App\Models\Packaging;
 use Illuminate\Http\Request;
 
 class PackagingController extends Controller
@@ -19,7 +19,10 @@ class PackagingController extends Controller
         $packagings = Packaging::get(['id', 'name']);
 
         if ($packagings->count() < 1) {
+          if (request()->expectsJson()) {
+
             return response()->json(['success' => false, 'message' => 'Packagings are missing']);
+      }
         }
 
         return response()->json(['success' => true, 'message' => 'Loading your packagings', 'packagings' => $packagings]);
