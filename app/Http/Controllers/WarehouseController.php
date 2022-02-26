@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Warehouse;
+use App\Models\Warehouse;
 use App\Http\Requests\WarehouseStoreRequest;
 use App\Http\Requests\WarehouseUpdateRequest;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -10,6 +10,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Datatables;
+use Brian2694\Toastr\Facades\Toastr;
 
 class WarehouseController extends BaseController
 {
@@ -51,6 +52,7 @@ class WarehouseController extends BaseController
 
     public function edit(Warehouse $warehouse)
     {
+      $pageTitle = __('Edit warehouse');
         return view('warehouses.edit', compact('warehouse'));
 
     }//end edit()
@@ -58,28 +60,45 @@ class WarehouseController extends BaseController
 
     public function update(WarehouseUpdateRequest $request, Warehouse $warehouse)
     {
-
+      $warehouseValidated = $request->validated();
+      if ($warehouse->update($warehouseValidated)) {
+        Toastr::success(__('warehouses.updated.success'), 'info', ['positionClass' => 'toast-top-center']);
+        return redirect()->route('warehouses.index');
+      }
+      Toastr::error(__('warehouses.updated.failed'), 'info', ['positionClass' => 'toast-top-center']);
+      return redirect()->route('warehouses.index');
     }//end update()
 
 
     public function create()
     {
-        return view('warehouses.create');
-
+      $pageTitle = 'Create warehouse(s)';
+      return view('warehouses.create', compact('pageTitle'));
     }//end create()
 
 
-    public function store(WarehouseStoreRequest $request)
+    public function store(WarehouseStoreRequest $warehouseStoreRequest)
     {
-        // code...
-
+      $warehouse = $warehouseStoreRequest->validated();
+      $warehouse['created_at'] = now();
+      $warehouse['updated_at'] = now();
+      if (Warehouse::create($warehouse)) {
+        Toastr::success(__('warehouses.store.success'), 'info');
+        return redirect()->route('warehouse.index');
+      }
+      Toastr::error(__('warehouses.store.error'), 'info');
+      return redirect()->route('warehouse.index');
     }//end store()
 
 
     public function delete(Warehouse $warehouse)
     {
-        // code...
-
+      if ($warehouse->delete()) {
+        // Toastr::success('The warehouse has been deleted', 'info');
+        return redirect()->route('warehouse.index');
+      }
+      // Toastr::error('Could not delete warehouse', 'info');
+      return redirect()->back('warehouse.index');
     }//end delete()
 
 
