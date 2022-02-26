@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LocationStoreRequest extends FormRequest
 {
@@ -27,9 +28,19 @@ class LocationStoreRequest extends FormRequest
      * @return array
      */
     public function rules()
-    {
+  {
+    $id = $this->id ?: 'NULL';
+    $name = $this->name;
+    $warehouse_id = $this->warehouse_id;
         return [
-            'name'         => 'required|min:4|unique:locations,name',
+      'name'         => [
+        'required',
+        Rule::unique('locations')
+        ->where(function ($query) use ($name, $warehouse_id) {
+          return $query->where('name', $name)
+          ->where('warehouse_id', $warehouse_id);
+        })
+      ],
             'type'         => 'required',
             'warehouse_id' => 'required|min:1|exists:warehouses,id',
         ];
