@@ -17,18 +17,21 @@
                     <label for="category_id">Category</label>
                     <select name="category_id" id="category_id" class="form-control">
                         <option value="">Select category</option>
-                        @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
+                        @forelse($categories as $category)
+          <option value="{{ $category->id }}">{{ $category->name }}</option>
+          @empty
+
+                        @endforelse
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="brand_id" class="control-label">Brand</label>
                     <select name="brand_id" id="brand_id" class="form-control">
                         <option value="">Select brand</option>
-                        @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                        @endforeach
+                        @forelse($brands as $brand)
+          <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+          @empty
+          @endforelse
                     </select>
                 </div>
                 <div class="form-group">
@@ -51,9 +54,10 @@
                     <label for="packaging" class="control-label">Packaging</label>
                     <select class="form-control @error('packaging') is-invalid @enderror" name="packaging" id="packaging">
                         <option value="">Please pick packaging</option>
-                        @foreach($packagings as $packaging)
-                            <option value="{{ $packaging->id }}">{{ $packaging->name }}</option>
-                            @endforeach
+                        @forelse($packagings as $packaging)
+          <option value="{{ $packaging->id }}">{{ $packaging->name }}</option>
+          @empty
+          @endforelse
                     </select>
                 </div>
                 <div class="form-group">
