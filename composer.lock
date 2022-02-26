@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "afbbe8600c687e1f0212740865758582",
+=======
+    "content-hash": "bffe6c74378560f3134a371a85517fb0",
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2929,6 +2933,7 @@
         },
         {
             "name": "psr/log",
+<<<<<<< HEAD
             "version": "2.0.0",
             "source": {
                 "type": "git",
@@ -2939,6 +2944,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/php-fig/log/zipball/ef29f6d262798707a9edd554e2b82517ef3a9376",
                 "reference": "ef29f6d262798707a9edd554e2b82517ef3a9376",
+=======
+            "version": "1.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/d49695b909c3b7628b6289db5479a1c204601f11",
+                "reference": "d49695b909c3b7628b6289db5479a1c204601f11",
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
                 "shasum": ""
             },
             "require": {
@@ -2973,9 +2990,15 @@
                 "psr-3"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/php-fig/log/tree/2.0.0"
             },
             "time": "2021-07-14T16:41:46+00:00"
+=======
+                "source": "https://github.com/php-fig/log/tree/1.1.4"
+            },
+            "time": "2021-05-03T11:20:27+00:00"
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
         },
         {
             "name": "psr/simple-cache",
@@ -5909,7 +5932,11 @@
                 "issues": "https://github.com/webmozarts/assert/issues",
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
+<<<<<<< HEAD
             "time": "2021-03-09T10:59:23+00:00"
+=======
+            "time": "2020-07-08T17:02:28+00:00"
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
         },
         {
             "name": "yajra/laravel-datatables-buttons",
@@ -6621,6 +6648,7 @@
             "time": "2022-02-04T16:00:38+00:00"
         },
         {
+<<<<<<< HEAD
             "name": "composer/metadata-minifier",
             "version": "1.0.0",
             "source": {
@@ -6692,6 +6720,10 @@
         {
             "name": "composer/pcre",
             "version": "1.0.1",
+=======
+            "name": "composer/semver",
+            "version": "3.2.4",
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/pcre.git",
@@ -9274,6 +9306,7 @@
         },
         {
             "name": "psr/cache",
+<<<<<<< HEAD
             "version": "3.0.0",
             "source": {
                 "type": "git",
@@ -9288,6 +9321,22 @@
             },
             "require": {
                 "php": ">=8.0.0"
+=======
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/cache.git",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
             },
             "type": "library",
             "extra": {
@@ -9307,7 +9356,11 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
+<<<<<<< HEAD
                     "homepage": "https://www.php-fig.org/"
+=======
+                    "homepage": "http://www.php-fig.org/"
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
                 }
             ],
             "description": "Common interface for caching libraries",
@@ -9317,9 +9370,15 @@
                 "psr-6"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/php-fig/cache/tree/3.0.0"
             },
             "time": "2021-02-03T23:26:27+00:00"
+=======
+                "source": "https://github.com/php-fig/cache/tree/master"
+            },
+            "time": "2016-08-06T20:24:11+00:00"
+>>>>>>> ca1fd315ebdba11fbf0d210251ac12efd53f5fdb
         },
         {
             "name": "react/promise",
