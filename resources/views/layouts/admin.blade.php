@@ -15,11 +15,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
-    <link href="{{ asset('css/atlantis.min.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="{{ asset('css/fonts.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/autofill/2.3.5/css/autoFill.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
     @yield('styles')
 
 <script src="{{ asset('js/core/jquery.3.2.1.min.js') }}"></script>
@@ -314,7 +310,7 @@
         <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
         {!! Toastr::message() !!}
 </div>
-
+<script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}"></script>
 <script src="{{ asset('js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js') }}"></script>
@@ -432,7 +428,6 @@
     });
 </script>
 @stack('scripts')
-<script src="{{asset('js/plugin/webfont/webfont.min.js')}}"></script>
 <script>
     WebFont.load({
         google: {"families":["Lato:300,400,700,900"]},
