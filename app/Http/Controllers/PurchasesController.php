@@ -27,6 +27,7 @@ use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
+use Illuminate\Http\Request;
 use DB;
 
 /**
@@ -40,7 +41,6 @@ use DB;
  */
 class PurchasesController extends Controller
 {
-
   protected $_service;
 
 
@@ -231,9 +231,16 @@ class PurchasesController extends Controller
    *
    * @param TransferPurchaseRequest $request The form request that needs to be validated
    */
-  public function doTransfer(TransferPurchaseRequest $request): bool
+  public function doTransfer(Request $request): bool
   {
-    dd($request->validated());
-    return $this->_service->transfer($request->validated());
+    $validation = $request->validate([
+      'item_id' => 'required|integer|exists:items,id',
+      'from_warehouse' => 'required|integer|exists:warehouses,id',
+      'from_location' => 'required|integer|exists:locations,id',
+      'to_warehouse' => 'required|integer|exists:warehouses,id|different:from_warehouse',
+      'to_location' => 'required|integer|exists:locations,id|different:from_location',
+      'qty' => 'required|digits_between:1,10'
+    ]);
+    return $this->_service->transfer($validation);
   } //end doTransfer()
 }//end class

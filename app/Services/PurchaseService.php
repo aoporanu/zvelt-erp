@@ -87,7 +87,6 @@ class PurchaseService
       DB::commit();
     } catch (Exception $ex) {
       DB::rollback();
-      dd($ex);
       throw $ex;
     } //end try
 
@@ -195,9 +194,29 @@ class PurchaseService
    * @param  $request
    * @return boolean
    */
-  public function transfer(array $request): bool
+  public function transfer($request): bool
   {
-    dd($request);
+    try {
+    // we need a quantity to transfer in the request array
+      $exception = DB::transaction(function () use ($request) {
+        // 1 . remove qty of items from from_location items
+        DB::enableQueryLog();
+        $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
+        if (!$qty) {
+
+        }
+        dump($qty);
+        // 2 . add qty of items to to_location items
+        }, 5);
+      if (is_null($exception)) {
+        return true;
+      } else {
+        throw new Exception;
+      }
+    } catch (Exception $e) {
+      info($e->getMessage());
+      return false;
+    }
     return true;
   } //end transfer()
 
