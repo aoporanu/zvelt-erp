@@ -50,7 +50,7 @@ class RegisterController extends Controller
                     'string',
                     'max:255',
                 ],
-                'role'     => [
+                'role_id'     => [
                     'required',
                     'string',
                     'max:100',
@@ -87,7 +87,7 @@ class RegisterController extends Controller
             [
                 'name'     => $data['name'],
                 'email'    => $data['email'],
-                'role'     => $data['role'],
+                'role_id'     => $data['role'],
                 'password' => Hash::make($data['password']),
             ]
         );
