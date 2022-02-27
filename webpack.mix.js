@@ -1,7 +1,7 @@
 const mix = require('laravel-mix');
 
-mix.js('resources/js/app.js', 'public/js')
-  .combine([
+// :mix.js('resources/js/app.js', 'public/js')
+  mix.combine([
     'resources/css/bootstrap.min.css', 
     'resources/css/atlantis.min.css', 
     'resources/css/fonts.min.css', 
@@ -9,7 +9,7 @@ mix.js('resources/js/app.js', 'public/js')
     'https://cdn.datatables.net/autofill/2.3.5/css/autoFill.dataTables.min.css',
     'https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css'
   ], 'resources/css/app.css')
-  .scripts([
+/*  .scripts([
   'resources/js/core/bootstrap.min.js',
   'https://code.jquery.com/ui/1.12.1/jquery-ui.js',
   'resources/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js',
@@ -29,7 +29,7 @@ mix.js('resources/js/app.js', 'public/js')
   'resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js',
   'resources/js/atlantis.min.js',
   'resources/js/setting-demo.js'
-  ], 'resources/js/app.js')
+], 'resources/js/app.js')*/
   .postCss('resources/css/app.css', 'public/css', [
     //
   ]).options({
