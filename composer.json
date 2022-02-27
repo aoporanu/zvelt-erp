@@ -2,47 +2,28 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "barryvdh/laravel-dompdf": "0.8.7",
-        "brian2694/laravel-toastr": "^5.57",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^9.0",
-        "laravel/sanctum": "^2.8",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.2",
-        "yajra/laravel-datatables-buttons": "dev-master",
-        "yajra/laravel-datatables-editor": "^1.0",
-        "yajra/laravel-datatables-oracle": "9.15.2"
+        "php": "^8.0.2",
+        "barryvdh/laravel-dompdf": "^1.0",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.2",
+        "laravel/sanctum": "^2.14.1",
+        "laravel/tinker": "^2.7",
+        "laravel/ui": "^3.4",
+        "yajra/laravel-datatables-editor": "^1.25",
+        "yajra/laravel-datatables-fractal": "^1.6",
+        "yajra/laravel-datatables-html": "^4.41",
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "3.5.2",
-        "barryvdh/laravel-ide-helper": "2.9.0",
-        "enlightn/enlightn": "^1.4",
-        "spatie/laravel-ignition": "^1.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.2",
+        "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.3.3",
-        "squizlabs/php_codesniffer": "^3.5"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -56,12 +37,13 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -69,5 +51,17 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
