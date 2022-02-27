@@ -11,49 +11,67 @@ use App\Models\Location;
 use App\Models\Packaging;
 use App\Models\UnitOfMeasure;
 use App\Models\Warehouse;
+use DB;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Log;
 
 class PurchaseTest extends TestCase
 {
-    use RefreshDatabase;
+  use RefreshDatabase;
 
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_transfer()
-    {
-        $user     = (new User)->factory()->create();
-        $response = $this->be($user)->get('/purchase/transfer');
-        $response->assertStatus(200);
-    }//end test_transfer()
+  /**
+   * A basic feature test example.
+   *
+   * @return void
+   */
+  public function test_transfer()
+  {
+    $user     = (new User)->factory()->create();
+    $response = $this->be($user)->get('/purchase/transfer');
+    $response->assertStatus(200);
+  } //end test_transfer()
 
+  /** @test */
+  public function an_item_goes_to_location_on_purchase()
+  {
+    $this->assertTrue(true); 
+  }
 
-    public function test_do_transfer()
-    {
-        $user = (new User)->factory()->create();
-        (new Category)->factory()->create();
-        (new Brand)->factory()->create();
-        (new Packaging)->factory()->create();
-        (new UnitOfMeasure)->factory()->create();
-        (new Item)->factory()->create();
-        $this->assertDatabaseCount('items', 1);
-        (new Warehouse)->factory()->create();
-        (new Location)->factory()->create();
-        (new Location)->factory()->create();
-        $response = $this->actingAs($user)->withSession(['user' => 'adyopo'])->post(
-            '/purchase/transfer',
-            [
-                'item_id'        => 1,
-                'from_warehouse' => 1,
-                'from_location'  => 1,
-                'to_warehouse'   => 1,
-                'to_location'    => 2,
-            ]
-        );
-            Log::info('response', [$response]);
-            $response->assertStatus(302);
-    }//end test_do_transfer()
+  public function test_do_transfer()
+  {
+    $this->withoutExceptionHandling();
+    $user = (new User)->factory()->create();
+    $user->role_id = 1;
+    $user->save();
+    (new Category)->factory()->create();
+    (new Brand)->factory()->create();
+    (new Packaging)->factory()->create();
+    (new UnitOfMeasure)->factory()->create();
+    $item = (new Item)->factory()->create();
+    $this->assertDatabaseCount('items', 1);
+    $warehouse = (new Warehouse)->factory()->create();
+
+    $warehouse2 = (new Warehouse)->factory()->create();
+    $this->assertDatabaseCount('warehouses', 2);
+    $location = (new Location)->factory()->create();
+    $location->addItems($item, 15);
+    $location2 = (new Location)->factory()->create();
+    $this->assertDatabaseCount('locations', 2);
+    $post = [
+      'item_id' => $item->id,
+      'from_warehouse' => $warehouse->id,
+      'from_location' => $location->id,
+      'to_warehouse' => $warehouse2->id,
+      'to_location' => $location2->id,
+      'qty' => 10
+    ];
+    $response = $this->be($user)
+      ->post(
+        '/purchase/transfer',
+        $post
+      );
+    $response->assertValid($post);
+    $items = DB::select('select qty from location_items where location_id=? and item_id=?', [$location2->id, $item->id]);
+    $this->assertNotNull($items);
+    // Log::info('response', [$response]);
+  } //end test_do_transfer()
 }//end class
