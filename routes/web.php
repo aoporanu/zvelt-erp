@@ -33,6 +33,7 @@ Route::post(
     'doTransfer',
   ]
 )->name('purchase.transfer');
+Route::post('purchase/addItems', [PurchasesController::class, 'addItems']);
 Route::resource('purchase', PurchasesController::class);
 Route::resource('warehouse', WarehouseController::class);
 Route::resource('locations', LocationController::class);

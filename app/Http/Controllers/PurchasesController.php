@@ -22,12 +22,14 @@ use App\Services\PurchaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
+use App\Http\Requests\AddItemsRequest;
 use App\Http\Requests\PurchaseStoreRequest;
 use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use DB;
 
 /**
@@ -243,4 +245,11 @@ class PurchasesController extends Controller
     ]);
     return $this->_service->transfer($validation);
   } //end doTransfer()
+
+  public function addItems(AddItemsRequest $addItemsRequest)
+  {
+    if ($this->_service->addItems($addItemsRequest->validated())) {
+      return response()->noContent(Response::HTTP_CREATED);
+    }
+  }
 }//end class

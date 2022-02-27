@@ -33,7 +33,36 @@ class PurchaseTest extends TestCase
   /** @test */
   public function an_item_goes_to_location_on_purchase()
   {
-    $this->assertTrue(true); 
+    // Visit purchase route with a serial no 
+    // that represents a buying invoice.
+    $this->withoutExceptionHandling();
+    $user = (new User)->factory()->create();
+    $user->role_id = 2;
+    $user->save();
+    $item = $this->createProduct();
+    DB::insert('insert into incoming_invoices(serial_no, created_by) values (?,?)', ['as3-wlk0iO', $user->id]);
+    $post = [
+      'id' => 'as3-wlk0iO',
+      'item_id' => $item->id,
+      'qty' => 23,
+      'price' => 2930,
+      'batch_id' => 31
+    ];
+    $response = $this->be($user)
+      ->post('/purchase/addItems', $post);
+    $response->assertValid($post);
+
+    $response->assertStatus(201);
+  }
+
+  protected function createProduct()
+  {
+    (new Category)->factory()->create();
+    (new Brand)->factory()->create();
+    (new Packaging)->factory()->create();
+    (new UnitOfMeasure)->factory()->create();
+    $item = (new Item)->factory()->create();
+    return $item;
   }
 
   public function test_do_transfer()
@@ -72,6 +101,5 @@ class PurchaseTest extends TestCase
     $response->assertValid($post);
     $items = DB::select('select qty from location_items where location_id=? and item_id=?', [$location2->id, $item->id]);
     $this->assertNotNull($items);
-    // Log::info('response', [$response]);
   } //end test_do_transfer()
 }//end class

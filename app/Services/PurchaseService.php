@@ -91,7 +91,13 @@ class PurchaseService
     } //end try
 
   } //end create()
-
+  public function addItems($validated)
+  {
+    if (DB::insert('insert into b_invoices(serial_no, qty, price, batch_id) values (?, ?, ?, ?)', [$validated['id'], $validated['qty'], $validated['price'], $validated['batch_id']])) {
+      return true;
+    }
+    return false;
+  }
 
   /**
    * View array for the PurchasesController@index method
@@ -197,17 +203,16 @@ class PurchaseService
   public function transfer($request): bool
   {
     try {
-    // we need a quantity to transfer in the request array
+      // we need a quantity to transfer in the request array
       $exception = DB::transaction(function () use ($request) {
         // 1 . remove qty of items from from_location items
         DB::enableQueryLog();
         $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
         if (!$qty) {
-
         }
         dump($qty);
         // 2 . add qty of items to to_location items
-        }, 5);
+      }, 5);
       if (is_null($exception)) {
         return true;
       } else {
