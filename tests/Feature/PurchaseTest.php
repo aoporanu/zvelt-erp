@@ -25,7 +25,7 @@ class PurchaseTest extends TestCase
    */
   public function test_transfer()
   {
-    $user     = (new User)->factory()->create();
+    $user = $this->createAdmin();
     $response = $this->be($user)->get('/purchase/transfer');
     $response->assertStatus(200);
   } //end test_transfer()
@@ -36,9 +36,7 @@ class PurchaseTest extends TestCase
     // Visit purchase route with a serial no 
     // that represents a buying invoice.
     $this->withoutExceptionHandling();
-    $user = (new User)->factory()->create();
-    $user->role_id = 2;
-    $user->save();
+    $user = $this->createOperator();
     $item = $this->createProduct();
     DB::insert('insert into incoming_invoices(serial_no, created_by) values (?,?)', ['as3-wlk0iO', $user->id]);
     $post = [
@@ -55,6 +53,22 @@ class PurchaseTest extends TestCase
     $response->assertStatus(201);
   }
 
+  protected function createAdmin()
+  {
+    $user = (new User)->factory()->create();
+    $user->role_id = 1;
+    $user->save();
+    return $user;
+  }
+
+  protected function createOperator()
+  {
+    $user = (new User)->factory()->create();
+    $user->role_id = 2;
+    $user->save();
+    return $user;
+  }
+
   protected function createProduct()
   {
     (new Category)->factory()->create();
@@ -68,14 +82,8 @@ class PurchaseTest extends TestCase
   public function test_do_transfer()
   {
     $this->withoutExceptionHandling();
-    $user = (new User)->factory()->create();
-    $user->role_id = 1;
-    $user->save();
-    (new Category)->factory()->create();
-    (new Brand)->factory()->create();
-    (new Packaging)->factory()->create();
-    (new UnitOfMeasure)->factory()->create();
-    $item = (new Item)->factory()->create();
+    $user = $this->createAdmin();
+    $item = $this->createProduct();
     $this->assertDatabaseCount('items', 1);
     $warehouse = (new Warehouse)->factory()->create();
 
