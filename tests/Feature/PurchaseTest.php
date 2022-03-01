@@ -31,6 +31,49 @@ class PurchaseTest extends TestCase
   } //end test_transfer()
 
   /** @test */
+  public function an_incoming_invoice_can_be_scanned()
+  {
+    (new Category)->factory()->create();
+    (new Brand)->factory()->create();
+    (new Packaging)->factory()->create();
+    (new UnitOfMeasure)->factory()->create();
+
+    $this->withoutExceptionHandling();
+    $user = $this->createOperator();
+    $item = $this->createProduct();
+    $item2 = (new Item)->factory()->create();
+    /*
+     * we need an array of items, each item having a price
+     * a qty and a batch_id
+     */
+    $post = [
+      'serial_no' => 'as3-wlk0iO',
+      'created_by' => $user->id,
+      'items' => [
+        0 => [
+          'item_id' => $item->id,
+          'qty' => 33,
+          'price' => 2930,
+          'batch_id' => '1'
+        ],
+        1 => [
+          'item_id' => $item2->id,
+          'qty' => 34,
+          'price' => 3012,
+          'batch_id' => '1'
+        ]
+      ],
+      'scanned' => 1
+    ];
+    // serial_no is required
+    $response = $this->be($user)
+      ->post('/purchase/scan', $post);
+    $response->assertValid($post);
+    $this->assertDatabaseCount('incoming_invoices', 2);
+    $response->assertStatus(201);
+  }
+
+  /** @test */
   public function an_item_goes_to_location_on_purchase()
   {
     // Visit purchase route with a serial no 
@@ -38,7 +81,7 @@ class PurchaseTest extends TestCase
     $this->withoutExceptionHandling();
     $user = $this->createOperator();
     $item = $this->createProduct();
-    DB::insert('insert into incoming_invoices(serial_no, created_by) values (?,?)', ['as3-wlk0iO', $user->id]);
+    DB::insert('insert into incoming_invoices(serial_no, created_by, item_id) values (?,?,?)', ['as3-wlk0iO', $user->id, $item->id]);
     $post = [
       'id' => 'as3-wlk0iO',
       'item_id' => $item->id,

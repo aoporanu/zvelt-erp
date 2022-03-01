@@ -208,9 +208,9 @@ class PurchaseService
         // 1 . remove qty of items from from_location items
         DB::enableQueryLog();
         $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
+        dump($qty);
         if (!$qty) {
         }
-        dump($qty);
         // 2 . add qty of items to to_location items
       }, 5);
       if (is_null($exception)) {
@@ -225,5 +225,43 @@ class PurchaseService
     return true;
   } //end transfer()
 
-
+  /**
+   * Scans an invoice that came our way in order to be able to sell and transfer the products
+   */
+  public function scan(array $request): bool
+  {
+    // construct the items array over here and 
+    // do one DB::insert instead of inserting
+    // in the foreach loop
+    $invoice = [];
+    foreach ($request['items'] as $incoming) {
+      $invoice[] = [
+        'serial_no' => $request['serial_no'],
+        'item_id' => $incoming['item_id'],
+        'qty' => $incoming['qty'],
+        'price' => $incoming['price'],
+        'batch_id' => $incoming['batch_id'],
+        'created_at' => now(),
+        'updated_at' => now(),
+        'created_by' => $request['created_by']
+      ];
+    }
+    try {
+      $exception = DB::transaction(function () use ($invoice) {
+        // starting scanning, at this point we already have the validated request
+        //
+        DB::table('incoming_invoices')
+          ->insert($invoice);
+      }, 5);
+      if (is_null($exception)) {
+        return true;
+      } else {
+        throw new Exception();
+      }
+    } catch (Exception $ex) {
+      info($ex->getMessage());
+      return false;
+    }
+    return true;
+  }
 }//end class

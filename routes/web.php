@@ -27,6 +27,10 @@ Route::get(
   ]
 )->name('purchase.transfer');
 Route::post(
+  'purchase/scan',
+  [PurchasesController::class, 'scan']
+)->name('purchase.scan');
+Route::post(
   'purchase/transfer',
   [
     PurchasesController::class,

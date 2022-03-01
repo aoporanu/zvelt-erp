@@ -23,6 +23,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Http\Requests\AddItemsRequest;
+use App\Http\Requests\IncomingInvoiceScanRequest;
 use App\Http\Requests\PurchaseStoreRequest;
 use App\Http\Requests\PurchaseUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
@@ -113,7 +114,6 @@ class PurchasesController extends Controller
    *
    * @param PurchaseStoreRequest $request the request object
    *
-   * @return RedirectResponse
    * @throws Exception
    */
   public function store(PurchaseStoreRequest $request): RedirectResponse
@@ -189,7 +189,6 @@ class PurchasesController extends Controller
   /**
    * Load the stocks for a given product
    *
-   * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View
    */
   public function stocks(): JsonResponse|Application|Factory|IlluminateView
   {
@@ -206,8 +205,6 @@ class PurchasesController extends Controller
    * Move stock between locations
    *
    * @param PurchasedItems $purchasedItem the item which will be transferred
-   *
-   * @return Application|Factory|\Illuminate\Contracts\View\View
    */
   public function transfer(PurchasedItems $purchasedItem): Application|Factory|IlluminateView
   {
@@ -251,5 +248,14 @@ class PurchasesController extends Controller
     if ($this->_service->addItems($addItemsRequest->validated())) {
       return response()->noContent(Response::HTTP_CREATED);
     }
+  }
+
+  public function scan(IncomingInvoiceScanRequest $incomingInvoiceScanRequest)
+  {
+    if ($this->_service->scan($incomingInvoiceScanRequest->validated())) {
+      return response()->noContent(Response::HTTP_CREATED);
+    }
+
+    return response()->noContent(Response::HTTP_FOUND);
   }
 }//end class
