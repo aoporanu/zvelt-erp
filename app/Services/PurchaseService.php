@@ -64,28 +64,27 @@ class PurchaseService
 
       foreach ($array['item'] as $item) {
         $itemsToInsert[] = [
-   'purchase_id'     => $purchase->id,
-            'item_id'         => $item['item_name'],
-            'qty'             => $item['item_qty'],
-            'lot'             => $item['lot'],
-            'expiration_date' => Carbon::make(
-              $item['expiration_date']
-            ),
-            'location_id'     => $item['location_id'],
-            'warehouse_id'    => $item['warehouse_id'],
-            'supplier_id'     => $array['supplier_id'],
-            'upc'             => $item['upc'],
-            'ean'             => $item['ean'],
-            'purchase_cost'   => $item['purchase_price'],
-            'selling_cost'    => $item['purchase_price'],
-            'vat'             => $item['vat'],
-            'created_at'      => Carbon::now(),
-            'updated_at'      => Carbon::now(),
-
+          'purchase_id'     => $purchase->id,
+          'item_id'         => $item['item_name'],
+          'qty'             => $item['item_qty'],
+          'lot'             => $item['lot'],
+          'expiration_date' => Carbon::make(
+            $item['expiration_date']
+          ),
+          'location_id'     => $item['location_id'],
+          'warehouse_id'    => $item['warehouse_id'],
+          'supplier_id'     => $array['supplier_id'],
+          'upc'             => $item['upc'],
+          'ean'             => $item['ean'],
+          'purchase_cost'   => $item['purchase_price'],
+          'selling_cost'    => $item['purchase_price'],
+          'vat'             => $item['vat'],
+          'created_at'      => Carbon::now(),
+          'updated_at'      => Carbon::now(),
         ];
       }
 
-        DB::table('purchased_items')->insert($itemsToInsert);
+      DB::table('purchased_items')->insert($itemsToInsert);
       DB::commit();
     } catch (Exception $ex) {
       DB::rollback();
@@ -264,5 +263,17 @@ class PurchaseService
       return false;
     }
     return true;
+  }
+
+  public function returnCreate(array $request)
+  {
+    # code...
+  }
+
+  public function returnScan(array $request)
+  {
+    // if the number of items matches the number of items
+    // on the return request, then the return order can be 
+    // marked as scanned 
   }
 }//end class

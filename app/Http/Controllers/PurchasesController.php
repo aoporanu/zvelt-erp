@@ -26,6 +26,7 @@ use App\Http\Requests\AddItemsRequest;
 use App\Http\Requests\IncomingInvoiceScanRequest;
 use App\Http\Requests\PurchaseStoreRequest;
 use App\Http\Requests\PurchaseUpdateRequest;
+use App\Http\Requests\ReturnStoreRequest;
 use Illuminate\Contracts\Foundation\Application;
 use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
@@ -257,5 +258,21 @@ class PurchasesController extends Controller
     }
 
     return response()->noContent(Response::HTTP_FOUND);
+  }
+
+  public function returnCreate()
+  {
+    return view('purchases.return.create');
+  }
+
+  public function returnStore(ReturnStoreRequest $returnStoreRequest)
+  {
+    if ($this->_service->returnCreate($returnStoreRequest->validated())) {
+      // create a bom for the return
+      // do a Toastr::success and return 
+      // the user to the index
+
+      // with Toastr::error
+    }
   }
 }//end class
