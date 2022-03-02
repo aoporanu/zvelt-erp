@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
       Schema::table('incoming_invoices', function (Blueprint $table) {
-        $table->integer('item_id')->after('created_by');
-        $table->integer('qty')->default(1)->after('item_id');
-        $table->integer('price')->default('0')->after('qty');
-        $table->string('batch_id')->default('')->after('price');
+        $table->integer('item_id')->after('created_by')->nullable(); // once the incoming invoice has been scanned and added to the Database
+        // do we need this
+        $table->integer('qty')->default(1)->after('item_id')->nullable();
+        $table->integer('price')->default('0')->after('qty')->nullable();
+        $table->string('batch_id')->default('')->after('price')->nullable();
       });
     }
 
