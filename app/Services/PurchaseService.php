@@ -60,10 +60,11 @@ class PurchaseService
         ]
       );
 
+      $itemsToInsert = [];
+
       foreach ($array['item'] as $item) {
-        DB::table('purchased_items')->insert(
-          [
-            'purchase_id'     => $purchase->id,
+        $itemsToInsert[] = [
+   'purchase_id'     => $purchase->id,
             'item_id'         => $item['item_name'],
             'qty'             => $item['item_qty'],
             'lot'             => $item['lot'],
@@ -80,10 +81,11 @@ class PurchaseService
             'vat'             => $item['vat'],
             'created_at'      => Carbon::now(),
             'updated_at'      => Carbon::now(),
-          ]
-        );
-      } //end foreach
 
+        ];
+      }
+
+        DB::table('purchased_items')->insert($itemsToInsert);
       DB::commit();
     } catch (Exception $ex) {
       DB::rollback();
