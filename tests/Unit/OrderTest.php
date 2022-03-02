@@ -18,11 +18,10 @@ class OrderTest extends TestCase
 {
   use RefreshDatabase;
 
-
   /**
    * @test
    */
-  public function it_tests_if_an_order_can_be_created_with_outstanding_invoice()
+  public function an_order_can_be_created_with_outstanding_invoice()
   {
     $this->withoutExceptionHandling();
     (new User)->factory()->create();
@@ -59,7 +58,7 @@ class OrderTest extends TestCase
   /**
    * @test
    */
-  public function it_tests_if_an_order_status_changes()
+  public function an_order_status_changes()
   {
     $this->withoutExceptionHandling();
     (new User)->factory()->create();
@@ -76,7 +75,7 @@ class OrderTest extends TestCase
   /**
    * @test
    */
-  public function it_tests_if_an_order_can_be_created_if_it_is_derrogated()
+  public function an_order_can_be_created_if_it_is_derrogated()
   {
     $this->withoutExceptionHandling();
     (new User)->factory()->create();
@@ -102,7 +101,7 @@ class OrderTest extends TestCase
   /**
    * @test
    */
-  public function it_tests_if_order_is_added_to_logs_on_deletion()
+  public function an_order_is_added_to_logs_on_deletion()
   {
     $this->withoutExceptionHandling();
     (new User)->factory()->create();

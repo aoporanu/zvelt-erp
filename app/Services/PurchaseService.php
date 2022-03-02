@@ -208,7 +208,6 @@ class PurchaseService
         // 1 . remove qty of items from from_location items
         DB::enableQueryLog();
         $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
-        dump($qty);
         if (!$qty) {
         }
         // 2 . add qty of items to to_location items
