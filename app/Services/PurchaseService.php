@@ -268,6 +268,7 @@ class PurchaseService
   public function returnCreate(array $request)
   {
     # code...
+    return true;
   }
 
   public function returnScan(array $request)

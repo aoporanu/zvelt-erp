@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
   Route::resource('suppliers', SupplierController::class);
   Route::resource('invoices', InvoicesController::class);
   Route::resource('financials', FinancialsController::class);
+  Route::post('returns/store', [PurchasesController::class, 'returnStore']);
 });
 Route::resource('items', ItemController::class);
 Auth::routes();

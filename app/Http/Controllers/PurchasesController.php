@@ -268,10 +268,10 @@ class PurchasesController extends Controller
   public function returnStore(ReturnStoreRequest $returnStoreRequest)
   {
     if ($this->_service->returnCreate($returnStoreRequest->validated())) {
-      // create a bom for the return
+      // change bom status for the return
       // do a Toastr::success and return 
       // the user to the index
-
+      return response()->noContent(Response::HTTP_CREATED);
       // with Toastr::error
     }
   }
