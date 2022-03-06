@@ -207,7 +207,6 @@ class PurchaseService
       // we need a quantity to transfer in the request array
       $exception = DB::transaction(function () use ($request) {
         // 1 . remove qty of items from from_location items
-        DB::enableQueryLog();
         $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
         if (!$qty) {
         }
@@ -273,8 +272,50 @@ class PurchaseService
 
   public function returnScan(array $request)
   {
+    $items = [];
+    foreach ($request['items'] as $item) {
+      $items[] = [
+        'bom_serial' => $request['bom_serial'],
+        'item_id' => $item['item_id'],
+        'qty' => $item['qty'],
+        'price' => $item['price'],
+        'location_id' => $request['location_id']
+      ];
+    }
+    try {
+      $exception = DB::transaction(function () use ($items) {
+        $locationItems = DB::table('location_items')
+          ->where('location_id', $items[0]['location_id'])
+          ->andWhere('item_id', current(array_filter($items), static function (array $item) {
+            return $item['item_id'];
+          })['item_id'])
+          ->get();
+        if (!$locationItems) {
+          // insert items into db, even though we should never run into this 
+          DB::table('location_items')
+            ->insert($items);
+        }
+        foreach ($items as $item) {
+          DB::table('location_items')
+            ->where('location_id', $items[0]['location_id'])
+            ->andWhere('item_id', current(array_filter($items), static function (array $item) {
+              return $item['item_id'];
+            })['item_id'])
+            ->update('qty', DB::raw('qty + ?', [$item['qty']]));
+        }
+      }, 5);
+      if (is_null($exception)) {
+        return true;
+      } else {
+        throw new Exception;
+      }
+    } catch (Exception $ex) {
+      info($ex->getMessage());
+      return false;
+    }
     // if the number of items matches the number of items
     // on the return request, then the return order can be 
-    // marked as scanned 
+    // marked as scanned
+    return true;
   }
 }//end class

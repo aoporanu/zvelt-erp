@@ -14,7 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
-
+use Illuminate\Support\Facades\DB;
 class ReturnInvoiceTest extends TestCase
 {
   use RefreshDatabase;
@@ -40,6 +40,8 @@ class ReturnInvoiceTest extends TestCase
     $unitOfMeasure = (new UnitOfMeasure)->factory()->create();
     $packaging = (new Packaging)->factory()->create();
     $item = (new Item)->factory()->create();
+    $qty = DB::select('select qty from location_items where location_id = ? and item_id = ?', [$location->id, $item->id]);
+    dump($qty);
     $post = [
       'bom_serial' => Str::uuid(),
       'items' => [
@@ -49,11 +51,13 @@ class ReturnInvoiceTest extends TestCase
           'price' => 1500,
           'batch_id' => Str::uuid(),
           'location_id' => $location->id
-
         ]
       ],
       'created_by' => $user->id
     ];
+    $qtyAfter = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
+    // $this->assertNotSame($qtyAfter, $qty);
+    dump($qtyAfter);
     $response = $this->be($user)
       ->post('/returns/store', $post);
     $response->assertValid();
