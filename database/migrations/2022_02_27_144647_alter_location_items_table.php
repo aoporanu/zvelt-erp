@@ -14,7 +14,7 @@ class AlterLocationItemsTable extends Migration
   public function up()
   {
     Schema::table('location_items', function (Blueprint $table) {
-      $table->uuid('bom_serial');
+      $table->uuid('bom_serial')->default('0');
     });
   }
 
