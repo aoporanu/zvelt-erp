@@ -31,7 +31,8 @@ class ReturnStoreRequest extends FormRequest
       'items.*.item_id' => 'required|exists:items,id',
       'items.*.qty' => 'required|integer',
       'items.*.price' => 'required|integer',
-      'created_by' => 'required'
+      'items.*.location_id' => 'required|exists:locations,id',
+      'created_by' => 'required',
     ];
   }
 }
