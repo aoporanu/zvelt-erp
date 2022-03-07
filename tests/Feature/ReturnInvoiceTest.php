@@ -41,7 +41,6 @@ class ReturnInvoiceTest extends TestCase
     $packaging = (new Packaging)->factory()->create();
     $item = (new Item)->factory()->create();
     $qty = DB::select('select qty from location_items where location_id = ? and item_id = ?', [$location->id, $item->id]);
-    dump($qty);
     $post = [
       'bom_serial' => Str::uuid(),
       'items' => [
@@ -57,9 +56,11 @@ class ReturnInvoiceTest extends TestCase
     ];
     $qtyAfter = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
     // $this->assertNotSame($qtyAfter, $qty);
-    dump($qtyAfter);
     $response = $this->be($user)
       ->post('/returns/store', $post);
+
+    $qtyAfter = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
+    dump($qtyAfter);
     $response->assertValid();
     $response->assertStatus(Response::HTTP_CREATED);
   }
