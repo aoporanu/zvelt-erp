@@ -233,7 +233,8 @@ class PurchaseService
   } //end transfer()
 
   /**
-   * Scans an invoice that came our way in order to be able to sell and transfer the products
+   * Scans an invoice that came our way in order to be able 
+   * to sell and transfer the products
    */
   public function scan(array $request): bool
   {
@@ -272,6 +273,9 @@ class PurchaseService
     return true;
   }
 
+  /**
+    * Creates the return invoice which is needed for scanning
+    */
   public function returnCreate(array $request)
   {
     $items = [];
@@ -290,39 +294,20 @@ class PurchaseService
       $exception = DB::transaction(function () use ($request, $items) {
         foreach ($request['items'] as $item) {
           $locationItems = DB::table('location_items')
-          ->where([
-            ['location_id', $item['location_id']],
-            ['item_id', $item['item_id']]
-          ])
+            ->where([
+              ['location_id', $item['location_id']],
+              ['item_id', $item['item_id']]
+            ])
             ->count();
           info($locationItems);
           if ($locationItems === 0) {
             DB::table('location_items')
               ->insert($items);
             $items = DB::table('location_items')
-            ->get();
+              ->get();
             dump($items);
           }
         }
-        // $locationItems = DB::table('location_items')
-        //   ->where('location_id', $items[0]['location_id'])
-        //   ->andWhere('item_id', current(array_filter($items), static function (array $item) {
-        //     return $item['item_id'];
-        //   })['item_id'])
-        //   ->get();
-        // if (!$locationItems || empty($locationItems)) {
-        //   // insert items into db, even though we should never run into this 
-        //   DB::table('location_items')
-        //     ->insert($items);
-        // }
-        // foreach ($items as $item) {
-        //   DB::table('location_items')
-        //     ->where('location_id', $items[0]['location_id'])
-        //     ->andWhere('item_id', current(array_filter($items), static function (array $item) {
-        //       return $item['item_id'];
-        //     })['item_id'])
-        //     ->update('qty', DB::raw('qty + ?', [$item['qty']]));
-        // }
       }, 5);
       if (is_null($exception)) {
         return true;
