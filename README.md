@@ -5,7 +5,7 @@ Easily manage and track all your supplier's needs by using the revolutionary Zve
 
 ## TODO
 
-[] Handle order creation
+[ ] Handle order creation
 
 &check; Handle invoice creation (tested)
 
@@ -13,4 +13,4 @@ Easily manage and track all your supplier's needs by using the revolutionary Zve
 
 &check; Handle clients and ceils, if the ceil is overflowed, the order goes under further scrutiny by someone with a higher role than the operator
 
-[] Pages for interacting with the product transfers
+[ ] Pages for interacting with the product transfers
