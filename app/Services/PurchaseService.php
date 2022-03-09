@@ -215,8 +215,6 @@ class PurchaseService
             ->insert($request);
           $items = DB::table('location_items')
             ->get();
-          dump(__METHOD__);
-          dump($items);
         }
         // 2 . add qty of items to to_location items
       }, 5);
@@ -299,13 +297,11 @@ class PurchaseService
               ['item_id', $item['item_id']]
             ])
             ->count();
-          info($locationItems);
           if ($locationItems === 0) {
             DB::table('location_items')
               ->insert($items);
             $items = DB::table('location_items')
               ->get();
-            dump($items);
           }
         }
       }, 5);

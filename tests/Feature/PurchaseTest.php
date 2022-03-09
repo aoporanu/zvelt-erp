@@ -152,7 +152,6 @@ class PurchaseTest extends TestCase
     $this->assertDatabaseCount('location_items', 1);
     $items = DB::table('location_items')
       ->get();
-    dump($items);
     $response = $this->be($user)
       ->post(
         '/purchase/transfer',
