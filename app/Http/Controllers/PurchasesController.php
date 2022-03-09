@@ -32,6 +32,7 @@ use App\Http\Controllers\Controller as Controller;
 use App\Http\Requests\TransferPurchaseRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Brian2694\Toastr\Facades\Toastr;
 use DB;
 
 /**
@@ -267,12 +268,14 @@ class PurchasesController extends Controller
 
   public function returnStore(ReturnStoreRequest $returnStoreRequest)
   {
+    // change bom status for the return
     if ($this->_service->returnCreate($returnStoreRequest->validated())) {
-      // change bom status for the return
       // do a Toastr::success and return 
       // the user to the index
+      Toastr::info('The return statement has been created', 'INFO', ['positionClass' => 'toast-top-center']);
       return response()->noContent(Response::HTTP_CREATED);
       // with Toastr::error
     }
+    return response()->noContent(Response::HTTP_FOUND);
   }
 }//end class
