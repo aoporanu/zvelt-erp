@@ -208,13 +208,19 @@ class PurchaseService
       // we need a quantity to transfer in the request array
       $exception = DB::transaction(function () use ($request) {
         // 1 . remove qty of items from from_location items
-        $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', [$request['from_location'], $request['item_id'],  null]);
+        $qty = DB::select('select qty from location_items where location_id=? and item_id=? and deleted_at=?', 
+          [$request['from_location'], $request['item_id'],  null]);
         if (!$qty || empty($qty)) {
           // throw new UnavailableQtyOnLocation('Unavailable qty for item on the selected location');
           DB::table('location_items')
             ->insert($request);
           $items = DB::table('location_items')
             ->get();
+        } else {
+          DB::update('update location_items set qty=? where location_id=? and item_id=? and deleted_at=?', 
+            [$request['qty'], $request['to_location'], null]);
+          DB::update('update location_items set qty=? where location_id=? and item_id=? and deleted_at=?',
+          [DB::raw('select qty-? where item_id=? and location_id=?', [$request['qty'], $request['item_id'], $request['from_location']])]);
         }
         // 2 . add qty of items to to_location items
       }, 5);
