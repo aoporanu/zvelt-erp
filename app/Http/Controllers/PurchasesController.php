@@ -263,7 +263,7 @@ class PurchasesController extends Controller
 
   public function returnCreate()
   {
-    $pageTitle = __('purchases.returns.pages.title');
+    $pageTitle = __('purchases.returns.pages.create.title');
     return view('purchases.return.create', compact('pageTitle'));
   }
 
