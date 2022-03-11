@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+
 class ReturnInvoiceTest extends TestCase
 {
   use RefreshDatabase;
@@ -41,6 +42,7 @@ class ReturnInvoiceTest extends TestCase
     $packaging = (new Packaging)->factory()->create();
     $item = (new Item)->factory()->create();
     $qty = DB::select('select qty from location_items where location_id = ? and item_id = ?', [$location->id, $item->id]);
+    $this->assertEmpty($qty);
     $post = [
       'bom_serial' => Str::uuid(),
       'items' => [
@@ -54,14 +56,31 @@ class ReturnInvoiceTest extends TestCase
       ],
       'created_by' => $user->id
     ];
-    $qtyAfter = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
-    // $this->assertNotSame($qtyAfter, $qty);
     $response = $this->be($user)
       ->post('/returns/store', $post);
 
     $qtyAfter = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
-    dump($qtyAfter);
+    $this->assertNotEquals($qty, $qtyAfter);
+    $post2 = [
+      'bom_serial' => Str::uuid(),
+      'items' => [
+        0 => [
+          'item_id' => $item->id,
+          'qty' => 36,
+          'price' => 1500,
+          'batch_id' => Str::uuid(),
+          'location_id' => $location->id
+        ]
+      ],
+      'created_by' => $user->id
+    ];
+
     $response->assertValid();
     $response->assertStatus(Response::HTTP_CREATED);
+    $response2 = $this->be($user)
+      ->post('/returns/store', $post2);
+    $qtySecondPost = DB::select('select qty from location_items where location_id=? and item_id=?', [$location->id, $item->id]);
+    $response2->assertValid();
+    $response2->assertStatus(Response::HTTP_CREATED);
   }
 }
