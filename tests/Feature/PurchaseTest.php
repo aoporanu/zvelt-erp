@@ -150,15 +150,11 @@ class PurchaseTest extends TestCase
       'qty' => 10
     ];
     $this->assertDatabaseCount('location_items', 1);
-    $items = DB::table('location_items')
-      ->get();
-    dump($items);
     $response = $this->be($user)
       ->post(
         '/purchase/transfer',
         $post
       );
     $response->assertValid($post);
-    // $this->assertNotEmpty($items);
   } //end test_do_transfer()
 }//end class
