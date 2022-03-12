@@ -6,6 +6,7 @@ use App\Models\Location;
 use App\Models\User;
 use App\Models\Shop;
 use App\Models\Client;
+use App\Models\Order;
 use App\Models\Warehouse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -113,5 +114,10 @@ class OrderTest extends TestCase
     $this->be($user)
       ->post('/orders', $post);
     $this->assertDatabaseCount('orders', 1);
+
+    $responseUnauthenticated = $this->withoutExceptionHandling()
+      ->get(route('orders.edit', (new Order)->first()));
+    $responseUnauthenticated->assertStatus(Response::HTTP_OK);
+    $responseUnauthenticated->dump();
   }
 }
