@@ -46,7 +46,7 @@ class ItemController extends Controller
       return $this->service->index();
     }
 
-    $pageTitle = 'Item index';
+    $pageTitle = __('items.pages.index.title');
     return view('items.index', compact('pageTitle'));
   } //end index()
 
@@ -59,7 +59,7 @@ class ItemController extends Controller
     $categories = Category::get(['id', 'name']);
     $brands     = Brand::get(['id', 'name']);
     $packagings = Packaging::get(['id', 'name']);
-    $pageTitle  = 'Create Item';
+    $pageTitle  = __('items.pages.create.title');
 
     return view(
       'items.create',
