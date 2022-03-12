@@ -2,58 +2,71 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ItemDeleteRequest;
-use App\Http\Requests\ItemStoreRequest;
-use App\Http\Requests\ItemUpdateRequest;
+use App\Http\Requests\OrderDeleteRequest;
+use App\Http\Requests\OrderStoreRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Models\Item;
+use App\Models\Order;
+use Symfony\Component\HttpFoundation\Response;
+use App\Services\OrderService;
 
 class OrderController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+  use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
-    {
-        return view('orders.index');
+  private OrderService $_service;
+
+  public function __construct(OrderService $orderService)
+  {
+    $this->_service = $orderService;
+  }
+
+  public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+  {
+    return view('orders.index');
+  }
+
+
+  public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+  {
+    return view('orders.create');
+  }
+
+
+  public function store(OrderStoreRequest $request)
+  {
+    $validatedRequest = $request->validated();
+    unset($validatedRequest['location_id']);
+    if ($this->_service->storeOrder($validatedRequest)) {
+      return Response::HTTP_CREATED;
     }
+    return Response::HTTP_FOUND;
+  }
 
 
-    public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
-    {
-        return view('items.create');
-    }
+  public function show(Order $order)
+  {
+    return view('items.show', compact('order'));
+  }
 
 
-    public function store(ItemStoreRequest $request)
-    {
-
-    }
-
-
-    public function show(Item $item)
-    {
-        return view('items.show', compact('item'));
-    }
+  public function edit(Order $order)
+  {
+    return view('items.edit', compact('order'));
+  }
 
 
-    public function edit(Item $item)
-    {
-        return view('items.edit', compact('item'));
-    }
+  public function update(OrderUpdateRequest $request, Order $order)
+  {
+  }
 
+  public function destroy(OrderDeleteRequest $request, Order $order)
+  {
+    $order->delete();
 
-    public function update(ItemUpdateRequest $request, Item $item)
-    {
-
-    }
-
-    public function destroy(ItemDeleteRequest $request, Item $item)
-    {
-        $item->delete();
-
-        return response()->noContent();
-    }
+    return response()->noContent();
+  }
 }//end class

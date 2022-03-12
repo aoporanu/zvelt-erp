@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PurchasesController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
   Route::resource('financials', FinancialsController::class);
   Route::post('returns/store', [PurchasesController::class, 'returnStore'])->name('return.store');
   Route::get('returns/create', [PurchasesController::class, 'returnCreate'])->name('return.create');
+  Route::resource('orders', OrderController::class);
 });
 Route::resource('items', ItemController::class);
 Auth::routes();

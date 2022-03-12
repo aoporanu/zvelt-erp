@@ -9,8 +9,10 @@ use App\Models\OrderItem;
 use App\Models\PurchasedItems;
 use App\Models\Shop;
 use App\Models\Visitation;
+use \Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use function array_key_exists;
 
 class OrderService
 {
@@ -133,5 +135,19 @@ class OrderService
     return $order;
   } //end createOrder()
 
-
+  public function storeOrder(array $validatedRequest): bool
+  {
+    unset($validatedRequest['location_id']); // we don't need location_id for now
+    if (!array_key_exists('agent_id', $validatedRequest)) {
+      // assume the agent_id is the user_id key
+      $validatedRequest['agent_id'] = $validatedRequest['user_id'];
+    }
+    try {
+      $order = (new Order)->insert($validatedRequest);
+    } catch (Exception $ex) {
+      dump($ex->getMessage());
+      return false;
+    }
+    return true; // wishful thinking for now
+  }
 }//end class
