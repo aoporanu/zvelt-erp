@@ -40,9 +40,10 @@ class OrderController extends BaseController
   {
     $validatedRequest = $request->validated();
     if ($this->_service->storeOrder($validatedRequest)) {
-      return Response::HTTP_CREATED;
+      return response()->noContent(Response::HTTP_CREATED);
+    } else {
+      return response()->noContent(Response::HTTP_FOUND);
     }
-    return Response::HTTP_FOUND;
   }
 
 

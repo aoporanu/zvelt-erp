@@ -82,6 +82,36 @@ class OrderTest extends TestCase
     ];
     $response = $this->be($user)
       ->post('/orders', $post);
+    $this->assertDatabaseCount('orders', 1);
     $response->assertStatus(Response::HTTP_CREATED);
+  }
+
+  /** @test */
+  public function order_can_be_edited()
+  {
+    $this->withoutExceptionHandling();
+    $clientWithShop = $this->createClientWithShop();
+    $deliverer = (new User)->factory()->create();
+    $deliverer->role_id = 3;
+    $deliverer->save();
+    $user = $this->createUser();
+    $warehouse = (new Warehouse)->factory()->create();
+    $location = (new Location)->factory()->create();
+    // create order so we can test the edit point
+    $post = [
+      'uid' => Str::uuid(),
+      'user_id' => 1,
+      'shop_id' => $clientWithShop[0]->id,
+      'client_id' => $clientWithShop[1]->id,
+      'deliverer_id' => $deliverer->id,
+      'warehouse_id' => $warehouse->id,
+      'total' => 14512,
+      'weight' => 130,
+      'location_id' => $location->id
+    ];
+
+    $this->be($user)
+      ->post('/orders', $post);
+    $this->assertDatabaseCount('orders', 1);
   }
 }

@@ -141,6 +141,5 @@ class OrderService
       info($ex->getMessage());
       return false;
     }
-    return true; // wishful thinking for now
   }
 }//end class
