@@ -59,7 +59,6 @@ class PurchasesController extends Controller
    */
   public function __construct(PurchaseService $_service)
   {
-    $this->middleware('auth');
     $this->_service = $_service;
   } //end __construct()
 
@@ -67,10 +66,9 @@ class PurchasesController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return \App\Services\JsonResponse|Application|Factory|\Illuminate\Contracts\View\View|JsonResponse|View
    * @throws Exception
    */
-  public function index()
+  public function index(): JsonResponse|Application|Factory|View
   {
     if (request()->ajax()) {
       return $this->_service->loadIndex();
@@ -273,7 +271,7 @@ class PurchasesController extends Controller
     if ($this->_service->returnCreate($returnStoreRequest->validated())) {
       // do a Toastr::success and return 
       // the user to the index
-      Toastr::info('The return statement has been created', 'INFO', ['positionClass' => 'toast-top-center']);
+      Toastr::success('The return statement has been created', 'INFO', ['positionClass' => 'toast-top-center']);
       return response()->noContent(Response::HTTP_CREATED);
       // with Toastr::error
     }
