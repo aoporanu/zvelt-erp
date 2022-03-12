@@ -39,7 +39,6 @@ class OrderController extends BaseController
   public function store(OrderStoreRequest $request)
   {
     $validatedRequest = $request->validated();
-    unset($validatedRequest['location_id']);
     if ($this->_service->storeOrder($validatedRequest)) {
       return Response::HTTP_CREATED;
     }

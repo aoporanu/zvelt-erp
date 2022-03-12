@@ -28,16 +28,8 @@ class OrderService
     $invoice    = Invoice::where('agent_id', $user_id)->get(['id', 'amount_left'])->toArray();
     $visitation = Visitation::where(
       [
-        [
-          'user_id',
-          '=',
-          $user_id,
-        ],
-        [
-          'shop_id',
-          '=',
-          $shop_id,
-        ],
+        ['user_id', '=', $user_id],
+        ['shop_id', '=', $shop_id],
       ]
     )->first();
     if (is_null($visitation)) {
@@ -45,7 +37,7 @@ class OrderService
     }
 
     if ($visitation->ceil < 0) {
-      return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your overdue invoices.'], 400);
+      return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your overdue invoices, or ask for a derrogation.'], 400);
     }
 
     if (
@@ -143,9 +135,10 @@ class OrderService
       $validatedRequest['agent_id'] = $validatedRequest['user_id'];
     }
     try {
-      $order = (new Order)->insert($validatedRequest);
+      $order = (new Order)->create($validatedRequest);
+      return true;
     } catch (Exception $ex) {
-      dump($ex->getMessage());
+      info($ex->getMessage());
       return false;
     }
     return true; // wishful thinking for now
