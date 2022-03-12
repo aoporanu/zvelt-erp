@@ -12,7 +12,6 @@ use App\Models\Visitation;
 use \Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use function array_key_exists;
 
 class OrderService
 {
@@ -21,23 +20,35 @@ class OrderService
   public static function createOrder($items, $shop_id, $user_id, $warehouse_id): JsonResponse
   {
     if (empty($items)) {
-      return response()->json(['success' => false, 'message' => 'The order doesn\'t have any items, it will be deleted', 500]);
+      return response()->json([
+        'success' => false, 
+        'message' => __('orders.pages.create.messages.order_no_items'), 500]);
     }
 
-    $shop       = Shop::find($shop_id);
-    $invoice    = Invoice::where('agent_id', $user_id)->get(['id', 'amount_left'])->toArray();
-    $visitation = Visitation::where(
+    $shop       = (new Shop)->find($shop_id);
+    $invoice    = (new Invoice)
+    ->where('agent_id', $user_id)
+    ->get(['id', 'amount_left'])->toArray();
+    $visitation = (new Visitation)->where(
       [
         ['user_id', '=', $user_id],
         ['shop_id', '=', $shop_id],
       ]
     )->first();
     if (is_null($visitation)) {
-      return response()->json(['success' => false, 'message' => 'no route for this agent to the shop'], 400);
+      return response()
+        ->json([
+          'success' => false, 
+          'message' => __('orders.pages.create.messages.no_route_for_agent')
+        ], 400);
     }
 
     if ($visitation->ceil < 0) {
-      return response()->json(['success' => false, 'message' => 'You have no ceil left for any order to this shop. Please try to cash some of your overdue invoices, or ask for a derrogation.'], 400);
+      return response()
+        ->json([
+          'success' => false, 
+          'message' => __('orders.pages.create.messages.no_ceil_for_client')
+        ], 400);
     }
 
     if (
@@ -47,12 +58,16 @@ class OrderService
       && $visitation
       && $visitation->ceil > $invoice[0]['amount_left']
     ) {
-      return response()->json(['success' => false, 'message' => 'This client has already been invoiced by you. Please cash the invoice first'], 400);
+      return response()
+        ->json([
+          'success' => false, 
+          'message' => __('orders.pages.create.messages.already_invoiced')
+        ], 400);
     }
 
     $total = 0.0;
     foreach ($items as $item) {
-      $itemR         = Item::firstOrFail($item['item_id']);
+      $itemR         = (new Item)->firstOrFail($item['item_id']);
       $purchasedItem = DB::select(
         'select id, selling_cost from item_purchase where item_id=? and location_id=? and warehouse_id=?',
         [
@@ -65,18 +80,18 @@ class OrderService
         return response()->json(
           [
             'success'        => false,
-            'message'        => 'There wasn\'t any purchase for this item',
+            'message'        => __('orders.pages.create.messages.item_not_purchased'),
             'purchased_item' => $item,
           ],
           400
         );
       } else {
-        $purchItem = PurchasedItems::first($purchasedItem[0]->id);
+        $purchItem = (new PurchasedItems)->first($purchasedItem[0]->id);
         if ($item['qty'] > $purchItem->qty) {
           return response()->json(
             [
               'status'  => false,
-              'message' => 'Unable to add the current item to your order. The quantity on stock is less than what you\'re ordering',
+              'message' => __('orders.pages.create.messages.item_not_enough_stock'),
             ],
             400
           );
@@ -86,7 +101,7 @@ class OrderService
           return response()->json(
             [
               'status'  => false,
-              'message' => 'Unable to add the current item to your order, it\'s out of stock',
+              'message' => __('orders.pages.create.messages.item_out_of_stock'),
             ],
             400
           );
@@ -111,10 +126,10 @@ class OrderService
         $total += ($item['sale_cost'] * $item['qty']);
       } //end if
 
-      OrderItem::insert($item);
+      (new OrderItem)->insert($item);
     } //end foreach
 
-    $order        = Order::insert();
+    $order        = (new Order)->insert();
     $order->total = $total;
     $order->save();
 
@@ -135,7 +150,8 @@ class OrderService
       $validatedRequest['agent_id'] = $validatedRequest['user_id'];
     }
     try {
-      $order = (new Order)->create($validatedRequest);
+      $order = (new Order)->create($validatedRequest); // maybe we need the order
+      // object in the future
       return true;
     } catch (Exception $ex) {
       info($ex->getMessage());
