@@ -324,9 +324,9 @@ class PurchaseService
       if (is_null($exception)) {
         return true;
       } else {
-        throw new Exception;
+        throw new UnavailableQtyOnLocation;
       }
-    } catch (Exception $ex) {
+    } catch (UnavailableQtyOnLocation $ex) {
       info($ex->getMessage());
       return false;
     }
@@ -373,9 +373,9 @@ class PurchaseService
       if (is_null($exception)) {
         return true;
       } else {
-        throw new Exception;
+        throw new UnavailableQtyOnLocation;
       }
-    } catch (Exception $ex) {
+    } catch (UnavailableQtyOnLocation $ex) {
       info($ex->getMessage());
       return false;
     }
