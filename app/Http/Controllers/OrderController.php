@@ -26,13 +26,15 @@ class OrderController extends BaseController
 
   public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
   {
-    return view('orders.index');
+    $pageTitle = __('orders.pages.index.title');
+    return view('orders.index', compact('pageTitle'));
   }
 
 
   public function create(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
   {
-    return view('orders.create');
+    $pageTitle = __('orders.pages.create.title');
+    return view('orders.create', compact('pageTitle'));
   }
 
 
@@ -49,13 +51,15 @@ class OrderController extends BaseController
 
   public function show(Order $order)
   {
-    return view('items.show', compact('order'));
+    $pageTitle = __('orders.pages.show.title');
+    return view('orders.show', compact('order', 'pageTitle'));
   }
 
 
   public function edit(Order $order)
   {
-    return view('items.edit', compact('order'));
+    $pageTitle = __('orders.pages.edit.title');
+    return view('orders.edit', compact('order', 'pageTitle'));
   }
 
 
