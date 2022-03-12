@@ -85,7 +85,8 @@ class PurchaseService
         ];
       }
 
-      DB::table('purchased_items')->insert($itemsToInsert);
+      DB::table('purchased_items')
+        ->insert($itemsToInsert);
       DB::commit();
     } catch (Exception $ex) {
       DB::rollback();
