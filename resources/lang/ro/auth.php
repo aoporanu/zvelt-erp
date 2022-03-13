@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'failed'   => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed'   => 'Informatiile nu se potrivesc celor din baza de date.',
+    'password' => 'Parola introdusa este incorecta.',
+    'throttle' => 'Ai incercat sa te autentifici de prea multe ori. Poti incerca din nou in :seconds seconde.',
 ];
