@@ -74,7 +74,7 @@ class PurchasesController extends Controller
       return $this->_service->loadIndex();
     }
 
-    $pageTitle = 'Purchases index';
+    $pageTitle = __('purchases.pages.index.title');
     return view(
       'purchases.index',
       compact('pageTitle')
@@ -89,7 +89,7 @@ class PurchasesController extends Controller
   public function create()
   {
     $arrayForView   = $this->_service->loadViewArray();
-    $pageTitle      = 'Create purchase';
+    $pageTitle      = __('purchases.pages.create.title');
     $purchaseCount = Purchase::count();
     if ($purchaseCount) {
       $lastPurchaseId = (int) Purchase::latest()->first()->purchase_id;
@@ -119,7 +119,7 @@ class PurchasesController extends Controller
   public function store(PurchaseStoreRequest $request): RedirectResponse
   {
     $this->_service->create($request->validated());
-    return redirect()->back()->with('message', 'The purchase has been created');
+    return redirect()->back()->with('message', __('purchases.methods.store.success_message'));
   } //end store()
 
   /**
@@ -131,7 +131,7 @@ class PurchasesController extends Controller
    */
   public function show(Purchase $purchase)
   {
-    $pageTitle = 'Showing purchased item';
+    $pageTitle = __('purchases.pages.show.title');
     return view('purchases.show', compact('purchase', 'pageTitle'));
   } //end show()
 
@@ -144,6 +144,7 @@ class PurchasesController extends Controller
    */
   public function edit(Purchase $purchase): Application|Factory|IlluminateView
   {
+    $pageTitle = __('purchases.pages.edit.title');
     return view('purchases.edit', compact('purchase'));
   } //end edit()
 
@@ -160,11 +161,11 @@ class PurchasesController extends Controller
     if ($purchase->update($request->validated())) {
       return redirect()->back()->with(
         'message',
-        'The Purchase has been updated'
+        __('purchases.methods.update.success_message')
       );
     }
 
-    return redirect()->back()->with('message', 'Could not update the model');
+    return redirect()->back()->with('message', __('purchases.methods.update.failure_message'));
   } //end update()
 
   /**
@@ -180,10 +181,15 @@ class PurchasesController extends Controller
       return response()->json(
         [
           'success' => true,
-          'message' => 'The purchase was deleted',
+          'message' => __('purchases.methods.delete.success_message'),
         ]
       );
     }
+    return response()
+      ->json([
+        'success' => false,
+        'message' => __('purchases.methods.delete.failure_message')
+      ]);
   } //end destroy()
 
   /**
@@ -196,7 +202,7 @@ class PurchasesController extends Controller
       return $this->_service->loadStocks();
     }
 
-    $pageTitle = 'Company stocks';
+    $pageTitle = __('purchases.pages.stocks.title');
 
     return view('purchases.stocks', compact('pageTitle'));
   } //end stocks()
@@ -208,7 +214,7 @@ class PurchasesController extends Controller
    */
   public function transfer(PurchasedItems $purchasedItem): Application|Factory|IlluminateView
   {
-    $pageTitle = 'Transfer stocks';
+    $pageTitle = __('purchases.pages.transfer.title');
     $purchasedItem->load('location', 'warehouse');
     $items      = DB::select('select id, name from items');
     $warehouses = DB::select('select id, name from warehouses');
@@ -271,10 +277,11 @@ class PurchasesController extends Controller
     if ($this->_service->returnCreate($returnStoreRequest->validated())) {
       // do a Toastr::success and return 
       // the user to the index
-      Toastr::success('The return statement has been created', 'INFO', ['positionClass' => 'toast-top-center']);
+      Toastr::success(__('purchases.methods.returnStore.success_message'), 'INFO', ['positionClass' => 'toast-top-center']);
       return response()->noContent(Response::HTTP_CREATED);
       // with Toastr::error
     }
+    Toastr::error(__('purchases.methods.returnStore.failure_message'), 'INFO', ['positionClass' => 'toast-top-center']);
     return response()->noContent(Response::HTTP_FOUND);
   }
 }//end class
