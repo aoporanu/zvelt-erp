@@ -3,6 +3,12 @@
 
 Easily manage and track all your supplier's needs by using the revolutionary Zvelt-ERP project
 
+## ACQUIRED SKILLS
+
+- TDD development (love it so far)
+
+- DB optimization techniques and caching
+
 ## TODO
 
 - [ ] Handle order creation
@@ -18,3 +24,5 @@ Easily manage and track all your supplier's needs by using the revolutionary Zve
 - [x] Order creation page
 
 - [ ] Order storing testing
+
+- [ ] Translate existing messages
